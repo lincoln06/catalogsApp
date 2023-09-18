@@ -11,6 +11,8 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+            <p>{{ app.user.email }} - <a href="{{ path('app_logout') }}">Wyloguj</a></p>
+        {% endblock %}
     </body>
 </html>
