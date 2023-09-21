@@ -24,6 +24,9 @@ class Catalog
     #[ORM\JoinColumn(nullable: false)]
     private ?System $system = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $pdfFile = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +64,18 @@ class Catalog
     public function setSystem(?System $system): static
     {
         $this->system = $system;
+
+        return $this;
+    }
+
+    public function getPdfFile(): ?string
+    {
+        return $this->pdfFile;
+    }
+
+    public function setPdfFile(string $pdfFile): static
+    {
+        $this->pdfFile = $pdfFile;
 
         return $this;
     }
