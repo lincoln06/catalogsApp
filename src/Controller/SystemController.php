@@ -41,6 +41,7 @@ class SystemController extends AbstractController
             return $this -> redirectToRoute('app_show_system');
         }
         return $this->render('add_catalog/index.html.twig', [
+            'caption' => 'Dodaj system',
             'form' => $form->createView(),
         ]);
     }
@@ -63,6 +64,7 @@ class SystemController extends AbstractController
             return $this -> redirectToRoute('app_show_system');
         }
         return $this->render('add_catalog/index.html.twig', [
+            'caption' => 'Edytuj system',
             'form' => $form->createView(),
             'message' => $message
         ]);

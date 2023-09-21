@@ -13,6 +13,7 @@
     <body>
         {% block body %}
             <p>{{ app.user.email }} -
+                <a href="{{ path('app_catalogs_home') }}">Strona główna</a> -
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('app_manage_users') }}">Użytkownicy</a> -
                     <a href="{{ path('app_show_system') }}">Systemodawcy</a> -

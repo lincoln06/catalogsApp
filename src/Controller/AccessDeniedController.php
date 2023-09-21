@@ -11,7 +11,7 @@ class AccessDeniedController extends AbstractController
     #[Route('/access/denied', name: 'app_access_denied')]
     public function index(): Response
     {
-        return $this->render('access_denied/index.html.twig', [
+        return $this->render('access_denied/edit.html.twig', [
         ]);
     }
 }
