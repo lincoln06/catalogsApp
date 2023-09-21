@@ -10,8 +10,22 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <ul>
+        {% for system in systems %}
+            <li class="system">{{ system.name }}
 
-    Here will be the list of all catalogs
+                <ul>
+                    {% for catalog in catalogs[system.name] %}
+                        <li class="system"><a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}" target="_blank">{{ catalog.name }}</a>
+                            {% if is_granted('ROLE_EDITOR') %}
+                                - <a href="{{ path('app_edit_catalog', {'id':catalog.id}) }}">Edytuj</a> -
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            </li>
+        {% endfor %}
+        <ul>
 </div>
 {% endblock %}
