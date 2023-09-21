@@ -12,6 +12,7 @@
 <div class="example-wrapper">
     <h1>{{ message }}</h1>
     <ul>
+        <li><a href="{{ path('app_add_system') }}">Dodaj nowy</a></li>
     {% for system in systems %}
         <li>{{ system.name }}
             {% if is_granted('ROLE_ADMIN') %}

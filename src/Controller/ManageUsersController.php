@@ -55,7 +55,7 @@ class ManageUsersController extends AbstractController
         }
         return $this->render('edit_users/index.html.twig', [
             'form' => $form,
-            'user' => $user
+            'username' => $user->getEmail()
         ]);
 
     }

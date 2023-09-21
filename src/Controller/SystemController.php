@@ -13,7 +13,7 @@ use App\Entity\System;
 class SystemController extends AbstractController
 {
 
-    #[Route('/show/system', name: 'app_show_system')]
+    #[Route('/system/show', name: 'app_show_system')]
     public function show(EntityManagerInterface $entityManager): Response
     {
         $message = '';
@@ -26,7 +26,7 @@ class SystemController extends AbstractController
             'message' => $message
         ]);
     }
-    #[Route('/add/system', name: 'app_add_system')]
+    #[Route('/system/add', name: 'app_add_system')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $system = new System();
@@ -44,7 +44,7 @@ class SystemController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    #[Route('/edit/system/{id}', name: 'app_edit_system')]
+    #[Route('/system/edit/{id}', name: 'app_edit_system')]
     public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         $system = $entityManager->getRepository(System::class)->find($id);
@@ -67,7 +67,7 @@ class SystemController extends AbstractController
             'message' => $message
         ]);
     }
-    #[Route('/delete/system/{id}', name: 'app_delete_system')]
+    #[Route('/system/delete/{id}', name: 'app_delete_system')]
     public function delete(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         $system = $entityManager->getRepository(System::class)->find($id);
@@ -77,8 +77,6 @@ class SystemController extends AbstractController
         }
         $entityManager->remove($system);
         $entityManager->flush();
-        return $this->render('add_catalog/index.html.twig', [
-            'message' => $message
-        ]);
+        return $this->redirectToRoute('app_show_system');
     }
 }

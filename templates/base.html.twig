@@ -12,7 +12,12 @@
     </head>
     <body>
         {% block body %}
-            <p>{{ app.user.email }} - <a href="{{ path('app_logout') }}">Wyloguj</a></p>
+            <p>{{ app.user.email }} -
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_manage_users') }}">Użytkownicy</a> -
+                    <a href="{{ path('app_show_system') }}">Systemodawcy</a> -
+                {% endif %}
+                <a href="{{ path('app_logout') }}">Wyloguj</a></p>
         {% endblock %}
     </body>
 </html>
