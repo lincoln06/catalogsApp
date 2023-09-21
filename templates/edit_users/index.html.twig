@@ -11,16 +11,9 @@
         {% if message is defined %}
         <h1>{{ message }}</h1>
         {% endif %}
-<ul>
-    {% for user in usersList %}
-        <li>{{ user.email }} - <a href="{{ path('app_delete_user', {'id':user.id}) }}">Usuń</a> - <a href="{{ path('app_edit_user', {'id':user.id}) }}">Edytuj</a>
-        <ul>
-                {% for role in user.roles %}
-                <li>{{ role }}</li>
-                {% endfor %}
-        </ul>
-        </li>
-    {% endfor %}
-</ul>
+<div>
+        <h1>{{ user.email }}</h1>
+    {{ form(form) }}
+</div>
 
 {% endblock %}

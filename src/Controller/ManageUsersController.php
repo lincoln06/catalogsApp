@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\EditUserType;
 use App\Services\GetUsersListService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +21,7 @@ class ManageUsersController extends AbstractController
         ]);
     }
     #[Route('/manage/users/delete/{id}', name: 'app_delete_user')]
-    public function delete(Request $request, EntityManagerInterface $entityManager, int $id, GetUsersListService $getUsersListService): Response
+    public function delete(EntityManagerInterface $entityManager, int $id, GetUsersListService $getUsersListService): Response
     {
         $user = $entityManager->getRepository(User::class)->find($id);
         $message = '';
@@ -33,5 +34,29 @@ class ManageUsersController extends AbstractController
             'message' => $message,
             'usersList' => $getUsersListService->getUsersFromDatabase()
         ]);
+    }
+    #[Route('/manage/users/edit/{id}', name: 'app_edit_user')]
+    public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    {
+        $user = $entityManager->getRepository(User::class)->find($id);
+        $message = '';
+        if(!$user) {
+            $message = 'Brak danych';
+        }
+        $form = $this -> createForm(EditUserType::class, $user);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $user->setRoles($data->getRoles());
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $this -> redirectToRoute('app_manage_users');
+        }
+        return $this->render('edit_users/index.html.twig', [
+            'form' => $form,
+            'user' => $user
+        ]);
+
     }
 }
