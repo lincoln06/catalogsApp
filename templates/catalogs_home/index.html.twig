@@ -11,6 +11,7 @@
 
 <div class="example-wrapper">
     <ul>
+        <li><a href="{{ path('app_add_catalog') }}">Dodaj nowy</a></li>
         {% for system in systems %}
             <li class="system">{{ system.name }}
 
@@ -19,6 +20,7 @@
                         <li class="system"><a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}" target="_blank">{{ catalog.name }}</a>
                             {% if is_granted('ROLE_EDITOR') %}
                                 - <a href="{{ path('app_edit_catalog', {'id':catalog.id}) }}">Edytuj</a> -
+                                <a href="{{  path('app_delete_catalog', {'id':catalog.id}) }}">Usuń</a>
                             {% endif %}
                         </li>
                     {% endfor %}
