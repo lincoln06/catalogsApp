@@ -38,14 +38,16 @@ class RegistrationController extends AbstractController
            'form' => $form
         ]);
     }
-    #[Route('/register/allowed/{hash}', name: 'app_register_allowed')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, int $commonHash, UserRegistrationService $userRegistrationService): Response
+    #[Route('/register/allowed/{commonHash}', name: 'app_register_allowed')]
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, string $commonHash, UserRegistrationService $userRegistrationService): Response
     {
         $registerRequest = $entityManager->getRepository(RegisterRequest::class)->findOneBy(['hash' => $commonHash]);
         $session = $request->getSession();
         $hash = $session->get('hash');
+            if($hash !== $commonHash || !$registerRequest) {
+                return $this->redirectToroute('app_access_denied');
+            }
             $user = new User();
-            if($hash === $commonHash && $registerRequest) {
             $form = $this->createForm(RegistrationFormType::class, $user);
             $form->handleRequest($request);
 
@@ -63,12 +65,11 @@ class RegistrationController extends AbstractController
                 $userRegistrationService->deleteRegisterRequest($registerRequest);
                 return $this->redirectToRoute('app_catalogs_home');
             }
-
             return $this->render('registration/register.html.twig', [
                 'registrationForm' => $form->createView(),
             ]);
-        }
-            return $this->redirectToroute('app_access_denied');
+
+
     }
 
 }

@@ -6,32 +6,34 @@ use App\Entity\RegisterRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
 
 class UserRegistrationService
 {
-    private MailerInterface $mailer;
     private EntityManagerInterface $entityManager;
-    public function __construct(MailerInterface $mailer, EntityManagerInterface $entityManager) {
-        $this->mailer = $mailer;
+    public function __construct(EntityManagerInterface $entityManager) {
         $this->entityManager = $entityManager;
         }
     
-    public function allowToRegister(RegisterRequest $registerRequest) {
+    public function allowToRegister(RegisterRequest $registerRequest) : void
+    {
+        $transport = Transport::fromDsn('smtp://gabitcatalogs@gmx.com:Katalogi1!@mail.gmx.com:587');
+        $mailer = new Mailer($transport);
         $email = (new Email())
             ->from('gabitcatalogs@gmx.com')
             ->to("{$registerRequest->getEmail()}")
-            ->subject('Katalogi GABIT - lonk do rejestracji')
-            ->html("<p>Aby się zarejestrować, kliknij w link: <a href='localhost:8000/register/allowed/{$registerRequest->getHash()}'></a></p>");
+            ->subject('Katalogi GABIT - link do rejestracji')
+            ->text("Link: localhost:8000/register/allowed/{$registerRequest->getHash()}");
         try {
-            $this->mailer->send($email);
+            $mailer->send($email);
         } catch (TransportExceptionInterface $e) {
             var_dump($email);
             die();
         }
-        $this->deleteRegisterRequest($registerRequest);
     }
-    public function deleteRegisterRequest(RegisterRequest $registerRequest) {
+    public function deleteRegisterRequest(RegisterRequest $registerRequest) : void
+    {
         $this->entityManager->remove($registerRequest);
         $this->entityManager->flush();
     }
