@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Catalog;
 use App\Form\CatalogType;
 use App\Repository\SystemRepository;
+use App\Services\CatalogMakerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -16,6 +17,12 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CatalogsHomeController extends AbstractController
 {
+    private SluggerInterface $slugger;
+    private CatalogMakerService $fileUploadService;
+    public function __construct(CatalogMakerService $fileUploadService, SluggerInterface $slugger) {
+        $this->slugger = $slugger;
+        $this->fileUploadService = $fileUploadService;
+    }
     #[Route('/', name: 'app_catalogs_home')]
     public function index(SystemRepository $systemRepository): Response
     {
@@ -34,7 +41,7 @@ class CatalogsHomeController extends AbstractController
         );
     }
     #[Route('/catalog/add', name: 'app_add_catalog')]
-    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $catalog = new Catalog();
 
@@ -42,29 +49,7 @@ class CatalogsHomeController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $catalog->setSystem($form->get('system')->getData());
-            $catalog->setName($form->get('name')->getData());
-            $catalog->setDateAdded($form->get('dateAdded')->getData());
-            $pdfFile = $form->get('pdfFile')->getData();
-
-            if ($pdfFile) {
-                $originalFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$pdfFile->guessExtension();
-
-                try {
-                    $pdfFile->move(
-                        $this->getParameter('catalogs_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-
-                $catalog->setPdfFile($newFilename);
-            }
-
+            $catalog = $this->fileUploadService->createOfUpdateCatalog($catalog, $form);
             $entityManager->persist($catalog);
             $entityManager->flush();
             return $this -> redirectToRoute('app_catalogs_home');
@@ -89,34 +74,11 @@ class CatalogsHomeController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $catalog->setSystem($form->get('system')->getData());
-            $catalog->setName($form->get('name')->getData());
-            $catalog->setDateAdded($form->get('dateAdded')->getData());
-            $pdfFile = $form->get('pdfFile')->getData();
-
-            if ($pdfFile) {
-                $originalFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$pdfFile->guessExtension();
-
-                try {
-                    $pdfFile->move(
-                        $this->getParameter('catalogs_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-
-                }
-
-                $catalog->setPdfFile($newFilename);
-            }
-
+            $catalog = $this->fileUploadService->createOfUpdateCatalog($catalog, $form);
             $entityManager->persist($catalog);
             $entityManager->flush();
             if($oldPdfFile) {
                 $olfPdfFilePath = $this->getParameter('catalogs_directory') . '/' . $oldPdfFile;
-
                 $filesystem->remove($olfPdfFilePath);
             }
             return $this -> redirectToRoute('app_catalogs_home');
