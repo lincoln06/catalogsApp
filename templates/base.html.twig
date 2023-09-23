@@ -18,6 +18,9 @@
                     <a href="{{ path('app_manage_users') }}">Użytkownicy</a> -
                     <a href="{{ path('app_show_system') }}">Systemodawcy</a> -
                 {% endif %}
+                {% if is_granted('ROLE_GOD') %}
+                    <a href="{{ path('app_manage_requests') }}">Prośby o rejestrację</a> -
+                {% endif %}
                 <a href="{{ path('app_logout') }}">Wyloguj</a></p>
         {% endblock %}
     </body>

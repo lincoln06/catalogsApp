@@ -8,7 +8,6 @@ use App\Repository\SystemRepository;
 use App\Services\CatalogMakerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,10 +17,10 @@ use Symfony\Component\Filesystem\Filesystem;
 class CatalogsHomeController extends AbstractController
 {
     private SluggerInterface $slugger;
-    private CatalogMakerService $fileUploadService;
-    public function __construct(CatalogMakerService $fileUploadService, SluggerInterface $slugger) {
+    private CatalogMakerService $catalogMakerService;
+    public function __construct(CatalogMakerService $catalogMakerService, SluggerInterface $slugger) {
         $this->slugger = $slugger;
-        $this->fileUploadService = $fileUploadService;
+        $this->catalogMakerService = $catalogMakerService;
     }
     #[Route('/', name: 'app_catalogs_home')]
     public function index(SystemRepository $systemRepository): Response
@@ -49,7 +48,7 @@ class CatalogsHomeController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $catalog = $this->fileUploadService->createOfUpdateCatalog($catalog, $form);
+            $catalog = $this->catalogMakerService->createOfUpdateCatalog($catalog, $form);
             $entityManager->persist($catalog);
             $entityManager->flush();
             return $this -> redirectToRoute('app_catalogs_home');
@@ -60,33 +59,34 @@ class CatalogsHomeController extends AbstractController
         ]);
     }
     #[Route('/catalog/edit/{id}', name: 'app_edit_catalog')]
-    public function edit(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, int $id): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         $catalog = $entityManager->getRepository(Catalog::class)->find($id);
-        if(!$catalog) {
-            $message = 'Brak danych';
-        }
-        $oldPdfFile = $catalog->getPdfFile();
-        $message = '';
-        $filesystem = new Filesystem();
+        if($catalog) {
 
-        $form = $this -> createForm(CatalogType::class, $catalog);
+            $oldPdfFile = $catalog->getPdfFile();
+            $filesystem = new Filesystem();
 
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            $catalog = $this->fileUploadService->createOfUpdateCatalog($catalog, $form);
-            $entityManager->persist($catalog);
-            $entityManager->flush();
-            if($oldPdfFile) {
-                $olfPdfFilePath = $this->getParameter('catalogs_directory') . '/' . $oldPdfFile;
-                $filesystem->remove($olfPdfFilePath);
+            $form = $this->createForm(CatalogType::class, $catalog);
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $catalog = $this->catalogMakerService->createOfUpdateCatalog($catalog, $form);
+                $entityManager->persist($catalog);
+                $entityManager->flush();
+                if ($oldPdfFile) {
+                    $olfPdfFilePath = $this->getParameter('catalogs_directory') . '/' . $oldPdfFile;
+                    $filesystem->remove($olfPdfFilePath);
+                }
+                return $this->redirectToRoute('app_catalogs_home');
             }
-            return $this -> redirectToRoute('app_catalogs_home');
+            return $this->render('add_catalog/index.html.twig', [
+                'caption' => 'Edytuj Katalog',
+                'form' => $form->createView()
+            ]);
         }
-        return $this->render('add_catalog/index.html.twig', [
-            'caption' => 'Edytuj Katalog',
-            'form' => $form->createView(),
-            'message' => $message
+        return $this->render('error_page/index.html.twig', [
+           'message' => 'Wystąpił błąd'
         ]);
     }
     #[Route('/catalog/delete/{id}', name: 'app_delete_catalog')]
@@ -107,6 +107,8 @@ class CatalogsHomeController extends AbstractController
 
         $entityManager->remove($catalog);
         $entityManager->flush();
-        return $this->redirectToRoute('app_catalogs_home');
+        return $this->redirectToRoute('app_catalogs_home', [
+            'message' => $message
+        ]);
     }
 }

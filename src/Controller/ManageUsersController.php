@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\RegisterRequest;
 use App\Entity\User;
 use App\Form\EditUserType;
 use App\Services\GetUsersListService;
+use App\Services\UserRegistrationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,5 +57,30 @@ class ManageUsersController extends AbstractController
             'username' => $user->getEmail()
         ]);
 
+    }
+    #[Route('/manage/requests', name: 'app_manage_requests')]
+    public function requests(EntityManagerInterface $entityManager): Response
+    {
+        $message = "Lista zapytań o rejestrację";
+        $requests = $entityManager->getRepository(RegisterRequest::class)->findAll();
+        if(!$requests) $message = "Brak zapytań o rejestrację";
+        return $this->render('manage_users/requests.html.twig', [
+            'message' =>$message,
+            'requests' => $requests,
+        ]);
+    }
+    #[Route('/manage/requests/confirm/{id}', name: 'app_request_confirm')]
+    public function confirm(Request $request, EntityManagerInterface $entityManager, UserRegistrationService $userRegistrationService, int $id): Response
+    {
+        $registerRequest = $entityManager->getRepository(RegisterRequest::class)->find($id);
+        $userRegistrationService->allowToRegister($registerRequest);
+        return $this->redirectToRoute('app_manage_requests');
+    }
+    #[Route('/manage/requests/deny/{id}', name: 'app_request_deny')]
+    public function deny(Request $request, EntityManagerInterface $entityManager, UserRegistrationService $userRegistrationService, int $id): Response
+    {
+        $registerRequest = $entityManager->getRepository(RegisterRequest::class)->find($id);
+        $userRegistrationService->deleteRegisterRequest($registerRequest);
+        return $this->redirectToRoute('app_manage_requests');
     }
 }
