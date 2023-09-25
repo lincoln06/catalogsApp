@@ -11,7 +11,9 @@
 
 <div class="example-wrapper">
     <ul>
+        {% if is_granted('ROLE_EDITOR') %}
         <li><a href="{{ path('app_add_catalog') }}">Dodaj nowy</a></li>
+        {% endif %}
         {% for system in systems %}
             <li class="system">{{ system.name }}
 
