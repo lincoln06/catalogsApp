@@ -32,7 +32,9 @@ class ManageUsersController extends AbstractController
         }
         $entityManager->remove($user);
         $entityManager->flush();
-        return $this->redirectToRoute('app_manage_users');
+        return $this->render('manage_users/index.html.twig', [
+            'message' => $message,
+        ]);
     }
     #[Route('/manage/users/edit/{id}', name: 'app_edit_user')]
     public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response

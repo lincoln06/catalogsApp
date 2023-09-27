@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\RegisterRequestType;
 use App\Form\RegistrationFormType;
 use App\Services\GetUsersListService;
+use App\Services\HashSetter;
 use App\Services\UserRegistrationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,15 +15,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function registrationRequest(Request $request, EntityManagerInterface $entityManager, GetUsersListService $getUsersListService): Response
+    public function registrationRequest(Request $request, EntityManagerInterface $entityManager, GetUsersListService $getUsersListService, HashSetter $hashSetter): Response
     {
         $session = $request->getSession();
-        $hash = sha1(time());
+        $hash = $hashSetter->makeHash();
         $session->set('hash', $hash);
         $registerRequest = new RegisterRequest();
         $form = $this->createForm(RegisterRequestType::class, $registerRequest);

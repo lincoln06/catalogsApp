@@ -90,7 +90,7 @@ class CatalogsHomeController extends AbstractController
         ]);
     }
     #[Route('/catalog/delete/{id}', name: 'app_delete_catalog')]
-    public function delete(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    public function delete(EntityManagerInterface $entityManager, int $id): Response
     {
         $catalog = $entityManager->getRepository(Catalog::class)->find($id);
         if(!$catalog) {

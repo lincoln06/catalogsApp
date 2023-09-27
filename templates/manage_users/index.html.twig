@@ -9,18 +9,20 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
         {% if message is defined %}
-        <h1>{{ message }}</h1>
+                <h1>{{ message }}</h1>
         {% endif %}
-<ul>
-    {% for user in usersList %}
-        <li>{{ user.email }} - <a href="{{ path('app_delete_user', {'id':user.id}) }}">Usuń</a> - <a href="{{ path('app_edit_user', {'id':user.id}) }}">Edytuj</a>
-        <ul>
-                {% for role in user.roles %}
-                <li>{{ role }}</li>
+        {% if usersList is defined %}
+                <ul>
+                {% for user in usersList %}
+                        <li>{{ user.email }} - <a href="{{ path('app_delete_user', {'id':user.id}) }}">Usuń</a> - <a href="{{ path('app_edit_user', {'id':user.id}) }}">Edytuj</a>
+                                <ul>
+                                {% for role in user.roles %}
+                                        <li>{{ role }}</li>
+                                {% endfor %}
+                                </ul>
+                        </li>
                 {% endfor %}
         </ul>
-        </li>
-    {% endfor %}
-</ul>
+        {% endif %}
 
 {% endblock %}
