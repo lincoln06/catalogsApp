@@ -28,7 +28,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegisterRequestType::class, $registerRequest);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $registeredEmailAddresses = $getUsersListService->getRegisteredEmails();
+            $registeredEmailAddresses = $getUsersListService->getAllEmails();
             $email = $form->get('email')->getData();
             if(in_array($email, $registeredEmailAddresses))
             {

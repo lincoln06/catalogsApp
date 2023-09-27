@@ -3,6 +3,9 @@
 {% block title %}Hello LoginController!{% endblock %}
 
 {% block body %}
+    {% if message is defined %}
+    <h2>{{ message }}</h2>
+    {% endif %}
     {% if error %}
         <div>{{  error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
@@ -14,6 +17,7 @@
         <input type="hidden" name="_target_path" value="/">
         <button type="submit">Zaloguj</button>
     </form>
+    <a href="{{ path('app_forgot_password_request') }}">Zapomniałem hasła</a>
 
     <p>Nie masz konta? <a href="{{ path('app_register') }}">Poproś o dostęp</a></p>
 {% endblock %}

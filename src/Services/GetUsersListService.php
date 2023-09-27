@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Entity\RegisterRequest;
 use App\Entity\User;
 use App\Repository\RegisterRequestRepository;
 use App\Repository\UserRepository;
@@ -39,22 +38,25 @@ class GetUsersListService
                 if($index !== false) {
                     unset($usersList[$index]);
                 }
-            };
+            }
         }
         return $usersList;
     }
-    public function getRegisteredEmails() : array
+    public function getAllEmails() : array
     {
-        $usersList = $this->userRepository->findAll();
         $registerRequestsList = $this->registerRequestRepository->findAll();
-        $emailsArray = [];
-        forEach($usersList as $user)
-        {
-            $emailsArray[] =  $user->getEmail();
-        }
+        $emailsArray = $this->getRegisteredEmails();
         forEach($registerRequestsList as $registerRequest)
         {
             $emailsArray[] = $registerRequest->getEmail();
+        }
+        return $emailsArray;
+    }
+    public function getRegisteredEmails() : array{
+        $registeredUsers = $this->userRepository->findAll();
+        $emailsArray = [];
+        forEach($registeredUsers as $registeredUser) {
+            $emailsArray[] = $registeredUser->getEmail();
         }
         return $emailsArray;
     }

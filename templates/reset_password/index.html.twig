@@ -4,10 +4,14 @@
 
 {% block body %}
     <h1>Register</h1>
+    {% if message is defined %}
+        <h2>{{ message }}</h2>
+    {% endif %}
     {{ form_errors(resetForm) }}
 
     {{ form_start(resetForm) }}
         {{ form_row(resetForm.email) }}
-        {{ form_row(resetForm.plainPassword) }}
+        {{ form_row(resetForm.password) }}
+        {{ form_row(resetForm.repeatPassword) }}
     {{ form_end(resetForm) }}
 {% endblock %}
