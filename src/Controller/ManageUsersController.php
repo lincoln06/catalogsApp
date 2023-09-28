@@ -40,12 +40,7 @@ class ManageUsersController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         $user = $entityManager->getRepository(User::class)->find($id);
-        $message = '';
-        if(!$user) {
-            $message = 'Brak danych';
-        }
         $form = $this -> createForm(EditUserType::class, $user);
-
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -58,7 +53,6 @@ class ManageUsersController extends AbstractController
             'form' => $form,
             'username' => $user->getEmail()
         ]);
-
     }
     #[Route('/manage/requests', name: 'app_manage_requests')]
     public function requests(EntityManagerInterface $entityManager): Response

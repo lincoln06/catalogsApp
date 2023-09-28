@@ -96,10 +96,11 @@ class ResetPasswordController extends AbstractController
             $usersRepository = $entityManager->getRepository(User::class);
             $user = $usersRepository->findOneBy(['email' => $email]);
             $user->setPassword($userPasswordHasher->hashPassword($user, $password));
+            $session->remove('hash');
+            $session->remove('email');
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->render('reset_password/done.html.twig');
-
         }
 
         return $this->render('reset_password/index.html.twig', [

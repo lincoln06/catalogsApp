@@ -30,22 +30,16 @@ class CatalogsHomeController extends AbstractController
         foreach($systems as $system) {
             $catalogs[$system->getName()]=$system->getCatalogs();
         }
-
-
         return $this->render('catalogs_home/index.html.twig', [
-
                 'systems'=>$systems,
                 'catalogs'=>$catalogs
-            ]
-        );
+            ]);
     }
     #[Route('/catalog/add', name: 'app_add_catalog')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $catalog = new Catalog();
-
         $form = $this -> createForm(CatalogType::class, $catalog);
-
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $catalog = $this->catalogMakerService->createOfUpdateCatalog($catalog, $form);
@@ -63,12 +57,9 @@ class CatalogsHomeController extends AbstractController
     {
         $catalog = $entityManager->getRepository(Catalog::class)->find($id);
         if($catalog) {
-
             $oldPdfFile = $catalog->getPdfFile();
             $filesystem = new Filesystem();
-
             $form = $this->createForm(CatalogType::class, $catalog);
-
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $catalog = $this->catalogMakerService->createOfUpdateCatalog($catalog, $form);
@@ -100,11 +91,9 @@ class CatalogsHomeController extends AbstractController
         $filesystem = new Filesystem();
         if($pdfFile) {
             $pdfFilePath = $this->getParameter('catalogs_directory') . '/' . $pdfFile;
-
             $filesystem->remove($pdfFilePath);
         }
         $message = '';
-
         $entityManager->remove($catalog);
         $entityManager->flush();
         return $this->redirectToRoute('app_catalogs_home', [

@@ -73,10 +73,6 @@ class SystemController extends AbstractController
     public function delete(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         $system = $entityManager->getRepository(System::class)->find($id);
-        $message = '';
-        if(!$system) {
-            $message = 'Brak danych';
-        }
         $entityManager->remove($system);
         $entityManager->flush();
         return $this->redirectToRoute('app_show_system');
