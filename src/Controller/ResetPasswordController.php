@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/reset-password')]
+
 class ResetPasswordController extends AbstractController
 {
 
-    #[Route('reset/password', name: 'app_forgot_password_request')]
+    #[Route('/reset/password', name: 'app_forgot_password_request')]
     public function request(Request $request, GetUsersListService $getGetUsersListService, MailerService $mailerService, HashSetter $hashSetter): Response
     {
         $form = $this->createForm(RegisterRequestType::class);
@@ -31,7 +31,7 @@ class ResetPasswordController extends AbstractController
             if(!in_array($email, $registeredEmails))
             {
                 return $this->render('registration/register_request.html.twig', [
-                    'requestForm' => $form->createView(),
+                    'form' => $form->createView(),
                     'message' => 'Brak użytkownika o podanym adresie e-mail'
                 ]);
             }
@@ -45,16 +45,16 @@ class ResetPasswordController extends AbstractController
                 "Aby zresetować hasło, skopiuj ten link do przeglądarki: localhost:8000/reset/password/$hash"
             );
             return $this->render('registration/register_request.html.twig', [
-                'requestForm' => $form->createView(),
+                'form' => $form->createView(),
                 'message' => $message
             ]);
         }
 
-        return $this->render('reset_password/index.html.twig', [
-            'resetForm' => $form->createView(),
+        return $this->render('registration/register_request.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
-    #[Route('reset/password/{commonHash}', name: 'app_reset_password')]
+    #[Route('/reset/password/{commonHash}', name: 'app_reset_password_')]
     public function reset(Request $request, GetUsersListService $getGetUsersListService, string $commonHash, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $session = $request->getSession();
@@ -68,21 +68,21 @@ class ResetPasswordController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $email = $form->get('password')->getData();
+            $email = $form->get('email')->getData();
             $password = $form->get('password')->getData();
             $repeatedPassword = $form->get('repeatPassword')->getData();
             $registeredEmails = $getGetUsersListService->getRegisteredEmails();
             if(!in_array($email, $registeredEmails))
             {
                 return $this->render('reset_password/index.html.twig', [
-                    'requestForm' => $form->createView(),
+                    'resetForm' => $form->createView(),
                     'message' => 'Brak użytkownika o podanym adresie e-mail'
                 ]);
             }
             if($password !== $repeatedPassword) {
                 return $this->render('reset_password/index.html.twig', [
-                    'requestForm' => $form->createView(),
-                    'message' => 'Brak użytkownika o podanym adresie e-mail'
+                    'resetForm' => $form->createView(),
+                    'message' => 'Hasła muszą być takie same'
                 ]);
             }
             $usersRepository = $entityManager->getRepository(User::class);
@@ -91,12 +91,13 @@ class ResetPasswordController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->render('login/index.html.twig', [
-               'message' => 'Hasło zostało zmienione'
+                'message' => 'Hasło zostało zmienione',
+                'last_username' => $email
             ]);
 
         }
 
-        return $this->render('reset_password/request.html.twig', [
+        return $this->render('reset_password/index.html.twig', [
             'resetForm' => $form->createView(),
         ]);
     }
