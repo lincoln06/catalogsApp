@@ -38,6 +38,7 @@ class ResetPasswordController extends AbstractController
             $session = $request->getSession();
             $hash = $hashSetter->makeHash();
             $session->set('hash', $hash);
+            $session->set('email', $email);
             $message = "Sprawdź swoją skrzynkę odbiorczą";
             $mailerService->sendEmail(
                 $email,
@@ -69,6 +70,13 @@ class ResetPasswordController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
+            $emailToCheck = $session->get('email');
+            if($email !== $emailToCheck)
+            {
+                return $this->render('error_page/index.html.twig', [
+                    'message' => 'Link wygasł lub nie masz uprawnień do przeglądania tej strony'
+                ]);
+            }
             $password = $form->get('password')->getData();
             $repeatedPassword = $form->get('repeatPassword')->getData();
             $registeredEmails = $getGetUsersListService->getRegisteredEmails();
@@ -90,10 +98,7 @@ class ResetPasswordController extends AbstractController
             $user->setPassword($userPasswordHasher->hashPassword($user, $password));
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->render('login/index.html.twig', [
-                'message' => 'Hasło zostało zmienione',
-                'last_username' => $email
-            ]);
+            return $this->render('reset_password/done.html.twig');
 
         }
 

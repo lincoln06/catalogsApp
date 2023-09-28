@@ -32,6 +32,7 @@ class ResetPasswordType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+                'toggle' => true
             ])
             ->add('repeatPassword', PasswordType::class, [
                 'label' => 'Powtórz hasło',
