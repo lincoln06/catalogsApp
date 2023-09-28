@@ -83,13 +83,13 @@ class ResetPasswordController extends AbstractController
             if(!in_array($email, $registeredEmails))
             {
                 return $this->render('reset_password/index.html.twig', [
-                    'resetForm' => $form->createView(),
+                    'form' => $form->createView(),
                     'message' => 'Brak użytkownika o podanym adresie e-mail'
                 ]);
             }
             if($password !== $repeatedPassword) {
                 return $this->render('reset_password/index.html.twig', [
-                    'resetForm' => $form->createView(),
+                    'form' => $form->createView(),
                     'message' => 'Hasła muszą być takie same'
                 ]);
             }
@@ -104,7 +104,7 @@ class ResetPasswordController extends AbstractController
         }
 
         return $this->render('reset_password/index.html.twig', [
-            'resetForm' => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 }

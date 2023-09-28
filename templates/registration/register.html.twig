@@ -4,10 +4,10 @@
 
 {% block body %}
     <h1>Register</h1>
-    {{ form_errors(resetForm) }}
+    {{ form_errors(form) }}
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.email) }}
-        {{ form_row(resetForm.plainPassword) }}
-    {{ form_end(resetForm) }}
+    {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plainPassword) }}
+    {{ form_end(form) }}
 {% endblock %}

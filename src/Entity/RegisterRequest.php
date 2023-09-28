@@ -19,6 +19,9 @@ class RegisterRequest
     #[ORM\Column(length: 255)]
     private ?string $hash = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isAccepted = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class RegisterRequest
     public function setHash(string $hash): static
     {
         $this->hash = $hash;
+
+        return $this;
+    }
+
+    public function isIsAccepted(): ?bool
+    {
+        return $this->isAccepted;
+    }
+
+    public function setIsAccepted(?bool $isAccepted): static
+    {
+        $this->isAccepted = $isAccepted;
 
         return $this;
     }

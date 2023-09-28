@@ -75,12 +75,12 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-
+            $session->remove('hash');
             $userRegistrationService->deleteRegisterRequest($registerRequest);
             return $this->redirectToRoute('app_catalogs_home');
         }
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 

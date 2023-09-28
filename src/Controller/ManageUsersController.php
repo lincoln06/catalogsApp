@@ -69,6 +69,9 @@ class ManageUsersController extends AbstractController
     public function confirm(EntityManagerInterface $entityManager, UserRegistrationService $userRegistrationService, int $id): Response
     {
         $registerRequest = $entityManager->getRepository(RegisterRequest::class)->find($id);
+        $registerRequest->setIsAccepted(true);
+        $entityManager->persist($registerRequest);
+        $entityManager->flush();
         $userRegistrationService->allowToRegister($registerRequest);
         return $this->redirectToRoute('app_manage_requests');
     }

@@ -7,11 +7,11 @@
     {% if message is defined %}
         <h2>{{ message }}</h2>
     {% endif %}
-    {{ form_errors(resetForm) }}
+    {{ form_errors(form) }}
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.email) }}
-        {{ form_row(resetForm.password) }}
-        {{ form_row(resetForm.repeatPassword) }}
-    {{ form_end(resetForm) }}
+    {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+        {{ form_row(form.repeatPassword) }}
+    {{ form_end(form) }}
 {% endblock %}

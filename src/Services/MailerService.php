@@ -21,8 +21,6 @@ class MailerService
         try {
             $mailer->send($email);
         } catch (TransportExceptionInterface $e) {
-            var_dump($email);
-            die();
         }
     }
 }

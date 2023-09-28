@@ -13,7 +13,11 @@
         {% endif %}
 <ul>
     {% for request in requests %}
-        <li>{{ request.email }} - <a href="{{ path('app_request_confirm', {'id':request.id}) }}">Zatwierdź</a> - <a href="{{ path('app_request_deny', {'id':request.id}) }}">Usuń</a>
+        <li>{{ request.email }}
+                {% if not request.isAccepted %}
+                - <a href="{{ path('app_request_confirm', {'id':request.id}) }}">Zatwierdź</a>-
+                {% endif %}
+                <a href="{{ path('app_request_deny', {'id':request.id}) }}">Usuń</a>
         
         </li>
     {% endfor %}
