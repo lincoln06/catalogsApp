@@ -4,24 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Catalog;
 use App\Form\CatalogType;
+use App\Repository\CatalogRepository;
 use App\Repository\SystemRepository;
-use App\Services\CatalogMakerService;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Services\CatalogHandlingService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class CatalogsHomeController extends AbstractController
+class CatalogsHomeController extends MainController
 {
-    private SluggerInterface $slugger;
-    private CatalogMakerService $catalogMakerService;
-    public function __construct(CatalogMakerService $catalogMakerService, SluggerInterface $slugger) {
-        $this->slugger = $slugger;
-        $this->catalogMakerService = $catalogMakerService;
-    }
     #[Route('/', name: 'app_catalogs_home')]
     public function index(SystemRepository $systemRepository): Response
     {
@@ -36,15 +28,14 @@ class CatalogsHomeController extends AbstractController
             ]);
     }
     #[Route('/catalog/add', name: 'app_add_catalog')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, CatalogHandlingService $catalogHandlingService): Response
     {
         $catalog = new Catalog();
         $form = $this -> createForm(CatalogType::class, $catalog);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $catalog = $this->catalogMakerService->createOfUpdateCatalog($catalog, $form);
-            $entityManager->persist($catalog);
-            $entityManager->flush();
+            $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
+            $this->crudService->persistEntity($catalog);
             return $this -> redirectToRoute('app_catalogs_home');
         }
         return $this->render('catalogs_home/new.html.twig', [
@@ -53,18 +44,17 @@ class CatalogsHomeController extends AbstractController
         ]);
     }
     #[Route('/catalog/edit/{id}', name: 'app_edit_catalog')]
-    public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    public function edit(CatalogHandlingService $catalogHandlingService, $request, CatalogRepository $catalogRepository, int $id): Response
     {
-        $catalog = $entityManager->getRepository(Catalog::class)->find($id);
+        $catalog = $catalogRepository->find($id);
         if($catalog) {
             $oldPdfFile = $catalog->getPdfFile();
             $filesystem = new Filesystem();
             $form = $this->createForm(CatalogType::class, $catalog);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $catalog = $this->catalogMakerService->createOfUpdateCatalog($catalog, $form);
-                $entityManager->persist($catalog);
-                $entityManager->flush();
+                $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
+                $this->crudService->persistEntity($catalog);
                 if ($oldPdfFile) {
                     $olfPdfFilePath = $this->getParameter('catalogs_directory') . '/' . $oldPdfFile;
                     $filesystem->remove($olfPdfFilePath);
@@ -81,23 +71,21 @@ class CatalogsHomeController extends AbstractController
         ]);
     }
     #[Route('/catalog/delete/{id}', name: 'app_delete_catalog')]
-    public function delete(EntityManagerInterface $entityManager, int $id): Response
+    public function delete(CatalogRepository $catalogRepository, CatalogHandlingService $catalogHandlingService, int $id): Response
     {
-        $catalog = $entityManager->getRepository(Catalog::class)->find($id);
+        $catalog = $catalogRepository->find($id);
         if(!$catalog) {
-            $message = 'Brak danych';
+            return $this->render('error_page/index.html.twig', [
+               'message' => 'Brak danych'
+            ]);
         }
-        $pdfFile = $catalog->getPdfFile();
-        $filesystem = new Filesystem();
-        if($pdfFile) {
-            $pdfFilePath = $this->getParameter('catalogs_directory') . '/' . $pdfFile;
-            $filesystem->remove($pdfFilePath);
+        if(!$catalogHandlingService->deleteCatalogFile($catalog))
+        {
+            return $this->render('error_page/index.html.twig',[
+                'message' => 'Błąd podczas usuwania: Nie znaleziono pliku'
+            ]);
         }
-        $message = '';
-        $entityManager->remove($catalog);
-        $entityManager->flush();
-        return $this->redirectToRoute('app_catalogs_home', [
-            'message' => $message
-        ]);
+        $this->crudService->deleteEntity($catalog);
+        return $this->redirectToRoute('app_catalogs_home');
     }
 }

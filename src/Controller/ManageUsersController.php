@@ -2,18 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\RegisterRequest;
-use App\Entity\User;
 use App\Form\EditUserType;
+use App\Repository\RegisterRequestRepository;
+use App\Repository\UserRepository;
 use App\Services\GetUsersListService;
-use App\Services\UserRegistrationService;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ManageUsersController extends AbstractController
+class ManageUsersController extends MainController
 {
     #[Route('/manage/users', name: 'app_manage_users')]
     public function index(GetUsersListService $getUsersListService): Response
@@ -23,30 +20,27 @@ class ManageUsersController extends AbstractController
         ]);
     }
     #[Route('/manage/users/delete/{id}', name: 'app_delete_user')]
-    public function delete(EntityManagerInterface $entityManager, int $id, GetUsersListService $getUsersListService): Response
+    public function delete(UserRepository $userRepository, int $id): Response
     {
-        $user = $entityManager->getRepository(User::class)->find($id);
-        $message = '';
+        $user = $userRepository->find($id);
         if (!$user) {
-            $message = 'Brak danych';
+            return $this->render('error_page/index.html.twig', [
+                'message' => 'Nieprawidłowy id użytkownika',
+                ]);
         }
-        $entityManager->remove($user);
-        $entityManager->flush();
-        return $this->render('manage_users/index.html.twig', [
-            'message' => $message,
-        ]);
+        $this->crudService->deleteEntity($user);
+        return $this->redirectToRoute('app_manage_users');
     }
     #[Route('/manage/users/edit/{id}', name: 'app_edit_user')]
-    public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    public function edit(Request $request, UserRepository $userRepository, int $id): Response
     {
-        $user = $entityManager->getRepository(User::class)->find($id);
+        $user = $userRepository->find($id);
         $form = $this -> createForm(EditUserType::class, $user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $user->setRoles($data->getRoles());
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->crudService->persistEntity($user);
             return $this -> redirectToRoute('app_manage_users');
         }
         return $this->render('manage_users/edit.html.twig', [
@@ -55,10 +49,10 @@ class ManageUsersController extends AbstractController
         ]);
     }
     #[Route('/manage/requests', name: 'app_manage_requests')]
-    public function requests(EntityManagerInterface $entityManager): Response
+    public function requests(RegisterRequestRepository $registerRequestRepository): Response
     {
         $message = "Lista zapytań o rejestrację";
-        $requests = $entityManager->getRepository(RegisterRequest::class)->findAll();
+        $requests = $registerRequestRepository->findAll();
         if(!$requests) $message = "Brak zapytań o rejestrację";
         return $this->render('manage_users/requests.html.twig', [
             'message' =>$message,
@@ -66,19 +60,18 @@ class ManageUsersController extends AbstractController
         ]);
     }
     #[Route('/manage/requests/confirm/{id}', name: 'app_request_confirm')]
-    public function confirm(EntityManagerInterface $entityManager, UserRegistrationService $userRegistrationService, int $id): Response
+    public function confirm(RegisterRequestRepository $registerRequestRepository, $userRegistrationService, int $id): Response
     {
-        $registerRequest = $entityManager->getRepository(RegisterRequest::class)->find($id);
+        $registerRequest = $registerRequestRepository->find($id);
         $registerRequest->setIsAccepted(true);
-        $entityManager->persist($registerRequest);
-        $entityManager->flush();
+        $this->crudService->persistEntity($registerRequest);
         $userRegistrationService->allowToRegister($registerRequest);
         return $this->redirectToRoute('app_manage_requests');
     }
     #[Route('/manage/requests/deny/{id}', name: 'app_request_deny')]
-    public function deny(Request $request, EntityManagerInterface $entityManager, UserRegistrationService $userRegistrationService, int $id): Response
+    public function deny(RegisterRequestRepository $registerRequestRepository, $userRegistrationService, int $id): Response
     {
-        $registerRequest = $entityManager->getRepository(RegisterRequest::class)->find($id);
+        $registerRequest = $registerRequestRepository->find($id);
         $userRegistrationService->deleteRegisterRequest($registerRequest);
         return $this->redirectToRoute('app_manage_requests');
     }

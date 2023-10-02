@@ -3,21 +3,21 @@
 namespace App\Controller;
 
 use App\Form\SystemType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\SystemRepository;
+use App\Services\CatalogHandlingService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\System;
 
-class SystemController extends AbstractController
+class SystemController extends MainController
 {
 
     #[Route('/system/show', name: 'app_show_system')]
-    public function show(EntityManagerInterface $entityManager): Response
+    public function show(SystemRepository $systemRepository): Response
     {
         $message = '';
-        $systems = $entityManager->getRepository(System::class)->findAll();
+        $systems = $systemRepository->findAll();
         if(!$systems) {
             $message = 'Nic do wyświetlenia';
         }
@@ -27,7 +27,7 @@ class SystemController extends AbstractController
         ]);
     }
     #[Route('/system/add', name: 'app_add_system')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $system = new System();
 
@@ -36,8 +36,7 @@ class SystemController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $system->setName($form->get('name')->getData());
-            $entityManager->persist($system);
-            $entityManager->flush();
+            $this->crudService->persistEntity($system);
             return $this -> redirectToRoute('app_show_system');
         }
         return $this->render('add_catalog/index.html.twig', [
@@ -46,9 +45,9 @@ class SystemController extends AbstractController
         ]);
     }
     #[Route('/system/edit/{id}', name: 'app_edit_system')]
-    public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    public function edit(Request $request, SystemRepository $systemRepository, int $id): Response
     {
-        $system = $entityManager->getRepository(System::class)->find($id);
+        $system = $systemRepository->find($id);
         $message = '';
         if(!$system) {
             $message = 'Brak danych';
@@ -59,8 +58,7 @@ class SystemController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $system->setName($data->getName());
-            $entityManager->persist($system);
-            $entityManager->flush();
+            $this->crudService->persistEntity($system);
             return $this -> redirectToRoute('app_show_system');
         }
         return $this->render('add_catalog/index.html.twig', [
@@ -70,11 +68,22 @@ class SystemController extends AbstractController
         ]);
     }
     #[Route('/system/delete/{id}', name: 'app_delete_system')]
-    public function delete(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    public function delete(CatalogHandlingService $catalogHandlingService, SystemRepository $systemRepository, int $id): Response
     {
-        $system = $entityManager->getRepository(System::class)->find($id);
-        $entityManager->remove($system);
-        $entityManager->flush();
+        $system = $systemRepository->find($id);
+        $systemCatalogs = $system->getCatalogs();
+        if($systemCatalogs)
+        {
+            foreach ($systemCatalogs as $systemCatalog) {
+                $this->crudService->deleteEntity($systemCatalog);
+                if (!$catalogHandlingService->deleteCatalogFile($systemCatalog)) {
+                    return $this->render('error_page/index.html.twig', [
+                        'message' => 'Błąd podczas usuwania pliku pdf'
+                    ]);
+                }
+            }
+        }
+        $this->crudService->deleteEntity($system);
         return $this->redirectToRoute('app_show_system');
     }
 }

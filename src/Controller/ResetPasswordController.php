@@ -6,28 +6,27 @@ use App\Entity\User;
 use App\Form\RegisterRequestType;
 use App\Form\ResetPasswordType;
 use App\Services\GetUsersListService;
-use App\Services\HashSetter;
+use App\Services\HashSetterService;
 use App\Services\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class ResetPasswordController extends AbstractController
+class ResetPasswordController extends MainController
 {
 
     #[Route('/reset/password', name: 'app_forgot_password_request')]
-    public function request(Request $request, GetUsersListService $getGetUsersListService, MailerService $mailerService, HashSetter $hashSetter): Response
+    public function request(Request $request, MailerService $mailerService, GetUsersListService $getUsersListService, HashSetterService $hashSetter): Response
     {
         $form = $this->createForm(RegisterRequestType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
-            $registeredEmails = $getGetUsersListService->getRegisteredEmails();
+            $registeredEmails = $getUsersListService->getRegisteredEmails();
             if(!in_array($email, $registeredEmails))
             {
                 return $this->render('registration/register_request.html.twig', [
@@ -98,8 +97,7 @@ class ResetPasswordController extends AbstractController
             $user->setPassword($userPasswordHasher->hashPassword($user, $password));
             $session->remove('hash');
             $session->remove('email');
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->crudService->persistEntity($user);
             return $this->render('reset_password/done.html.twig');
         }
 

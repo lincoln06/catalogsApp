@@ -3,16 +3,20 @@
 namespace App\Services;
 
 use App\Entity\Catalog;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class CatalogMakerService extends AbstractController
+class CatalogHandlingService extends AbstractController
 {
     private SluggerInterface $slugger;
-    public function __construct(SluggerInterface $slugger) {
+    private EntityManagerInterface $entityManager;
+    public function __construct(SluggerInterface $slugger, EntityManagerInterface $entityManager) {
         $this->slugger = $slugger;
+        $this->entityManager = $entityManager;
     }
     public function createOfUpdateCatalog(Catalog $catalog, FormInterface $form) : Catalog
     {
@@ -39,5 +43,16 @@ class CatalogMakerService extends AbstractController
 
         }
         return $catalog;
+    }
+    public function deleteCatalogFile(Catalog $catalog) : bool
+    {
+        $pdfFile = $catalog->getPdfFile();
+        $filesystem = new Filesystem();
+        if($pdfFile) {
+            $pdfFilePath = $this->getParameter('catalogs_directory') . '/' . $pdfFile;
+            $filesystem->remove($pdfFilePath);
+            return true;
+        }
+        return false;
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 
-class HashSetter
+class HashSetterService
 {
     public function makeHash() : string
     {
