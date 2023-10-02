@@ -44,7 +44,7 @@ class CatalogsHomeController extends MainController
         ]);
     }
     #[Route('/catalog/edit/{id}', name: 'app_edit_catalog')]
-    public function edit(CatalogHandlingService $catalogHandlingService, $request, CatalogRepository $catalogRepository, int $id): Response
+    public function edit(Request $request, CatalogHandlingService $catalogHandlingService, CatalogRepository $catalogRepository, int $id): Response
     {
         $catalog = $catalogRepository->find($id);
         if($catalog) {
