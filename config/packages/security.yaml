@@ -45,6 +45,7 @@ security:
          - { path: ^/system, roles: ROLE_ADMIN }
          - { path: ^/catalog, roles: ROLE_EDITOR }
          - { path: ^/report/category/show, roles: ROLE_GOD }
+         - { path: ^/report/show, roles: ROLE_EDITOR }
          - { path: ^/, roles: ROLE_USER }
 
 when@test:

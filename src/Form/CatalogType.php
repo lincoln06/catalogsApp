@@ -58,7 +58,9 @@ class CatalogType extends AbstractType
                     ])
                 ],
             ])
-            ->add('Zapisz', SubmitType::class)
+            ->add('save', SubmitType::class, [
+                'label' => 'Zapisz'
+            ])
             // ...
         ;
     }

@@ -11,20 +11,9 @@
 
 <div class="example-wrapper">
     <h1>{{ title }}</h1>
-
-    {% if reports %}
-    <ul>
-        {% for report in reports %}
-            <li>
-                {{ report.category.name }}
-                <ul>
-                    <li>{{ report.topic }}</li>
-                    <li>{{ report.description }}</li>
-                    <li>{{ report.reportFrom }}</li>
-                </ul>
-            </li>
-        {%  endfor %}
-    </ul>
+    {% if message is defined %}
+    <h2>{{ message }}</h2>
     {% endif %}
+    {{ form(form) }}
 </div>
 {% endblock %}
