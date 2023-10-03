@@ -6,6 +6,7 @@ use App\Form\EditUserType;
 use App\Repository\RegisterRequestRepository;
 use App\Repository\UserRepository;
 use App\Services\GetUsersListService;
+use App\Services\UserRegistrationService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,7 +61,7 @@ class ManageUsersController extends MainController
         ]);
     }
     #[Route('/manage/requests/confirm/{id}', name: 'app_request_confirm')]
-    public function confirm(RegisterRequestRepository $registerRequestRepository, $userRegistrationService, int $id): Response
+    public function confirm(RegisterRequestRepository $registerRequestRepository, UserRegistrationService $userRegistrationService, int $id): Response
     {
         $registerRequest = $registerRequestRepository->find($id);
         $registerRequest->setIsAccepted(true);
@@ -69,7 +70,7 @@ class ManageUsersController extends MainController
         return $this->redirectToRoute('app_manage_requests');
     }
     #[Route('/manage/requests/deny/{id}', name: 'app_request_deny')]
-    public function deny(RegisterRequestRepository $registerRequestRepository, $userRegistrationService, int $id): Response
+    public function deny(RegisterRequestRepository $registerRequestRepository, UserRegistrationService $userRegistrationService, int $id): Response
     {
         $registerRequest = $registerRequestRepository->find($id);
         $userRegistrationService->deleteRegisterRequest($registerRequest);

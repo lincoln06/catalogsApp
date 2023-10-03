@@ -55,7 +55,8 @@ class CatalogsHomeController extends MainController
             if ($form->isSubmitted() && $form->isValid()) {
                 $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
                 $this->crudService->persistEntity($catalog);
-                if ($oldPdfFile) {
+                if ($catalog->getPdfFile() !== $oldPdfFile) {
+
                     $olfPdfFilePath = $this->getParameter('catalogs_directory') . '/' . $oldPdfFile;
                     $filesystem->remove($olfPdfFilePath);
                 }

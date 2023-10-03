@@ -24,11 +24,11 @@ class CatalogHandlingService extends AbstractController
         $catalog->setName($form->get('name')->getData());
         $catalog->setDateAdded($form->get('dateAdded')->getData());
         $pdfFile = $form->get('pdfFile')->getData();
-
         if ($pdfFile) {
             $originalFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
             $safeFilename = $this->slugger->slug($originalFilename);
             $newFilename = $safeFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
+            $catalog->setPdfFile($newFilename);
 
             try {
                 $pdfFile->move(
@@ -39,7 +39,6 @@ class CatalogHandlingService extends AbstractController
                 // ... handle exception if something happens during file upload
             }
 
-            $catalog->setPdfFile($newFilename);
 
         }
         return $catalog;
