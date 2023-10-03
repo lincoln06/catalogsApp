@@ -3,18 +3,26 @@
 {% block title %}Hello ReportCategoryController!{% endblock %}
 
 {% block body %}
+    {{ parent() }}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
+    <h1>{{ message }}</h1>
     <ul>
-        <li>Your controller at <code><a href="{{ '/home/maciek/dev/catalogsApp/src/Controller/ReportCategoryController.php'|file_link(0) }}">src/Controller/ReportCategoryController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/maciek/dev/catalogsApp/templates/report_category/index.html.twig'|file_link(0) }}">templates/report_category/index.html.twig</a></code></li>
+        <li><a href="{{ path('app_add_report_category')}}">Dodaj</a></li>
+    {% if categories %}
+        {% for category in categories %}
+        <li>{{ category.name }}
+            {% if is_granted('ROLE_GOD') %}
+                - <a href="{{ path('app_edit_report_category', {'id':category.id}) }}">Edytuj</a> -
+                <a href="{{  path('app_delete_report_category', {'id':category.id}) }}">Usuń</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    {% endif %}
     </ul>
 </div>
 {% endblock %}

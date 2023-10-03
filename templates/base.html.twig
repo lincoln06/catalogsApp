@@ -20,6 +20,7 @@
                 {% endif %}
                 {% if is_granted('ROLE_GOD') %}
                     <a href="{{ path('app_manage_requests') }}">Prośby o rejestrację</a> -
+                    <a href="{{ path('app_show_report_category') }}">Kategorie zgłoszeń</a> -
                 {% endif %}
                 <a href="{{ path('app_logout') }}">Wyloguj</a></p>
         {% endblock %}
