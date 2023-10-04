@@ -16,7 +16,10 @@ class EditUserType extends AbstractType
         $builder
             ->add(
                 'roles', ChoiceType::class, [
-                    'choices' => [['Administrator' => 'ROLE_ADMIN'], ['Edytor' => 'ROLE_EDITOR'], ['Użytkownik' => 'ROLE_USER']],
+                    'choices' => [
+                        ['Administrator' => 'ROLE_ADMIN'],
+                        ['Edytor' => 'ROLE_EDITOR'],
+                        ['Użytkownik' => 'ROLE_USER']],
                     'expanded' => true,
                     'multiple' => true,
                 ])

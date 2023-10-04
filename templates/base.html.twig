@@ -14,7 +14,7 @@
         {% block body %}
             <p>{{ app.user.email }} -
                 <a href="{{ path('app_catalogs_home') }}">Strona główna</a> -
-                {% if not is_granted('ROLE_EDITOR') %}
+                {% if not is_granted('ROLE_GOD') %}
                     <a href="{{ path('app_add_report') }}">Wyślij zgłoszenie</a> -
                 {% endif %}
                 {% if is_granted('ROLE_EDITOR') %}

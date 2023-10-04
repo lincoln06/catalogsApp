@@ -21,6 +21,9 @@ class ReportCategory
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Report::class)]
     private Collection $reports;
 
+    #[ORM\Column(length: 30)]
+    private ?string $role = null;
+
     public function __construct()
     {
         $this->reports = new ArrayCollection();
@@ -69,6 +72,18 @@ class ReportCategory
                 $report->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
 
         return $this;
     }

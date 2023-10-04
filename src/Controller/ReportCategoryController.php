@@ -20,6 +20,7 @@ class ReportCategoryController extends MainController
         if($form->isSubmitted() && $form->isValid())
         {
             $reportCategory->setName($form->get('name')->getData());
+            $reportCategory->setRole($form->get('role')->getData());
             $this->crudService->persistEntity($reportCategory);
             return $this->redirectToRoute('app_show_report_category');
         }
@@ -68,6 +69,7 @@ class ReportCategoryController extends MainController
             if($form->isSubmitted() && $form->isValid())
             {
                 $reportCategory->setName($form->get('name')->getData());
+                $reportCategory->setRole($form->get('role')->getData());
                 $this->crudService->persistEntity($reportCategory);
                 return $this->redirectToRoute('app_show_report_category');
             }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Report;
 use App\Form\ReportType;
 use App\Repository\ReportRepository;
+use App\Services\GetReportsListService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,9 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 class ReportController extends MainController
 {
     #[Route('/report/show', name: 'app_show_report')]
-    public function index(ReportRepository $reportRepository): Response
+    public function index(GetReportsListService $getReportsListService): Response
     {
-        $reports = $reportRepository->findAll();
+        $reports = $getReportsListService->getReportsList();
         if(!$reports) {
             return $this->render('report/index.html.twig', [
                 'title' => 'Nic do wyświetlenia'
