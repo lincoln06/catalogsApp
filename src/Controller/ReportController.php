@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Report;
+use App\Form\ReportSolvedType;
 use App\Form\ReportType;
 use App\Repository\ReportRepository;
 use App\Services\GetReportsListService;
+use App\Services\MailerService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,6 +51,32 @@ class ReportController extends MainController
         return $this->render('report/new.html.twig',[
             'title' => 'Dodawanie zgłoszenia',
             'form' => $form,
+        ]);
+    }
+    #[Route('/report/solve/{id}', name: 'app_solve_report')]
+    public function solveReport(Request $request, ReportRepository $reportRepository, MailerService $mailerService, int $id): Response
+    {
+        $report = $reportRepository->find($id);
+        if(!$report)
+        {
+            return $this->render('error_page/index.html.twig', [
+                'message' => 'Brak raportu'
+                ]);
+        }
+        $form = $this->createForm(ReportSolvedType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $answerToUser = $form->get('answer')->getData();
+            $title = "[Rozwiązanie problemu: {$report->getCategory()->getName()}]";
+            $solvedMessage = "Twoje zgłoszenie: \n{$report->getTopic()}\nzostało rozwiązane. \n Odpowiedź do zgłoszenia: \n {$answerToUser}";
+            $mailerService->sendEmail($report->getReportFrom(), $title, $solvedMessage);
+            $this->crudService->deleteEntity($report);
+            return $this->redirectToRoute('app_show_report');
+        }
+        return $this->render('report/solve.html.twig',[
+           'title' => 'Rozwiązywanie zgłoszenia',
+           'form' => $form
         ]);
     }
 }

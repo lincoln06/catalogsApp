@@ -17,11 +17,23 @@ class EditUserType extends AbstractType
             ->add(
                 'roles', ChoiceType::class, [
                     'choices' => [
-                        ['Administrator' => 'ROLE_ADMIN'],
-                        ['Edytor' => 'ROLE_EDITOR'],
-                        ['Użytkownik' => 'ROLE_USER']],
+                        'Administrator' => ['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_USER'],
+                        'Edytor' => ['ROLE_EDITOR', 'ROLE_USER'],
+                        'Użytkownik' => ['ROLE_USER'],
+                    ],
                     'expanded' => true,
-                    'multiple' => true,
+                    'multiple' => false,
+                    'choice_label' => function($value, $key, $index)
+                    {
+                        if($key === 0)
+                        {
+                            return 'Administrator';
+                        } elseif($key === 1) {
+                            return 'Edytor';
+                        } else {
+                            return 'Użytkownik';
+                        }
+                    }
                 ])
             ->add('Zapisz', SubmitType::class)
         ;

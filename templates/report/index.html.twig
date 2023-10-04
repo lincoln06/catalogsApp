@@ -12,11 +12,11 @@
 <div class="example-wrapper">
     <h1>{{ title }}</h1>
 
-    {% if reports %}
+    {% if reports is defined%}
     <ul>
         {% for report in reports %}
             <li>
-                {{ report.category.name }}
+                {{ report.category.name }} - <a href="{{ path('app_solve_report', {'id':report.id}) }}">Rozwiąż</a>
                 <ul>
                     <li>{{ report.topic }}</li>
                     <li>{{ report.description }}</li>
