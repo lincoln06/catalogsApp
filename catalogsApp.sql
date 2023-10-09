@@ -113,7 +113,7 @@ CREATE TABLE `register_request` (
   `hash` varchar(255) NOT NULL,
   `is_accepted` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,7 +141,7 @@ CREATE TABLE `report` (
   PRIMARY KEY (`id`),
   KEY `IDX_C42F778412469DE2` (`category_id`),
   CONSTRAINT `FK_C42F778412469DE2` FOREIGN KEY (`category_id`) REFERENCES `report_category` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +150,7 @@ CREATE TABLE `report` (
 
 LOCK TABLES `report` WRITE;
 /*!40000 ALTER TABLE `report` DISABLE KEYS */;
-INSERT INTO `report` VALUES (12,5,'user@cata.logs','test','test'),(13,4,'user@cata.logs','test 2','test 2'),(14,7,'user@cata.logs','test 3','test 3');
+INSERT INTO `report` VALUES (16,4,'maciekjl1993@gmail.com','aaa','aaa'),(17,5,'maciekjl1993@gmail.com','bbb','aaabbb'),(18,6,'maciekjl1993@gmail.com','ccc','ccc'),(19,7,'maciekjl1993@gmail.com','ddd','cccddd');
 /*!40000 ALTER TABLE `report` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,7 +217,7 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +226,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'god@cata.logs','[\"ROLE_USER\",\"ROLE_EDITOR\",\"ROLE_ADMIN\",\"ROLE_GOD\"]','$2y$13$aeFYZxeiJNS1aev3NiVKCe.nMP0e6p9Or1.s3d8.bET7xoWPRedAG'),(2,'admin@cata.logs','[\"ROLE_ADMIN\",\"ROLE_USER\"]','$2y$13$llVmsLi96alp9byJ76jFv.Ll8jbxln93fVExPhHte1yXt8ETfVbW.'),(3,'user@cata.logs','{\"2\":\"ROLE_USER\"}','$2y$13$eUE4nuKvf7OhMMNAT/CGfesEgMI2L3vOt7dJH5SAPN11fNoj5Ep9K'),(4,'editor@cata.logs','[\"ROLE_EDITOR\",\"ROLE_USER\"]','$2y$13$nAnUVSfgW8FXCaQy/Q3FLO7PBMUbxbRQAyczWKyOpSXvS4BOiFwrG'),(18,'maciekjl1993@gmail.com','[\"ROLE_ADMIN\",\"ROLE_EDITOR\",\"ROLE_USER\"]','$2y$13$zk5flbfouT7JjizSWG/O7.3FSgU4Fa6SMvs3i2LZR.buI85S30/zq');
+INSERT INTO `user` VALUES (1,'god@cata.logs','[\"ROLE_USER\",\"ROLE_EDITOR\",\"ROLE_ADMIN\",\"ROLE_GOD\"]','$2y$13$aeFYZxeiJNS1aev3NiVKCe.nMP0e6p9Or1.s3d8.bET7xoWPRedAG'),(2,'admin@cata.logs','[\"ROLE_ADMIN\",\"ROLE_USER\"]','$2y$13$sfY6fJsO77KLGqika.RjruZkm4rrY9y1NVi4rmPbw8jRHTLipc3SC'),(4,'editor@cata.logs','[\"ROLE_EDITOR\",\"ROLE_USER\"]','$2y$13$nAnUVSfgW8FXCaQy/Q3FLO7PBMUbxbRQAyczWKyOpSXvS4BOiFwrG');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -239,4 +239,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-09 18:12:41
+-- Dump completed on 2023-10-09 19:57:26
