@@ -11,10 +11,10 @@ class MailerService
 {
     public function sendEmail(string $emailAddress, string $title, string $body) : void
     {
-        $transport = Transport::fromDsn('smtp://gabitcatalogs@gmx.com:Katalogi1!@mail.gmx.com:587');
+        $transport = Transport::fromDsn('dsn_for_symfony_mailer');
         $mailer = new Mailer($transport);
         $email = (new Email())
-            ->from('gabitcatalogs@gmx.com')
+            ->from('place_your_email_here')
             ->to($emailAddress)
             ->subject($title)
             ->text($body);
