@@ -21,29 +21,33 @@ class RegistrationController extends MainController
     public function registrationRequest(Request $request, GetUsersListService $getUsersListService, HashSetterService $hashSetter): Response
     {
         $session = $request->getSession();
-        $hash = $hashSetter->makeHash();
-        $session->set('hash', $hash);
+
         $registerRequest = new RegisterRequest();
         $form = $this->createForm(RegisterRequestType::class, $registerRequest);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $registeredEmailAddresses = $getUsersListService->getAllEmails();
+            $emailToCheck = $form->get('email')->getData();
+            $isEmailRegistered = $getUsersListService->checkIfIsEmailRegistered($emailToCheck);
             $email = $form->get('email')->getData();
-            if(in_array($email, $registeredEmailAddresses))
+            $hash = $hashSetter->makeHash();
+            $session->set('hash', $hash);
+            if($isEmailRegistered)
             {
-                $message = "Na ten adres e-mail już zostało utworzone konto lub zostało wysłane zapytanie";
                 return $this->render('registration/register_request.html.twig', [
-                'message' => $message,
+                'message' => 'Na ten adres e-mail już zostało utworzone konto lub zostało wysłane zapytanie',
                 'form' => $form
             ]);
             }
             $registerRequest->setEmail($email);
             $registerRequest->setHash($hash);
             $this->crudService->persistEntity($registerRequest);
-            return $this->redirectToRoute('app_catalogs_home');
+            return $this->render('registration/register_request.html.twig',[
+                'message' => 'Prośba została wysłana',
+                'form' => $form
+            ]);
         }
         return $this->render('registration/register_request.html.twig',[
-           'form' => $form
+            'form' => $form
         ]);
     }
     #[Route('/register/allowed/{commonHash}', name: 'app_register_allowed')]

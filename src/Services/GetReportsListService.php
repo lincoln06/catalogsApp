@@ -11,12 +11,9 @@ use Symfony\Bundle\SecurityBundle\Security;
 class GetReportsListService
 {
     private Security $security;
-    private UserRepository $userRepository;
     private ReportRepository $reportRepository;
-    public function __construct(UserRepository $userRepository, Security $security, ReportRepository $reportRepository)
+    public function __construct(Security $security, ReportRepository $reportRepository)
     {
-
-        $this->userRepository = $userRepository;
         $this->security = $security;
         $this->reportRepository = $reportRepository;
     }
@@ -24,11 +21,20 @@ class GetReportsListService
     public function getReportsList() : array
     {
         $currentUserRoles = $this->security->getUser()->getRoles();
+        $allRolesOfCurrentUser = [];
+        if(in_array('ROLE_GOD',$currentUserRoles))
+        {
+            $allRolesOfCurrentUser = ['ROLE_GOD', 'ROLE_ADMIN', 'ROLE_EDITOR'];
+        } else if(in_array('ROLE_ADMIN', $currentUserRoles)) {
+            $allRolesOfCurrentUser = ['ROLE_ADMIN', 'ROLE_EDITOR'];
+        } else if(in_array('ROLE_EDITOR', $currentUserRoles)) {
+            $allRolesOfCurrentUser = ['ROLE_EDITOR'];
+        }
         $reports = $this->reportRepository->findAll();
         $reportsArray = [];
         foreach($reports as $report)
         {
-            if(in_array($report->getCategory()->getRole(), $currentUserRoles)) $reportsArray[] = $report;
+            if(in_array($report->getCategory()->getRole(), $allRolesOfCurrentUser)) $reportsArray[] = $report;
         }
         return $reportsArray;
     }

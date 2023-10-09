@@ -5,19 +5,22 @@ namespace App\Services;
 use App\Entity\User;
 use App\Repository\RegisterRequestRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class GetUsersListService
 {
     private Security $security;
+    private EntityManagerInterface $entityManager;
     private UserRepository $userRepository;
     private RegisterRequestRepository $registerRequestRepository;
-    public function __construct(UserRepository $userRepository, Security $security, RegisterRequestRepository $registerRequestRepository)
+    public function __construct(UserRepository $userRepository, Security $security, RegisterRequestRepository $registerRequestRepository, EntityManagerInterface $entityManager)
     {
 
         $this->userRepository = $userRepository;
         $this->security = $security;
         $this->registerRequestRepository = $registerRequestRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function getUsersFromDatabase() : array
@@ -42,15 +45,22 @@ class GetUsersListService
         }
         return $usersList;
     }
-    public function getAllEmails() : array
+    public function checkIfIsEmailRegistered(string $email) : bool
     {
-        $registerRequestsList = $this->registerRequestRepository->findAll();
-        $emailsArray = $this->getRegisteredEmails();
-        forEach($registerRequestsList as $registerRequest)
+        $isRegistered = $this->userRepository->findBy(['email' => $email]);
+        if(!$isRegistered)
         {
-            $emailsArray[] = $registerRequest->getEmail();
+            $isThereRequestForThisEmail = $this->registerRequestRepository->findOneBy(['email' => $email]);
+//            var_dump($isThereRequestForThisEmail);
+//            die();
+            if($isThereRequestForThisEmail)
+            {
+                $this->entityManager->remove($isThereRequestForThisEmail);
+                $this->entityManager->flush();
+            }
+            return false;
         }
-        return $emailsArray;
+        return true;
     }
     public function getRegisteredEmails() : array{
         $registeredUsers = $this->userRepository->findAll();
