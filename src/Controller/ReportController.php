@@ -54,7 +54,7 @@ class ReportController extends MainController
         ]);
     }
     #[Route('/report/solve/{id}', name: 'app_solve_report')]
-    public function solveReport(Request $request, ReportRepository $reportRepository, MailerService $mailerService, int $id): Response
+    public function solveReport(Request $request, ReportRepository $reportRepository, Security $security, MailerService $mailerService, int $id): Response
     {
         $report = $reportRepository->find($id);
         if(!$report)
@@ -62,6 +62,14 @@ class ReportController extends MainController
             return $this->render('error_page/index.html.twig', [
                 'message' => 'Brak raportu'
                 ]);
+        }
+        $roles = $security->getUser()->getRoles();
+        $isLoggedUserAbleToSolve = in_array($report->getCategory()->getRole(), $roles);
+        if(!$isLoggedUserAbleToSolve)
+        {
+            return $this->render('error_page/index.html.twig', [
+                'message' => 'Brak uprawnień do obsługi tego zgłoszenia'
+            ]);
         }
         $form = $this->createForm(ReportSolvedType::class);
         $form->handleRequest($request);

@@ -25,15 +25,10 @@ class GetUsersListService
 
     public function getUsersFromDatabase() : array
     {
-
         $currentUserRoles = $this->security->getUser()->getRoles();
         $currentUserRole = '';
-        foreach($currentUserRoles as $role) {
-            if($role === 'ROLE_ADMIN' || $role ==='ROLE_GOD') {
-                $currentUserRole = $role;
-                break;
-            }
-        }
+        if(in_array('ROLE_GOD', $currentUserRoles)) $currentUserRole = 'ROLE_GOD';
+        elseif(in_array('ROLE_ADMIN', $currentUserRoles)) $currentUserRole = 'ROLE_ADMIN';
         $usersList = $this->userRepository->findAll();
         foreach ($usersList as $user) {
             if($this->checkFetchedUserRoles($currentUserRole, $user)) {
