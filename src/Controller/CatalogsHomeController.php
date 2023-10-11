@@ -35,8 +35,16 @@ class CatalogsHomeController extends MainController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
-            $this->crudService->persistEntity($catalog);
-            return $this -> redirectToRoute('app_catalogs_home');
+            if($catalog)
+            {
+                $this->crudService->persistEntity($catalog);
+                return $this->redirectToRoute('app_catalogs_home');
+            }
+            return $this->render('catalogs_home/new.html.twig', [
+                'caption' => 'Dodaj katalog',
+                'message' => 'Nie dodano pliku',
+                'form' => $form->createView(),
+            ]);
         }
         return $this->render('catalogs_home/new.html.twig', [
             'caption' => 'Dodaj katalog',
@@ -62,7 +70,7 @@ class CatalogsHomeController extends MainController
                 }
                 return $this->redirectToRoute('app_catalogs_home');
             }
-            return $this->render('add_catalog/index.html.twig', [
+            return $this->render('catalogs_home/new.html.twig', [
                 'caption' => 'Edytuj Katalog',
                 'form' => $form->createView()
             ]);

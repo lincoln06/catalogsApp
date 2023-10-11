@@ -18,7 +18,7 @@ class CatalogHandlingService extends AbstractController
         $this->slugger = $slugger;
         $this->entityManager = $entityManager;
     }
-    public function createOfUpdateCatalog(Catalog $catalog, FormInterface $form) : Catalog
+    public function createOfUpdateCatalog(Catalog $catalog, FormInterface $form) : ?Catalog
     {
         $catalog->setSystem($form->get('system')->getData());
         $catalog->setName($form->get('name')->getData());
@@ -38,10 +38,12 @@ class CatalogHandlingService extends AbstractController
             } catch (FileException $e) {
                 // ... handle exception if something happens during file upload
             }
-
-
+            return $catalog;
         }
-        return $catalog;
+        else {
+            if($catalog->getPdfFile() !== null) return $catalog;
+        }
+        return null;
     }
     public function deleteCatalogFile(Catalog $catalog) : bool
     {

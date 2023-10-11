@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CatalogType extends AbstractType
 {
@@ -30,13 +31,18 @@ class CatalogType extends AbstractType
                 'choice_label' => 'name',
             ])
             ->add('name', TextType::class, [
-                'label' => 'Nazwa'
-            ])
+                'label' => 'Nazwa',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Pole nie może być puste',
+                    ]),
+            ]])
             ->add('dateAdded', DateType::class, [
                 'label' => 'Data wydania'
             ])
             ->add('pdfFile', FileType::class, [
                 'label' => 'Plik',
+
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
@@ -55,7 +61,7 @@ class CatalogType extends AbstractType
                             'application/x-pdf',
                         ],
                         'mimeTypesMessage' => 'Plik nie jest prawidłowm plikiem PDF',
-                    ])
+                    ]),
                 ],
             ])
             ->add('save', SubmitType::class, [
