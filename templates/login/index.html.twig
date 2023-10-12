@@ -1,7 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LoginController!{% endblock %}
-
+{% block title %}GABIT | Baza wiedzy{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        main {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+        }
+        section {
+            padding: 15px 20px 15px 20px;
+            background-color: #102e44;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            border-radius: 5px;
+        }
+        section form {
+            display: flex;
+            flex-direction: column;
+        }
+        section form>input,label,button,span {
+            margin-top: 5px;
+        }
+        .logo-placeholder {
+            display: flex;
+            width: 100%;
+            font-size: 50px;
+            color: #102E44;
+            justify-content: center;
+            padding: 50px;
+        }
+        input, button {
+            border-radius: 4px;
+        }
+        input {
+            border: 1px solid #c0c0c0;
+        }
+        button {
+            margin-top: 5px;
+            background-color: #005596;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 5px;
+            font-size: 17px;
+            font-family: Montserrat, sans-serif;
+        }
+        a {
+            color: deepskyblue;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #c0c0c0;
+            text-decoration: none;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     {% if message is defined %}
     <h2>{{ message }}</h2>
@@ -9,15 +73,27 @@
     {% if error %}
         <div>{{  error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-    <form action="{{ path('app_login') }}" method="post">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}">
-        <label for="password">Hasło:</label>
-        <input type="password" id="password" name="_password">
-        <input type="hidden" name="_target_path" value="/">
-        <button type="submit">Zaloguj</button>
-    </form>
-    <a href="{{ path('app_forgot_password_request') }}">Zapomniałem hasła</a>
-
-    <p>Nie masz konta? <a href="{{ path('app_register') }}">Poproś o dostęp</a></p>
+    <main>
+        <div class="logo-placeholder">
+            GABIT - Baza wiedzy
+        </div>
+        <section>
+            <div>
+                <form action="{{ path('app_login') }}" method="post">
+                    <label for="username">Email:</label>
+                    <input type="text" id="username" name="_username" value="{{ last_username }}">
+                    <label for="password">Hasło:</label>
+                    <input type="password" id="password" name="_password">
+                    <input type="hidden" name="_target_path" value="/">
+                    <button type="submit">Zaloguj</button>
+                </form>
+            </div>
+            <span>
+                <a href="{{ path('app_forgot_password_request') }}">Zapomniałem hasła</a>
+            </span>
+            <span>
+                <p>Nie masz konta? <a href="{{ path('app_register') }}">Poproś o dostęp</a></p>
+            </span>
+        </section>
+    </main>
 {% endblock %}
