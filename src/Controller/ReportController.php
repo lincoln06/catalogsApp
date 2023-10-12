@@ -8,6 +8,7 @@ use App\Form\ReportType;
 use App\Repository\ReportRepository;
 use App\Services\GetReportsListService;
 use App\Services\MailerService;
+use App\Services\UserPrivilegeValidatingService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,7 +55,7 @@ class ReportController extends MainController
         ]);
     }
     #[Route('/report/solve/{id}', name: 'app_solve_report')]
-    public function solveReport(Request $request, ReportRepository $reportRepository, Security $security, MailerService $mailerService, int $id): Response
+    public function solveReport(Request $request, ReportRepository $reportRepository, UserPrivilegeValidatingService $userPrivilegeValidatingService, MailerService $mailerService, int $id): Response
     {
         $report = $reportRepository->find($id);
         if(!$report)
@@ -63,8 +64,7 @@ class ReportController extends MainController
                 'message' => 'Brak raportu'
                 ]);
         }
-        $roles = $security->getUser()->getRoles();
-        $isLoggedUserAbleToSolve = in_array($report->getCategory()->getRole(), $roles);
+        $isLoggedUserAbleToSolve = $userPrivilegeValidatingService->checkManageReportPrivileges($report);
         if(!$isLoggedUserAbleToSolve)
         {
             return $this->render('error_page/index.html.twig', [

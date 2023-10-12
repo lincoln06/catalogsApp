@@ -24,7 +24,8 @@
             color: #fff;
             display: flex;
             flex-direction: column;
-            border-radius: 5px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #000;
         }
         section form {
             display: flex;
@@ -33,26 +34,37 @@
         section form>input,label,button,span {
             margin-top: 5px;
         }
-        .logo-placeholder {
+        #logo-placeholder {
             display: flex;
-            width: 100%;
-            font-size: 50px;
+            width: 200px;
             color: #102E44;
             justify-content: center;
-            padding: 50px;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+        .logo-placeholder-big {
+            font-size: 50px;
+        }
+        .logo-placeholder-small {
+            font-size: 15px;
         }
         input, button {
+            padding: 5px;
+            height: 1.5em;
             border-radius: 4px;
         }
         input {
             border: 1px solid #c0c0c0;
+            font-size: 17px;
+            font-family: Montserrat, sans-serif;
         }
         button {
+            height: 2.2em;
             margin-top: 5px;
             background-color: #005596;
             color: #fff;
             border: 1px solid #fff;
-            padding: 5px;
             font-size: 17px;
             font-family: Montserrat, sans-serif;
         }
@@ -64,18 +76,25 @@
             color: #c0c0c0;
             text-decoration: none;
         }
+        #error {
+            color: #ff0000;
+            padding: 5px;
+        }
     </style>
 {% endblock %}
 {% block body %}
     {% if message is defined %}
     <h2>{{ message }}</h2>
     {% endif %}
-    {% if error %}
-        <div>{{  error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+
     <main>
-        <div class="logo-placeholder">
-            GABIT - Baza wiedzy
+        <div id="logo-placeholder">
+            <span class="logo-placeholder-big">
+                GABIT
+            </span>
+            <span class="logo-placeholder-small">
+                Baza wiedzy | Aluminium
+            </span>
         </div>
         <section>
             <div>
@@ -95,5 +114,10 @@
                 <p>Nie masz konta? <a href="{{ path('app_register') }}">Poproś o dostęp</a></p>
             </span>
         </section>
+        <div id="error">
+            {% if error %}
+                <div>{{  error }}</div>
+            {% endif %}
+        </div>
     </main>
 {% endblock %}
