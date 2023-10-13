@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\SystemType;
 use App\Repository\SystemRepository;
 use App\Services\CatalogHandlingService;
+use App\Services\CheckObjectNameService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,7 +28,7 @@ class SystemController extends MainController
         ]);
     }
     #[Route('/system/add', name: 'app_add_system')]
-    public function new(Request $request): Response
+    public function new(Request $request, CheckObjectNameService $checkObjectNameService): Response
     {
         $system = new System();
 
@@ -35,9 +36,18 @@ class SystemController extends MainController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $system->setName($form->get('name')->getData());
-            $this->crudService->persistEntity($system);
-            return $this -> redirectToRoute('app_show_system');
+            $systemName = $form->get('name')->getData();
+            if($checkObjectNameService->checkIfSystemExists($systemName)) {
+                $system->setName($form->get('name')->getData());
+                $this->crudService->persistEntity($system);
+                return $this->redirectToRoute('app_show_system');
+            }
+            $error = "System o takiej nazwie już istnieje";
+            return $this->render('add_catalog/index.html.twig', [
+                'caption' => 'Dodaj system',
+                'form' => $form->createView(),
+                'error' => $error
+            ]);
         }
         return $this->render('add_catalog/index.html.twig', [
             'caption' => 'Dodaj system',
@@ -45,12 +55,12 @@ class SystemController extends MainController
         ]);
     }
     #[Route('/system/edit/{id}', name: 'app_edit_system')]
-    public function edit(Request $request, SystemRepository $systemRepository, int $id): Response
+    public function edit(Request $request, CheckObjectNameService $checkObjectNameService, SystemRepository $systemRepository, int $id): Response
     {
         $system = $systemRepository->find($id);
-        $message = '';
+        $error = '';
         if(!$system) {
-            $message = 'Brak danych';
+            $error = 'Brak danych';
         }
         $form = $this -> createForm(SystemType::class, $system);
 
@@ -58,13 +68,19 @@ class SystemController extends MainController
         if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $system->setName($data->getName());
-            $this->crudService->persistEntity($system);
-            return $this -> redirectToRoute('app_show_system');
+            $systemName = $system->getName();
+            if($checkObjectNameService->checkIfSystemExists($systemName))
+            {
+                $this->crudService->persistEntity($system);
+                return $this->redirectToRoute('app_show_system');
+            }
+            $error = 'System o takiej nazwie już istnieje';
+
         }
         return $this->render('add_catalog/index.html.twig', [
             'caption' => 'Edytuj system',
             'form' => $form->createView(),
-            'message' => $message
+            'error' => $error
         ]);
     }
     #[Route('/system/delete/{id}', name: 'app_delete_system')]
