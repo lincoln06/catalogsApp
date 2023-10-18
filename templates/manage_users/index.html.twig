@@ -4,25 +4,33 @@
 
 {% block body %}
         {{ parent () }}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<main>
         {% if message is defined %}
                 <h1>{{ message }}</h1>
         {% endif %}
         {% if usersList is defined %}
-                <ul>
                 {% for user in usersList %}
-                        <li>{{ user.email }} - <a href="{{ path('app_delete_user', {'id':user.id}) }}">Usuń</a> - <a href="{{ path('app_edit_user', {'id':user.id}) }}">Edytuj</a>
-                                <ul>
+                        <table>
+                                <tr class="table-header">
+                                <td>
+                                        {{ user.email }}
+                                </td>
+                                        <td class="button-cell">
+                                                <a href="{{ path('app_delete_user', {'id':user.id}) }}">Usuń</a>
+                                        </td>
+                                        <td class="button-cell">
+                                                <a href="{{ path('app_edit_user', {'id':user.id}) }}">Edytuj</a>
+                                        </td>
+                                </tr>
                                 {% for role in user.roles %}
-                                        <li>{{ role }}</li>
+                                <tr>
+                                        <td colspan="2">
+                                                {{ role }}
+                                        </td>
+                                </tr>
                                 {% endfor %}
-                                </ul>
-                        </li>
+                        </table>
                 {% endfor %}
-        </ul>
         {% endif %}
-
+</main>
 {% endblock %}

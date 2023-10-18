@@ -1,30 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ReportController!{% endblock %}
+{% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
     {{ parent() }}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>{{ title }}</h1>
+<main>
+    <h1>{{ caption }}</h1>
 
     {% if reports is defined%}
-    <ul>
+        <div class="container">
         {% for report in reports %}
-            <li>
-                {{ report.category.name }} - <a href="{{ path('app_solve_report', {'id':report.id}) }}">Rozwiąż</a>
-                <ul>
-                    <li>{{ report.topic }}</li>
-                    <li>{{ report.description }}</li>
-                    <li>{{ report.reportFrom }}</li>
-                </ul>
-            </li>
+            <table>
+                <tr class="table-header">
+                    <td>
+                    {{ report.category.name }}
+                    </td>
+                    <td class="button-cell">
+                        <a href="{{ path('app_solve_report', {'id':report.id}) }}">Rozwiąż</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="topic-cell">
+                        {{ report.topic }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="description-cell">
+                        {{ report.description }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="author-cell">
+                        {{ report.reportFrom }}
+                    </td>
+                </tr>
+            </table>
         {%  endfor %}
-    </ul>
-    {% endif %}
-</div>
+        </div>
+        {% endif %}
+</main>
 {% endblock %}

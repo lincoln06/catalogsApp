@@ -21,6 +21,7 @@ class EditUserType extends AbstractType
                         'Edytor' => 'ROLE_EDITOR',
                         'Użytkownik' => 'ROLE_USER',
                     ],
+                    'label' => 'Uprawnienia',
                     'expanded' => true,
                     'multiple' => true,
                 ])

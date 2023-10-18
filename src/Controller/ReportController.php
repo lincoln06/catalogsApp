@@ -22,11 +22,11 @@ class ReportController extends MainController
         $reports = $getReportsListService->getReportsList();
         if(!$reports) {
             return $this->render('report/index.html.twig', [
-                'title' => 'Nic do wyświetlenia'
+                'caption' => 'Nic do wyświetlenia'
                 ]);
         }
         return $this->render('report/index.html.twig', [
-            'title' => 'Lista zgłoszeń',
+            'caption' => 'Lista zgłoszeń',
             'reports' => $reports
         ]);
     }
@@ -44,7 +44,7 @@ class ReportController extends MainController
             $report->setDescription($form->get('description')->getData());
             $this->crudService->persistEntity($report);
             return $this->render('report/new.html.twig', [
-               'title' => 'Dodawanie zgłoszenia',
+               'caption' => 'Dodawanie zgłoszenia',
                'form' => $form,
                'message' => 'Zgłoszenie zostało wysłane'
             ]);
@@ -83,7 +83,7 @@ class ReportController extends MainController
             return $this->redirectToRoute('app_show_report');
         }
         return $this->render('report/solve.html.twig',[
-           'title' => 'Rozwiązywanie zgłoszenia',
+           'caption' => 'Rozwiązywanie zgłoszenia',
            'form' => $form
         ]);
     }

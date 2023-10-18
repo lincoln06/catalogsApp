@@ -67,6 +67,7 @@ class ManageUsersController extends MainController
                 return $this->redirectToRoute('app_manage_users');
             }
             return $this->render('manage_users/edit.html.twig', [
+                'caption' => 'Edycja użytkownika',
                 'form' => $form,
                 'username' => $user->getEmail()
             ]);

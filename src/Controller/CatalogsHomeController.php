@@ -42,7 +42,7 @@ class CatalogsHomeController extends MainController
             }
             return $this->render('catalogs_home/new.html.twig', [
                 'caption' => 'Dodaj katalog',
-                'message' => 'Nie dodano pliku',
+                'error' => 'Nie dodano pliku',
                 'form' => $form->createView(),
             ]);
         }
@@ -75,8 +75,9 @@ class CatalogsHomeController extends MainController
                 'form' => $form->createView()
             ]);
         }
-        return $this->render('error_page/index.html.twig', [
-           'message' => 'Wystąpił błąd'
+        return $this->render('error_page/new.html.twig', [
+            'caption' => 'Edytuj katalog',
+            'error' => 'Wystąpił błąd'
         ]);
     }
     #[Route('/catalog/delete/{id}', name: 'app_delete_catalog')]

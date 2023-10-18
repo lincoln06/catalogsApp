@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Entity\Catalog;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
@@ -13,10 +12,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class CatalogHandlingService extends AbstractController
 {
     private SluggerInterface $slugger;
-    private EntityManagerInterface $entityManager;
-    public function __construct(SluggerInterface $slugger, EntityManagerInterface $entityManager) {
+    public function __construct(SluggerInterface $slugger) {
         $this->slugger = $slugger;
-        $this->entityManager = $entityManager;
     }
     public function createOfUpdateCatalog(Catalog $catalog, FormInterface $form) : ?Catalog
     {

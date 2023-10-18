@@ -3,14 +3,12 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-    {{ parent() }}
-<main>
+    {{ parent () }}
     <section class="normal-form">
         <h1>{{ caption }}</h1>
         {{ form(form) }}
         {% if error is defined %}
-        <span id="error">{{ error }}</span>
+        {{ error }}
         {% endif %}
     </section>
-</main>
 {% endblock %}

@@ -18,68 +18,7 @@
             flex-direction: column;
             justify-content: center;
         }
-        section {
-            padding: 15px 20px 15px 20px;
-            background-color: #102e44;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #000;
-        }
-        section form {
-            display: flex;
-            flex-direction: column;
-        }
-        section form>input,label,button,span {
-            margin-top: 5px;
-        }
-        #logo-placeholder {
-            display: flex;
-            width: 200px;
-            color: #102E44;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-            padding: 20px;
-        }
-        .logo-placeholder-big {
-            font-size: 50px;
-        }
-        .logo-placeholder-small {
-            font-size: 15px;
-        }
-        input, button {
-            padding: 5px;
-            height: 1.5em;
-            border-radius: 4px;
-        }
-        input {
-            border: 1px solid #c0c0c0;
-            font-size: 17px;
-            font-family: Montserrat, sans-serif;
-        }
-        button {
-            height: 2.2em;
-            margin-top: 5px;
-            background-color: #005596;
-            color: #fff;
-            border: 1px solid #fff;
-            font-size: 17px;
-            font-family: Montserrat, sans-serif;
-        }
-        a {
-            color: deepskyblue;
-            text-decoration: none;
-        }
-        a:hover {
-            color: #c0c0c0;
-            text-decoration: none;
-        }
-        #error {
-            color: #ff0000;
-            padding: 5px;
-        }
+
     </style>
 {% endblock %}
 {% block body %}
@@ -96,7 +35,7 @@
                 Baza wiedzy | Aluminium
             </span>
         </div>
-        <section>
+        <section class="login-form">
             <div>
                 <form action="{{ path('app_login') }}" method="post">
                     <label for="username">Email:</label>

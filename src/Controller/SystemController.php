@@ -22,7 +22,7 @@ class SystemController extends MainController
         if(!$systems) {
             $message = 'Nic do wyświetlenia';
         }
-        return $this->render('add_catalog/list.html.twig', [
+        return $this->render('system/list.html.twig', [
             'systems' => $systems,
             'message' => $message
         ]);
@@ -43,13 +43,13 @@ class SystemController extends MainController
                 return $this->redirectToRoute('app_show_system');
             }
             $error = "System o takiej nazwie już istnieje";
-            return $this->render('add_catalog/index.html.twig', [
+            return $this->render('system/index.html.twig', [
                 'caption' => 'Dodaj system',
                 'form' => $form->createView(),
                 'error' => $error
             ]);
         }
-        return $this->render('add_catalog/index.html.twig', [
+        return $this->render('system/index.html.twig', [
             'caption' => 'Dodaj system',
             'form' => $form->createView(),
         ]);
@@ -77,7 +77,7 @@ class SystemController extends MainController
             $error = 'System o takiej nazwie już istnieje';
 
         }
-        return $this->render('add_catalog/index.html.twig', [
+        return $this->render('system/index.html.twig', [
             'caption' => 'Edytuj system',
             'form' => $form->createView(),
             'error' => $error
