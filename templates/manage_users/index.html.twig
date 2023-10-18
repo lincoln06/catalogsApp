@@ -1,13 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ManageUsersController!{% endblock %}
+{% block title %}{{caption}}{% endblock %}
 
 {% block body %}
         {{ parent () }}
 <main>
-        {% if message is defined %}
-                <h1>{{ message }}</h1>
-        {% endif %}
+                <h1>{{ caption }}</h1>
         {% if usersList is defined %}
                 {% for user in usersList %}
                         <table>

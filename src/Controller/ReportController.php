@@ -44,13 +44,13 @@ class ReportController extends MainController
             $report->setDescription($form->get('description')->getData());
             $this->crudService->persistEntity($report);
             return $this->render('report/new.html.twig', [
-               'caption' => 'Dodawanie zgłoszenia',
+               'caption' => 'Wyślij zgłoszenie',
                'form' => $form,
                'message' => 'Zgłoszenie zostało wysłane'
             ]);
         }
         return $this->render('report/new.html.twig',[
-            'title' => 'Dodawanie zgłoszenia',
+            'caption' => 'Wyślij zgłoszenie',
             'form' => $form,
         ]);
     }

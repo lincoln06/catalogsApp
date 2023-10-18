@@ -25,7 +25,7 @@ class ReportCategoryController extends MainController
             return $this->redirectToRoute('app_show_report_category');
         }
         return $this->render('report_category/new.html.twig', [
-            'title' => 'Dodawanie kategorii zgłoszeń',
+            'caption' => 'Dodawanie kategorii zgłoszeń',
             'form' => $form
         ]);
     }
@@ -40,7 +40,7 @@ class ReportCategoryController extends MainController
             $message = 'Lista kategorii';
         }
         return $this->render('report_category/index.html.twig', [
-            'message' => $message,
+            'caption' => $message,
             'categories' => $reportCategories
 
         ]);
@@ -74,7 +74,7 @@ class ReportCategoryController extends MainController
                 return $this->redirectToRoute('app_show_report_category');
             }
             return $this->render('report_category/new.html.twig',[
-                'title' => 'Edycja kategorii zgłoszeń',
+                'caption' => 'Edycja kategorii zgłoszeń',
                 'form' => $form
             ]);
         }

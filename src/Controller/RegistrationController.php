@@ -34,9 +34,10 @@ class RegistrationController extends MainController
             if($isEmailRegistered)
             {
                 return $this->render('registration/register_request.html.twig', [
-                'message' => 'Na ten adres e-mail już zostało utworzone konto lub zostało wysłane zapytanie',
-                'form' => $form
-            ]);
+                    'caption' => 'Prośby o rejestrację',
+                    'message' => 'Na ten adres e-mail już zostało utworzone konto lub zostało wysłane zapytanie',
+                    'form' => $form
+                ]);
             }
             $registerRequest->setEmail($email);
             $registerRequest->setHash($hash);

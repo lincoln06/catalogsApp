@@ -17,6 +17,7 @@ nav {
 #top-menu {
     justify-content: space-between;
     background-color: #102E44;
+    font-size: 18px;
 }
 #top-menu-options {
     display: flex;
@@ -124,6 +125,9 @@ select {
     font-size: 17px;
     font-family: 'Montserrat', sans-serif;
     margin-top: 5px;
+}
+.ok-message {
+    color: green;
 }
 button {
     height: 2.2em;

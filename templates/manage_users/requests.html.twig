@@ -1,26 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ManageUsersController!{% endblock %}
+{% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
         {{ parent () }}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-        {% if message is defined %}
-        <h1>{{ message }}</h1>
-        {% endif %}
-<ul>
+<main>
+        <h1>{{ caption }}</h1>
     {% for request in requests %}
-        <li>{{ request.email }}
-                {% if not request.isAccepted %}
-                - <a href="{{ path('app_request_confirm', {'id':request.id}) }}">Zatwierdź</a>-
-                {% endif %}
-                <a href="{{ path('app_request_deny', {'id':request.id}) }}">Usuń</a>
-        
-        </li>
-    {% endfor %}
-</ul>
+            <table>
+                <tr>
+                        <td>
+                                {{ request.email }}
+                        </td>
 
+                                {% if not request.isAccepted %}
+                        <td class="button-cell">
+                                <a href="{{ path('app_request_confirm', {'id':request.id}) }}">Zatwierdź</a>
+                        </td>
+                                {% endif %}
+                        <td class="button-cell">
+                                <a href="{{ path('app_request_deny', {'id':request.id}) }}">Usuń</a>
+                        </td>
+                </tr>
+            </table>
+    {% endfor %}
+</main>
 {% endblock %}

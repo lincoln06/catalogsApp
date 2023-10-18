@@ -8,7 +8,9 @@
         <h1>{{ caption }}</h1>
         {{ form(form) }}
         {% if error is defined %}
-        {{ error }}
+            <div id="error">
+            {{ error }}
+            </div>
         {% endif %}
     </section>
 {% endblock %}

@@ -75,9 +75,8 @@ class CatalogsHomeController extends MainController
                 'form' => $form->createView()
             ]);
         }
-        return $this->render('error_page/new.html.twig', [
-            'caption' => 'Edytuj katalog',
-            'error' => 'Wystąpił błąd'
+        return $this->render('error_page/index.html.twig', [
+            'message' => 'Brak katalogu o podanym numerze id.'
         ]);
     }
     #[Route('/catalog/delete/{id}', name: 'app_delete_catalog')]

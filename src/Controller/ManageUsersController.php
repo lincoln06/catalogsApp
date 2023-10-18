@@ -26,6 +26,7 @@ class ManageUsersController extends MainController
     public function index(GetUsersListService $getUsersListService): Response
     {
         return $this->render('manage_users/index.html.twig', [
+            'caption' => 'Lista użytkowników',
             'usersList' => $getUsersListService->getUsersFromDatabase(),
         ]);
     }
@@ -83,7 +84,7 @@ class ManageUsersController extends MainController
         $requests = $registerRequestRepository->findAll();
         if(!$requests) $message = "Brak zapytań o rejestrację";
         return $this->render('manage_users/requests.html.twig', [
-            'message' =>$message,
+            'caption' =>$message,
             'requests' => $requests,
         ]);
     }

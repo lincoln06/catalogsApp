@@ -17,14 +17,14 @@ class SystemController extends MainController
     #[Route('/system/show', name: 'app_show_system')]
     public function show(SystemRepository $systemRepository): Response
     {
-        $message = '';
+        $message = 'Lista systemów';
         $systems = $systemRepository->findAll();
         if(!$systems) {
             $message = 'Nic do wyświetlenia';
         }
         return $this->render('system/list.html.twig', [
             'systems' => $systems,
-            'message' => $message
+            'caption' => $message
         ]);
     }
     #[Route('/system/add', name: 'app_add_system')]

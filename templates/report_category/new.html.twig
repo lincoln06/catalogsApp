@@ -1,17 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
     {{ parent() }}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<main>
+    <section class="normal-form">
 
-<div class="example-wrapper">
-    <h1>{{ title }}! ✅</h1>
+    <h1>{{ caption }}</h1>
 
     {{ form(form) }}
-</div>
+    </section>
+</main>
 {% endblock %}
