@@ -15,9 +15,11 @@ class RegisterRequestType extends AbstractType
     {
         $builder
             ->add('email', TextType::class, [
-                'label' => 'Email',
+                'label' => 'Email:',
             ])
-            ->add('Zapisz', SubmitType::class)
+            ->add('send', SubmitType::class, [
+              'label' => 'Wyślij'
+            ])
         ;
     }
 

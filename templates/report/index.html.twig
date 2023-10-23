@@ -8,7 +8,6 @@
     <h1>{{ caption }}</h1>
 
     {% if reports is defined%}
-        <div class="container">
         {% for report in reports %}
             <table>
                 <tr class="table-header">
@@ -36,7 +35,6 @@
                 </tr>
             </table>
         {%  endfor %}
-        </div>
         {% endif %}
 </main>
 {% endblock %}

@@ -4,10 +4,10 @@
 
 {% block body %}
     <h1>Register</h1>
-    {{ form_errors(form) }}
+    <section class="login-form">
 
-    {{ form_start(form) }}
-        {{ form_row(form.email) }}
-        {{ form_row(form.plainPassword) }}
-    {{ form_end(form) }}
+
+        {{ form(form) }}
+    </section>
+
 {% endblock %}

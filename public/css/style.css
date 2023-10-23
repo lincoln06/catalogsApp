@@ -8,11 +8,16 @@ body {
 nav {
     display: flex;
     position: sticky;
-    top: 10px;
     flex-direction: row;
-    border-radius: 5px;
     width: 100%;
-    margin: 5px;
+    margin: 0;
+    top: 0;
+}
+main {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
 }
 #top-menu {
     justify-content: space-between;
@@ -43,7 +48,6 @@ nav {
 #user-info {
     padding: 15px;
     background-color: #005596;
-    border-radius: 5px;
     color: #fff;
     border-left: 1px solid #c0c0c0;
 }
@@ -55,29 +59,28 @@ section {
     padding: 15px 20px 15px 20px;
     display: flex;
     flex-direction: column;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #000;
     margin-top: 20px;
 }
 table {
     border: 1px solid #102e44;
     border-spacing: 0;
-    border-radius: 5px;
     margin: 5px;
     width: 100vb;
 }
 td {
     padding: 10px;
 }
-.login-form {
+.login-form, .login-form div {
     background-color: #102e44;
     color: #fff;
+    display: flex;
+    flex-direction: column;
 }
 .button-cell {
     background-color: #102e44;
     width: 10vb;
 }
-.table-header {
+.table-header{
     background-color: #102e44;
     color: #fff;
     font-size: 20px;
@@ -86,7 +89,6 @@ td {
     color: #102e44;
     display: flex;
     flex-direction: column;
-
 }
 form {
     display: flex;
@@ -113,7 +115,6 @@ form>input,label,button,span {
 input, button {
     padding: 5px;
     height: 1.5em;
-    border-radius: 4px;
 }
 input {
     border: 1px solid #c0c0c0;
@@ -170,4 +171,41 @@ a:hover {
 }
 .catalogs-list.visible {
     display: flex;
+}
+.iconify {
+    font-size: 20px;
+    margin-left: 20px;
+}
+ul {
+    display: flex;
+    list-style: none;
+    flex-direction: column;
+}
+li {
+    line-height: 3em;
+    width: 100%;
+    margin-left: -2em;
+}
+.system-header {
+    background-color: #c0c0c0;
+    width: 100%;
+    padding: 10px;
+    display: block;
+}
+.system-header:hover, .system-header span:hover {
+    cursor: pointer;
+}
+.system-header.active {
+    color: #fff;
+    background-color: #102e44;
+}
+.catalogs-home-list {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+.login-form div ul {
+    font-size: 14px;
+    color: orangered;
+    margin-left: -1em;
 }

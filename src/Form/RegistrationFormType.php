@@ -39,7 +39,9 @@ class RegistrationFormType extends AbstractType
                 ],
                 'toggle' => true
             ])
-            ->add('Zapisz', SubmitType::class)
+            ->add('save', SubmitType::class, [
+                'label' => 'Zarejestruj'
+            ])
         ;
     }
 
