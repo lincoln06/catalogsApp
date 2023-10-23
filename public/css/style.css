@@ -164,3 +164,10 @@ a:hover {
     font-size: 13px;
     text-align: right;
 }
+.catalogs-list {
+    display: none;
+    margin: 0;
+}
+.catalogs-list.visible {
+    display: flex;
+}

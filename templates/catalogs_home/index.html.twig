@@ -10,11 +10,11 @@
         <li><a href="{{ path('app_add_catalog') }}">Dodaj nowy</a></li>
         {% endif %}
         {% for system in systems %}
-            <li class="system">{{ system.name }}
+            <li class="system-header" id="{{ system.name }}">{{ system.name }}
 
-                <ul>
+                <ul id="{{ system.name }}-catalogs" class="catalogs-list">
                     {% for catalog in catalogs[system.name] %}
-                        <li class="system"><a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}" target="_blank">{{ catalog.name }}</a>
+                        <li class="catalog"><a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}" target="_blank">{{ catalog.name }}</a>
                             {% if is_granted('ROLE_EDITOR') %}
                                 - <a href="{{ path('app_edit_catalog', {'id':catalog.id}) }}">Edytuj</a> -
                                 <a href="{{  path('app_delete_catalog', {'id':catalog.id}) }}">Usuń</a>
@@ -27,4 +27,17 @@
         {% endfor %}
         </ul>
 </main>
+    <script>
+        const MENU_VISIBLE_CLASS = 'visible';
+        const systemHeaders = document.querySelectorAll(".system-header");
+        systemHeaders?.forEach((systemHeader) => {
+           systemHeader.addEventListener('click', (event) => {
+               let systemCatalogsEl = document.getElementById(`${systemHeader.id}-catalogs`);
+               console.log(`${systemHeader.id}-catalogs`);
+               console.log(systemCatalogsEl);
+               systemCatalogsEl?.classList.toggle(MENU_VISIBLE_CLASS);
+            });
+        });
+
+    </script>
 {% endblock %}
