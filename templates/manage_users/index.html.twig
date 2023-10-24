@@ -14,10 +14,10 @@
                                         {{ user.email }}
                                 </td>
                                         <td class="button-cell">
-                                                <a href="{{ path('app_delete_user', {'id':user.id}) }}">Usuń</a>
+                                                <a href="{{ path('app_edit_user', {'id':user.id}) }}"><span class="iconify" data-icon="mdi-pencil"></span></a>
                                         </td>
                                         <td class="button-cell">
-                                                <a href="{{ path('app_edit_user', {'id':user.id}) }}">Edytuj</a>
+                                                <a href="{{ path('app_delete_user', {'id':user.id}) }}"><span class="iconify" data-icon="mdi-delete"></span></a>
                                         </td>
                                 </tr>
                                 {% for role in user.roles %}

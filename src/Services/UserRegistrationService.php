@@ -19,7 +19,7 @@ class UserRegistrationService
         $this->mailerService->sendEmail(
             $registerRequest->getEmail(),
             "Katalogi GABIT - link do rejestracji",
-            "Aby dokończyć rejestrację, skopiuj ten link do okna przeglądarki: localhost:8000/register/allowed/{$registerRequest->getHash()}"
+            "Aby dokończyć rejestrację, skopiuj ten link do okna przeglądarki:\nlocalhost:8000/register/allowed/{$registerRequest->getHash()}"
         );
     }
     public function deleteRegisterRequest(RegisterRequest $registerRequest) : void

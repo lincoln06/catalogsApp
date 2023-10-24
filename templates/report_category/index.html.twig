@@ -8,8 +8,8 @@
     <h1>{{ caption }}</h1>
         <table>
             <tr class="table-header">
-                <td class="button-cell" colspan="3">
-                <a href="{{ path('app_add_report_category')}}">Dodaj</a>
+                <td colspan="3">
+                <a href="{{ path('app_add_report_category')}}"><span class="iconify" data-icon="mdi-note-plus-outline"></span>  Dodaj</a>
                 </td>
             </tr>
             {% if categories %}
@@ -21,10 +21,10 @@
 
                     {% if is_granted('ROLE_GOD') %}
                         <td class="button-cell">
-                            <a href="{{ path('app_edit_report_category', {'id':category.id}) }}">Edytuj</a>
+                            <a href="{{ path('app_edit_report_category', {'id':category.id}) }}"><span class="iconify" data-icon="mdi-pencil"></span></a>
                         </td>
                         <td class="button-cell">
-                            <a href="{{  path('app_delete_report_category', {'id':category.id}) }}">Usuń</a>
+                            <a href="{{  path('app_delete_report_category', {'id':category.id}) }}"><span class="iconify" data-icon="mdi-delete"></span></a>
                         </td>
                     {% endif %}
                 </tr>

@@ -80,6 +80,9 @@ td {
     background-color: #102e44;
     width: 10vb;
 }
+.button-cell>a {
+    color: #fff;
+}
 .table-header{
     background-color: #102e44;
     color: #fff;
@@ -140,7 +143,7 @@ button {
     font-family: Montserrat, sans-serif;
 }
 a {
-    color: deepskyblue;
+    color: dodgerblue;
     text-decoration: none;
 }
 a:hover {
@@ -173,7 +176,7 @@ a:hover {
     display: flex;
 }
 .iconify {
-    font-size: 20px;
+    font-size: 25px;
     margin-left: 20px;
 }
 ul {
@@ -208,4 +211,15 @@ li {
     font-size: 14px;
     color: orangered;
     margin-left: -1em;
+}
+#edit_user_roles {
+    align-items: center;
+    display: flex;
+    flex-direction: column-reverse;
+}
+.date-added {
+    font-size: 15px;
+    margin-left: 30px;
+    margin-right: 30px;
+    color: #666;
 }

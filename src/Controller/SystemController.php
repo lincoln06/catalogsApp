@@ -63,19 +63,17 @@ class SystemController extends MainController
             $error = 'Brak danych';
         }
         $form = $this -> createForm(SystemType::class, $system);
-
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $system->setName($data->getName());
-            $systemName = $system->getName();
-            if($checkObjectNameService->checkIfSystemExists($systemName))
+
+            $systemName = $form->get('name')->getData();
+            if($checkObjectNameService->checkIfSystemExists($systemName) || !($system->getName() !== $systemName))
             {
+                $system->setName($systemName);
                 $this->crudService->persistEntity($system);
                 return $this->redirectToRoute('app_show_system');
             }
             $error = 'System o takiej nazwie już istnieje';
-
         }
         return $this->render('system/index.html.twig', [
             'caption' => 'Edytuj system',

@@ -4,12 +4,11 @@
 
 {% block body %}
     {{ parent() }}
-    <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
 <main>
     <section id="catalogs-home-list" class="catalogs-home-list">
         <ul>
             {% if is_granted('ROLE_EDITOR') %}
-            <li><a href="{{ path('app_add_catalog') }}">Dodaj nowy</a></li>
+            <li><a href="{{ path('app_add_catalog') }}"><span class="iconify" data-icon="mdi-note-plus-outline"></span>  Dodaj nowy</a></li>
             {% endif %}
             {% for system in systems %}
             <li>
@@ -17,6 +16,7 @@
                 <ul id="{{ system.name }}-catalogs" class="catalogs-list">
                     {% for catalog in catalogs[system.name] %}
                         <li class="catalog"><a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}" target="_blank">{{ catalog.name }}</a>
+                            <span class="date-added">{{ catalog.dateAdded|date('d-m-Y') }}</span>
                             {% if is_granted('ROLE_EDITOR') %}
                                 <a href="{{ path('app_edit_catalog', {'id':catalog.id}) }}"><span class="iconify" data-icon="mdi-pencil"></span></a>
                                 <a href="{{  path('app_delete_catalog', {'id':catalog.id}) }}"><span class="iconify" data-icon="mdi-delete"></span></a>
