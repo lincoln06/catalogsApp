@@ -6,11 +6,11 @@
     <h1>Prośba o dostęp</h1>
 
     {% if message is defined %}
-    <h2>{{ message }}</h2>
+        <h2>{{ message }}</h2>
     {% endif %}
-<section class="login-form">
-    <div>
-    {{ form(form) }}
-    </div>
-</section>
-    {% endblock %}
+    <section class="login-form">
+        <div>
+            {{ form(form) }}
+        </div>
+    </section>
+{% endblock %}

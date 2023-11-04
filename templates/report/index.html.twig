@@ -4,37 +4,37 @@
 
 {% block body %}
     {{ parent() }}
-<main>
-    <h1>{{ caption }}</h1>
+    <main>
+        <h1>{{ caption }}</h1>
 
-    {% if reports is defined%}
-        {% for report in reports %}
-            <table>
-                <tr class="table-header">
-                    <td>
-                    {{ report.category.name }}
-                    </td>
-                    <td>
-                        <a href="{{ path('app_solve_report', {'id':report.id}) }}">Rozwiąż</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="topic-cell">
-                        {{ report.topic }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="description-cell">
-                        {{ report.description }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="author-cell">
-                        {{ report.reportFrom }}
-                    </td>
-                </tr>
-            </table>
-        {%  endfor %}
+        {% if reports is defined %}
+            {% for report in reports %}
+                <table>
+                    <tr class="table-header">
+                        <td>
+                            {{ report.category.name }}
+                        </td>
+                        <td>
+                            <a href="{{ path('app_solve_report', {'id':report.id}) }}">Rozwiąż</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="topic-cell">
+                            {{ report.topic }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="description-cell">
+                            {{ report.description }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="author-cell">
+                            {{ report.reportFrom }}
+                        </td>
+                    </tr>
+                </table>
+            {% endfor %}
         {% endif %}
-</main>
+    </main>
 {% endblock %}

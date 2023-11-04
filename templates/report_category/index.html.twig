@@ -4,32 +4,36 @@
 
 {% block body %}
     {{ parent() }}
-<main>
-    <h1>{{ caption }}</h1>
+    <main>
+        <h1>{{ caption }}</h1>
         <table>
             <tr class="table-header">
                 <td colspan="3">
-                <a href="{{ path('app_add_report_category')}}"><span class="iconify" data-icon="mdi-note-plus-outline"></span>  Dodaj</a>
+                    <a href="{{ path('app_add_report_category') }}"><span class="iconify"
+                                                                          data-icon="mdi-note-plus-outline"></span>
+                        Dodaj</a>
                 </td>
             </tr>
             {% if categories %}
                 {% for category in categories %}
-                <tr>
-                    <td>
-                        {{ category.name }}
-                    </td>
+                    <tr>
+                        <td>
+                            {{ category.name }}
+                        </td>
 
-                    {% if is_granted('ROLE_GOD') %}
-                        <td class="button-cell">
-                            <a href="{{ path('app_edit_report_category', {'id':category.id}) }}"><span class="iconify" data-icon="mdi-pencil"></span></a>
-                        </td>
-                        <td class="button-cell">
-                            <a href="{{  path('app_delete_report_category', {'id':category.id}) }}"><span class="iconify" data-icon="mdi-delete"></span></a>
-                        </td>
-                    {% endif %}
-                </tr>
+                        {% if is_granted('ROLE_GOD') %}
+                            <td class="button-cell">
+                                <a href="{{ path('app_edit_report_category', {'id':category.id}) }}"><span
+                                            class="iconify" data-icon="mdi-pencil"></span></a>
+                            </td>
+                            <td class="button-cell">
+                                <a href="{{ path('app_delete_report_category', {'id':category.id}) }}"><span
+                                            class="iconify" data-icon="mdi-delete"></span></a>
+                            </td>
+                        {% endif %}
+                    </tr>
                 {% endfor %}
             {% endif %}
-            </table>
-</main>
+        </table>
+    </main>
 {% endblock %}

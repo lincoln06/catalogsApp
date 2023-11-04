@@ -10,6 +10,7 @@
             align-items: center;
             justify-content: center;
         }
+
         main {
             display: flex;
             width: 100%;
@@ -23,7 +24,7 @@
 {% endblock %}
 {% block body %}
     {% if message is defined %}
-    <h2>{{ message }}</h2>
+        <h2>{{ message }}</h2>
     {% endif %}
 
     <main>
@@ -55,7 +56,7 @@
         </section>
         <div id="error">
             {% if error %}
-                <div>{{  error }}</div>
+                <div>{{ error }}</div>
             {% endif %}
         </div>
     </main>

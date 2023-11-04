@@ -4,43 +4,53 @@
 
 {% block body %}
     {{ parent() }}
-<main>
-    <section id="catalogs-home-list" class="catalogs-home-list">
-        <ul>
-            {% if is_granted('ROLE_EDITOR') %}
-            <li><a href="{{ path('app_add_catalog') }}"><span class="iconify" data-icon="mdi-note-plus-outline"></span>  Dodaj nowy</a></li>
-            {% endif %}
-            {% for system in systems %}
-            <li>
-                <span class="system-header" id="{{ system.name }}">{{ system.name }}</span>
-                <ul id="{{ system.name }}-catalogs" class="catalogs-list">
-                    {% for catalog in catalogs[system.name] %}
-                        <li class="catalog"><a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}" target="_blank">{{ catalog.name }}</a>
-                            <span class="date-added">{{ catalog.dateAdded|date('d-m-Y') }}</span>
-                            {% if is_granted('ROLE_EDITOR') %}
-                                <a href="{{ path('app_edit_catalog', {'id':catalog.id}) }}"><span class="iconify" data-icon="mdi-pencil"></span></a>
-                                <a href="{{  path('app_delete_catalog', {'id':catalog.id}) }}"><span class="iconify" data-icon="mdi-delete"></span></a>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
+    <main>
+        <section id="catalogs-home-list" class="catalogs-home-list">
+            <ul>
+                {% if is_granted('ROLE_EDITOR') %}
+                    <li><a href="{{ path('app_add_catalog') }}"><span class="iconify"
+                                                                      data-icon="mdi-note-plus-outline"></span> Dodaj
+                            nowy</a></li>
+                {% endif %}
+                <li>
+                    <span class="system-header">
+                        <a style="text-decoration: none; color: black" href="https://docucenter.schueco.com" target="_blank">Schüco</a>
+                    </span>
+                </li>
+                {% for system in systems %}
+                    <li>
+                        <span class="system-header" id="{{ system.name }}">{{ system.name }}</span>
+                        <ul id="{{ system.name }}-catalogs" class="catalogs-list">
+                            {% for catalog in catalogs[system.name] %}
+                                <li class="catalog"><a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}"
+                                                       target="_blank">{{ catalog.name }}</a>
+                                    <span class="date-added">{{ catalog.dateAdded|date('d-m-Y') }}</span>
+                                    {% if is_granted('ROLE_EDITOR') %}
+                                        <a href="{{ path('app_edit_catalog', {'id':catalog.id}) }}"><span
+                                                    class="iconify" data-icon="mdi-pencil"></span></a>
+                                        <a href="{{ path('app_delete_catalog', {'id':catalog.id}) }}"><span
+                                                    class="iconify" data-icon="mdi-delete"></span></a>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
 
-            </li>
-        {% endfor %}
-        </ul>
-    </section>
-</main>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
 
     <script>
         const MENU_VISIBLE_CLASS = 'visible';
         const MENU_ACTIVE_CLASS = 'active';
         const systemHeaders = document.querySelectorAll(".system-header");
         systemHeaders?.forEach((systemHeader) => {
-           systemHeader.addEventListener('click', (event) => {
-               let systemCatalogsEl = document.getElementById(`${systemHeader.id}-catalogs`);
-               systemCatalogsEl?.classList.toggle(MENU_VISIBLE_CLASS);
-               let systemCatalogsHeaderEl = document.getElementById(`${systemHeader.id}`);
-               systemCatalogsHeaderEl.classList.toggle(MENU_ACTIVE_CLASS);
+            systemHeader.addEventListener('click', (event) => {
+                let systemCatalogsEl = document.getElementById(`${systemHeader.id}-catalogs`);
+                systemCatalogsEl?.classList.toggle(MENU_VISIBLE_CLASS);
+                let systemCatalogsHeaderEl = document.getElementById(`${systemHeader.id}`);
+                systemCatalogsHeaderEl.classList.toggle(MENU_ACTIVE_CLASS);
             });
         });
 

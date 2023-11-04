@@ -3,15 +3,15 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-        {{ parent () }}
-        <main>
-                <section class="normal-form">
-                        <h1>{{ caption }}</h1>
-                {% if message is defined %}
+    {{ parent () }}
+    <main>
+        <section class="normal-form">
+            <h1>{{ caption }}</h1>
+            {% if message is defined %}
                 <h1>{{ message }}</h1>
-                {% endif %}
-                <h3>{{ username }}</h3>
-                {{ form(form) }}
-                </section>
-        </main>
+            {% endif %}
+            <h3>{{ username }}</h3>
+            {{ form(form) }}
+        </section>
+    </main>
 {% endblock %}

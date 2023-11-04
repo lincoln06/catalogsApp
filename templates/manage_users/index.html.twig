@@ -1,34 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{caption}}{% endblock %}
+{% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-        {{ parent () }}
-<main>
-                <h1>{{ caption }}</h1>
+    {{ parent () }}
+    <main>
+        <h1>{{ caption }}</h1>
         {% if usersList is defined %}
-                {% for user in usersList %}
-                        <table>
-                                <tr class="table-header">
-                                <td>
-                                        {{ user.email }}
-                                </td>
-                                        <td class="button-cell">
-                                                <a href="{{ path('app_edit_user', {'id':user.id}) }}"><span class="iconify" data-icon="mdi-pencil"></span></a>
-                                        </td>
-                                        <td class="button-cell">
-                                                <a href="{{ path('app_delete_user', {'id':user.id}) }}"><span class="iconify" data-icon="mdi-delete"></span></a>
-                                        </td>
-                                </tr>
-                                {% for role in user.roles %}
-                                <tr>
-                                        <td colspan="2">
-                                                {{ role }}
-                                        </td>
-                                </tr>
-                                {% endfor %}
-                        </table>
-                {% endfor %}
+            {% for user in usersList %}
+                <table>
+                    <tr class="table-header">
+                        <td>
+                            {{ user.email }}
+                        </td>
+                        <td class="button-cell">
+                            <a href="{{ path('app_edit_user', {'id':user.id}) }}"><span class="iconify"
+                                                                                        data-icon="mdi-pencil"></span></a>
+                        </td>
+                        <td class="button-cell">
+                            <a href="{{ path('app_delete_user', {'id':user.id}) }}"><span class="iconify"
+                                                                                          data-icon="mdi-delete"></span></a>
+                        </td>
+                    </tr>
+                    {% for role in user.roles %}
+                        <tr>
+                            <td colspan="2">
+                                {{ role }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endfor %}
         {% endif %}
-</main>
+    </main>
 {% endblock %}

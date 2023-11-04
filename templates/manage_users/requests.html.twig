@@ -3,26 +3,26 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-        {{ parent () }}
-<main>
+    {{ parent () }}
+    <main>
         <h1>{{ caption }}</h1>
-    {% for request in requests %}
+        {% for request in requests %}
             <table>
                 <tr>
-                        <td>
-                                {{ request.email }}
-                        </td>
+                    <td>
+                        {{ request.email }}
+                    </td>
 
-                                {% if not request.isAccepted %}
+                    {% if not request.isAccepted %}
                         <td class="button-cell">
-                                <a href="{{ path('app_request_confirm', {'id':request.id}) }}">Zatwierdź</a>
+                            <a href="{{ path('app_request_confirm', {'id':request.id}) }}">Zatwierdź</a>
                         </td>
-                                {% endif %}
-                        <td class="button-cell">
-                                <a href="{{ path('app_request_deny', {'id':request.id}) }}">Usuń</a>
-                        </td>
+                    {% endif %}
+                    <td class="button-cell">
+                        <a href="{{ path('app_request_deny', {'id':request.id}) }}">Usuń</a>
+                    </td>
                 </tr>
             </table>
-    {% endfor %}
-</main>
+        {% endfor %}
+    </main>
 {% endblock %}

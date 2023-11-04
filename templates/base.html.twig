@@ -1,64 +1,65 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-            <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {% block stylesheets %}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+    {% endblock %}
 
-        {% block javascripts %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}
-            <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
-            <nav id="top-menu">
-                <div id="top-menu-options">
-                    <div id="top-menu-option">
-                        <a href="{{ path('app_catalogs_home') }}">Strona główna</a>
-                    </div>
-                    {% if not is_granted('ROLE_GOD') %}
-                        <div id="top-menu-option">
-                            <a href="{{ path('app_add_report') }}">Wyślij zgłoszenie</a> -
-                        </div>
-                    {% endif %}
-                    {% if is_granted('ROLE_EDITOR') %}
-                        <div id="top-menu-option">
-                            <a href="{{ path('app_show_report') }}">Zgłoszenia</a>
-                        </div>
-                    {% endif %}
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <div id="top-menu-option">
-                            <a href="{{ path('app_manage_users') }}">Użytkownicy</a>
-                        </div>
-                        <div id="top-menu-option">
-                            <a href="{{ path('app_show_system') }}">Systemodawcy</a>
-                        </div>
-                    {% endif %}
-                    {% if is_granted('ROLE_GOD') %}
-                    <div id="top-menu-option">
-                        <a href="{{ path('app_manage_requests') }}">Prośby o rejestrację</a>
-                    </div>
-                        <div id="top-menu-option">
-                            <a href="{{ path('app_show_report_category') }}">Kategorie zgłoszeń</a>
-                        </div>
-                    {% endif %}
+    {% block javascripts %}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+    <nav id="top-menu">
+        <div id="top-menu-options">
+            <div id="top-menu-option">
+                <a href="{{ path('app_catalogs_home') }}">Strona główna</a>
+            </div>
+            {% if not is_granted('ROLE_GOD') %}
+                <div id="top-menu-option">
+                    <a href="{{ path('app_add_report') }}">Wyślij zgłoszenie</a> -
                 </div>
-                <div id="top-menu-options">
-                    <div id="user-info">
-                        <span class="user-element">{{ app.user.email }}</span>
-                        <span class="user-element"><a href="{{ path('app_logout') }}">Wyloguj</a></span>
-                        <span></span>
-                    </div>
+            {% endif %}
+            {% if is_granted('ROLE_EDITOR') %}
+                <div id="top-menu-option">
+                    <a href="{{ path('app_show_report') }}">Zgłoszenia</a>
                 </div>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <div id="top-menu-option">
+                    <a href="{{ path('app_manage_users') }}">Użytkownicy</a>
+                </div>
+                <div id="top-menu-option">
+                    <a href="{{ path('app_show_system') }}">Systemodawcy</a>
+                </div>
+            {% endif %}
+            {% if is_granted('ROLE_GOD') %}
+                <div id="top-menu-option">
+                    <a href="{{ path('app_manage_requests') }}">Prośby o rejestrację</a>
+                </div>
+                <div id="top-menu-option">
+                    <a href="{{ path('app_show_report_category') }}">Kategorie zgłoszeń</a>
+                </div>
+            {% endif %}
+        </div>
+        <div id="top-menu-options">
+            <div id="user-info">
+                <span class="user-element">{{ app.user.email }}</span>
+                <span class="user-element"><a href="{{ path('app_logout') }}">Wyloguj</a></span>
+                <span></span>
+            </div>
+        </div>
 
-            </nav>
-        {% endblock %}
+    </nav>
+{% endblock %}
 
-    </body>
+</body>
 </html>
