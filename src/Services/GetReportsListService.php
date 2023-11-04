@@ -20,21 +20,12 @@ class GetReportsListService
 
     public function getReportsList() : array
     {
-        $currentUserRoles = $this->security->getUser()->getRoles();
-        $allRolesOfCurrentUser = [];
-        if(in_array('ROLE_GOD',$currentUserRoles))
-        {
-            $allRolesOfCurrentUser = ['ROLE_GOD', 'ROLE_ADMIN', 'ROLE_EDITOR'];
-        } else if(in_array('ROLE_ADMIN', $currentUserRoles)) {
-            $allRolesOfCurrentUser = ['ROLE_ADMIN', 'ROLE_EDITOR'];
-        } else if(in_array('ROLE_EDITOR', $currentUserRoles)) {
-            $allRolesOfCurrentUser = ['ROLE_EDITOR'];
-        }
         $reports = $this->reportRepository->findAll();
         $reportsArray = [];
-        foreach($reports as $report)
-        {
-            if(in_array($report->getCategory()->getRole(), $allRolesOfCurrentUser)) $reportsArray[] = $report;
+        foreach ($reports as $report) {
+            if ($this->security->isGranted($report->getCategory()->getRole())) {
+                $reportsArray[] = $report;
+            }
         }
         return $reportsArray;
     }

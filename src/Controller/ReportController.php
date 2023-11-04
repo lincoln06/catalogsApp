@@ -64,8 +64,7 @@ class ReportController extends MainController
                 'message' => 'Brak raportu'
                 ]);
         }
-        $isLoggedUserAbleToSolve = $userPrivilegeValidatingService->checkManageReportPrivileges($report);
-        if(!$isLoggedUserAbleToSolve)
+        if(!$this->isGranted($report->getCategory()->getRole()))
         {
             return $this->render('error_page/index.html.twig', [
                 'message' => 'Brak uprawnień do obsługi tego zgłoszenia'
