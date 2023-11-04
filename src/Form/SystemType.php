@@ -17,8 +17,7 @@ class SystemType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Nazwa',
             ])
-            ->add('Zapisz', SubmitType::class)
-        ;
+            ->add('Zapisz', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

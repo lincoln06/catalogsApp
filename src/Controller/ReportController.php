@@ -20,60 +20,58 @@ class ReportController extends MainController
     public function index(GetReportsListService $getReportsListService): Response
     {
         $reports = $getReportsListService->getReportsList();
-        if(!$reports) {
+        if (!$reports) {
             return $this->render('report/index.html.twig', [
                 'caption' => 'Nic do wyświetlenia'
-                ]);
+            ]);
         }
         return $this->render('report/index.html.twig', [
             'caption' => 'Lista zgłoszeń',
             'reports' => $reports
         ]);
     }
+
     #[Route('/report/add', name: 'app_add_report')]
     public function new(Request $request, Security $security): Response
     {
         $report = new Report();
         $form = $this->createForm(ReportType::class);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $report->setReportFrom($security->getUser()->getEmail());
             $report->setCategory($form->get('category')->getData());
             $report->setTopic($form->get('topic')->getData());
             $report->setDescription($form->get('description')->getData());
             $this->crudService->persistEntity($report);
             return $this->render('report/new.html.twig', [
-               'caption' => 'Wyślij zgłoszenie',
-               'form' => $form,
-               'message' => 'Zgłoszenie zostało wysłane'
+                'caption' => 'Wyślij zgłoszenie',
+                'form' => $form,
+                'message' => 'Zgłoszenie zostało wysłane'
             ]);
         }
-        return $this->render('report/new.html.twig',[
+        return $this->render('report/new.html.twig', [
             'caption' => 'Wyślij zgłoszenie',
             'form' => $form,
         ]);
     }
+
     #[Route('/report/solve/{id}', name: 'app_solve_report')]
     public function solveReport(Request $request, ReportRepository $reportRepository, UserPrivilegeValidatingService $userPrivilegeValidatingService, MailerService $mailerService, int $id): Response
     {
         $report = $reportRepository->find($id);
-        if(!$report)
-        {
+        if (!$report) {
             return $this->render('error_page/index.html.twig', [
                 'message' => 'Brak raportu'
-                ]);
+            ]);
         }
-        if(!$this->isGranted($report->getCategory()->getRole()))
-        {
+        if (!$this->isGranted($report->getCategory()->getRole())) {
             return $this->render('error_page/index.html.twig', [
                 'message' => 'Brak uprawnień do obsługi tego zgłoszenia'
             ]);
         }
         $form = $this->createForm(ReportSolvedType::class);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $answerToUser = $form->get('answer')->getData();
             $title = "[Rozwiązanie problemu: {$report->getCategory()->getName()}]";
             $solvedMessage = "Twoje zgłoszenie: \n{$report->getTopic()}\nzostało rozwiązane. \n Odpowiedź do zgłoszenia: \n {$answerToUser}";
@@ -81,9 +79,9 @@ class ReportController extends MainController
             $this->crudService->deleteEntity($report);
             return $this->redirectToRoute('app_show_report');
         }
-        return $this->render('report/solve.html.twig',[
-           'caption' => 'Rozwiązywanie zgłoszenia',
-           'form' => $form
+        return $this->render('report/solve.html.twig', [
+            'caption' => 'Rozwiązywanie zgłoszenia',
+            'form' => $form
         ]);
     }
 }

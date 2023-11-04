@@ -17,8 +17,7 @@ class ReportCategoryController extends MainController
         $reportCategory = new ReportCategory();
         $form = $this->createForm(ReportCategoryType::class);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $reportCategory->setName($form->get('name')->getData());
             $reportCategory->setRole($form->get('role')->getData());
             $this->crudService->persistEntity($reportCategory);
@@ -29,12 +28,12 @@ class ReportCategoryController extends MainController
             'form' => $form
         ]);
     }
+
     #[Route('/report/category/show', name: 'app_show_report_category')]
     public function show(ReportCategoryRepository $reportCategoryRepository): Response
     {
         $reportCategories = $reportCategoryRepository->findAll();
-        if(!$reportCategories)
-        {
+        if (!$reportCategories) {
             $message = 'Nic do wyświetlenia';
         } else {
             $message = 'Lista kategorii';
@@ -45,12 +44,12 @@ class ReportCategoryController extends MainController
 
         ]);
     }
+
     #[Route('/report/category/delete/{id}', name: 'app_delete_report_category')]
     public function delete(ReportCategoryRepository $reportCategoryRepository, int $id): Response
     {
         $reportCategory = $reportCategoryRepository->find($id);
-        if(!$reportCategory)
-        {
+        if (!$reportCategory) {
             return $this->render('error_page/index.html.twig', [
                 'message' => 'Brak danych do usunięcia'
             ]);
@@ -58,22 +57,21 @@ class ReportCategoryController extends MainController
         $this->crudService->deleteEntity($reportCategory);
         return $this->redirectToRoute('app_show_report_category');
     }
+
     #[Route('/report/category/edit/{id}', name: 'app_edit_report_category')]
     public function edit(Request $request, ReportCategoryRepository $reportCategoryRepository, int $id): Response
     {
         $reportCategory = $reportCategoryRepository->find($id);
-        if($reportCategory)
-        {
+        if ($reportCategory) {
             $form = $this->createForm(ReportCategoryType::class, $reportCategory);
             $form->handleRequest($request);
-            if($form->isSubmitted() && $form->isValid())
-            {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $reportCategory->setName($form->get('name')->getData());
                 $reportCategory->setRole($form->get('role')->getData());
                 $this->crudService->persistEntity($reportCategory);
                 return $this->redirectToRoute('app_show_report_category');
             }
-            return $this->render('report_category/new.html.twig',[
+            return $this->render('report_category/new.html.twig', [
                 'caption' => 'Edycja kategorii zgłoszeń',
                 'form' => $form
             ]);

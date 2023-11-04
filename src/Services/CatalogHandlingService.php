@@ -12,10 +12,13 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class CatalogHandlingService extends AbstractController
 {
     private SluggerInterface $slugger;
-    public function __construct(SluggerInterface $slugger) {
+
+    public function __construct(SluggerInterface $slugger)
+    {
         $this->slugger = $slugger;
     }
-    public function createOfUpdateCatalog(Catalog $catalog, FormInterface $form) : ?Catalog
+
+    public function createOfUpdateCatalog(Catalog $catalog, FormInterface $form): ?Catalog
     {
         $catalog->setSystem($form->get('system')->getData());
         $catalog->setName($form->get('name')->getData());
@@ -36,17 +39,17 @@ class CatalogHandlingService extends AbstractController
                 // ... handle exception if something happens during file upload
             }
             return $catalog;
-        }
-        else {
-            if($catalog->getPdfFile() !== null) return $catalog;
+        } else {
+            if ($catalog->getPdfFile() !== null) return $catalog;
         }
         return null;
     }
-    public function deleteCatalogFile(Catalog $catalog) : bool
+
+    public function deleteCatalogFile(Catalog $catalog): bool
     {
         $pdfFile = $catalog->getPdfFile();
         $filesystem = new Filesystem();
-        if($pdfFile) {
+        if ($pdfFile) {
             $pdfFilePath = $this->getParameter('catalogs_directory') . '/' . $pdfFile;
             $filesystem->remove($pdfFilePath);
             return true;

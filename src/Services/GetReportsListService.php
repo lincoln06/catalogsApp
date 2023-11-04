@@ -12,13 +12,14 @@ class GetReportsListService
 {
     private Security $security;
     private ReportRepository $reportRepository;
+
     public function __construct(Security $security, ReportRepository $reportRepository)
     {
         $this->security = $security;
         $this->reportRepository = $reportRepository;
     }
 
-    public function getReportsList() : array
+    public function getReportsList(): array
     {
         $reports = $this->reportRepository->findAll();
         $reportsArray = [];

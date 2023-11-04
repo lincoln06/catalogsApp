@@ -9,12 +9,14 @@ class UserRegistrationService
 {
     private EntityManagerInterface $entityManager;
     private MailerService $mailerService;
-    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService) {
+
+    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService)
+    {
         $this->entityManager = $entityManager;
         $this->mailerService = $mailerService;
-        }
-    
-    public function allowToRegister(RegisterRequest $registerRequest) : void
+    }
+
+    public function allowToRegister(RegisterRequest $registerRequest): void
     {
         $this->mailerService->sendEmail(
             $registerRequest->getEmail(),
@@ -22,7 +24,8 @@ class UserRegistrationService
             "Aby dokończyć rejestrację, skopiuj ten link do okna przeglądarki:\nlocalhost:8000/register/allowed/{$registerRequest->getHash()}"
         );
     }
-    public function deleteRegisterRequest(RegisterRequest $registerRequest) : void
+
+    public function deleteRegisterRequest(RegisterRequest $registerRequest): void
     {
         $this->entityManager->remove($registerRequest);
         $this->entityManager->flush();

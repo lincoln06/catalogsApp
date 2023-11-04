@@ -20,15 +20,14 @@ class ReportCategoryType extends AbstractType
             ])
             ->add(
                 'role', ChoiceType::class, [
-                    'label' => 'Wymagane uprawnienia',
+                'label' => 'Wymagane uprawnienia',
                 'choices' => [
                     'Administrator' => 'ROLE_ADMIN',
                     'Edytor' => 'ROLE_EDITOR',
                     'God' => 'ROLE_GOD'
                 ],
             ])
-            ->add('Zapisz', SubmitType::class)
-        ;
+            ->add('Zapisz', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

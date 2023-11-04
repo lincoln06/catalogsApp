@@ -25,14 +25,13 @@ class RegistrationController extends MainController
         $registerRequest = new RegisterRequest();
         $form = $this->createForm(RegisterRequestType::class, $registerRequest);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $emailToCheck = $form->get('email')->getData();
             $isEmailRegistered = $getUsersListService->checkIfIsEmailRegistered($emailToCheck);
             $email = $form->get('email')->getData();
             $hash = $hashSetter->makeHash();
             $session->set('hash', $hash);
-            if($isEmailRegistered)
-            {
+            if ($isEmailRegistered) {
                 return $this->render('registration/register_request.html.twig', [
                     'caption' => 'Prośby o rejestrację',
                     'message' => 'Na ten adres e-mail już zostało utworzone konto lub zostało wysłane zapytanie',
@@ -42,22 +41,23 @@ class RegistrationController extends MainController
             $registerRequest->setEmail($email);
             $registerRequest->setHash($hash);
             $this->crudService->persistEntity($registerRequest);
-            return $this->render('registration/register_request.html.twig',[
+            return $this->render('registration/register_request.html.twig', [
                 'message' => 'Prośba została wysłana',
                 'form' => $form
             ]);
         }
-        return $this->render('registration/register_request.html.twig',[
+        return $this->render('registration/register_request.html.twig', [
             'form' => $form
         ]);
     }
+
     #[Route('/register/allowed/{commonHash}', name: 'app_register_allowed')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, RegisterRequestRepository $registerRequestRepository, string $commonHash, UserRegistrationService $userRegistrationService): Response
     {
         $registerRequest = $registerRequestRepository->findOneBy(['hash' => $commonHash]);
         $session = $request->getSession();
         $hash = $session->get('hash');
-        if($hash !== $commonHash || !$registerRequest) {
+        if ($hash !== $commonHash || !$registerRequest) {
             return $this->redirectToroute('app_access_denied');
         }
         $user = new User();
@@ -66,9 +66,8 @@ class RegistrationController extends MainController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
-            if($email!==$registerRequest->getEmail())
-            {
-                return $this->render('error_page/index.html.twig',[
+            if ($email !== $registerRequest->getEmail()) {
+                return $this->render('error_page/index.html.twig', [
                     'message' => 'Ten adres e-mail nie istnieje w systemie'
                 ]);
             }

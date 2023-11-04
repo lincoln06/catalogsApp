@@ -14,6 +14,7 @@ class GetUsersListService
     private EntityManagerInterface $entityManager;
     private UserRepository $userRepository;
     private RegisterRequestRepository $registerRequestRepository;
+
     public function __construct(UserRepository $userRepository, Security $security, RegisterRequestRepository $registerRequestRepository, EntityManagerInterface $entityManager)
     {
 
@@ -23,33 +24,28 @@ class GetUsersListService
         $this->entityManager = $entityManager;
     }
 
-    public function getUsersFromDatabase() : array
+    public function getUsersFromDatabase(): array
     {
-        $currentUserRoles = $this->security->getUser()->getRoles();
-        $currentUserRole = '';
-        if(in_array('ROLE_GOD', $currentUserRoles)) $currentUserRole = 'ROLE_GOD';
-        elseif(in_array('ROLE_ADMIN', $currentUserRoles)) $currentUserRole = 'ROLE_ADMIN';
-        $usersList = $this->userRepository->findAll();
-        foreach ($usersList as $user) {
-            if($this->checkFetchedUserRoles($currentUserRole, $user)) {
-                $index = array_search($user, $usersList);
-                if($index !== false) {
-                    unset($usersList[$index]);
+        $listOfUsersToExport = [];
+        $listOfAllUsers = $this->userRepository->findAll();
+        foreach ($listOfAllUsers as $user) {
+            if ($this->security->isGranted('ROLE_GOD')) {
+                if (!in_array('ROLE_GOD', $user->getRoles())) $listOfUsersToExport[] = $user;
+            } elseif ($this->security->isGranted('ROLE_ADMIN')) {
+                if (!(in_array('ROLE_GOD', $user->getRoles()) || in_array('ROLE_ADMIN', $user->getRoles()))) {
+                    $listOfUsersToExport[] = $user;
                 }
             }
         }
-        return $usersList;
+        return $listOfUsersToExport;
     }
-    public function checkIfIsEmailRegistered(string $email) : bool
+
+    public function checkIfIsEmailRegistered(string $email): bool
     {
         $isRegistered = $this->userRepository->findBy(['email' => $email]);
-        if(!$isRegistered)
-        {
+        if (!$isRegistered) {
             $isThereRequestForThisEmail = $this->registerRequestRepository->findOneBy(['email' => $email]);
-//            var_dump($isThereRequestForThisEmail);
-//            die();
-            if($isThereRequestForThisEmail)
-            {
+            if ($isThereRequestForThisEmail) {
                 $this->entityManager->remove($isThereRequestForThisEmail);
                 $this->entityManager->flush();
             }
@@ -57,15 +53,19 @@ class GetUsersListService
         }
         return true;
     }
-    public function getRegisteredEmails() : array{
+
+    public function getRegisteredEmails(): array
+    {
         $registeredUsers = $this->userRepository->findAll();
         $emailsArray = [];
-        forEach($registeredUsers as $registeredUser) {
+        foreach ($registeredUsers as $registeredUser) {
             $emailsArray[] = $registeredUser->getEmail();
         }
         return $emailsArray;
     }
-    private function checkFetchedUserRoles(string $roleToCheck, User $user): bool {
+
+    private function checkFetchedUserRoles(string $roleToCheck, User $user): bool
+    {
         $roles = $user->getRoles();
         if (in_array($roleToCheck, $roles) || in_array('ROLE_GOD', $roles)) {
             return true;

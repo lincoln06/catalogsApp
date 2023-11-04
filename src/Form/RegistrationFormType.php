@@ -22,7 +22,7 @@ class RegistrationFormType extends AbstractType
                     new NotBlank([
                         'message' => 'Pole nie może być puste',
                     ]),
-            ]])
+                ]])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Hasło',
                 'mapped' => false,
@@ -41,8 +41,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Zarejestruj'
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

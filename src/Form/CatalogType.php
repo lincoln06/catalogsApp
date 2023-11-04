@@ -20,13 +20,16 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class CatalogType extends AbstractType
 {
     private SystemRepository $systemRepository;
-    public function __construct(SystemRepository $systemRepository) {
+
+    public function __construct(SystemRepository $systemRepository)
+    {
         $this->systemRepository = $systemRepository;
     }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('system', EntityType::class,[
+            ->add('system', EntityType::class, [
                 'class' => System::class,
                 'choice_label' => 'name',
             ])
@@ -36,7 +39,7 @@ class CatalogType extends AbstractType
                     new NotBlank([
                         'message' => 'Pole nie może być puste',
                     ]),
-            ]])
+                ]])
             ->add('dateAdded', DateType::class, [
                 'label' => 'Data wydania'
             ])
@@ -66,8 +69,7 @@ class CatalogType extends AbstractType
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Zapisz'
-            ])
-            // ...
+            ])// ...
         ;
     }
 

@@ -18,9 +18,8 @@ class RegisterRequestType extends AbstractType
                 'label' => 'Email:',
             ])
             ->add('send', SubmitType::class, [
-              'label' => 'Wyślij'
-            ])
-        ;
+                'label' => 'Wyślij'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

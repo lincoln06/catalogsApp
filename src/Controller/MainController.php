@@ -10,6 +10,7 @@ class MainController extends AbstractController
 {
     protected EntityManagerInterface $entityManager;
     protected CRUDService $crudService;
+
     public function __construct(EntityManagerInterface $entityManager, CRUDService $crudService)
     {
         $this->entityManager = $entityManager;

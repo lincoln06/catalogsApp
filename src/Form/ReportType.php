@@ -34,8 +34,7 @@ class ReportType extends AbstractType
             ])
             ->add('send', SubmitType::class, [
                 'label' => 'Wyślij'
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

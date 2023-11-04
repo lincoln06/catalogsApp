@@ -27,8 +27,7 @@ class ResetPasswordController extends MainController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
             $registeredEmails = $getUsersListService->getRegisteredEmails();
-            if(!in_array($email, $registeredEmails))
-            {
+            if (!in_array($email, $registeredEmails)) {
                 return $this->render('registration/register_request.html.twig', [
                     'form' => $form->createView(),
                     'message' => 'Brak użytkownika o podanym adresie e-mail'
@@ -54,14 +53,15 @@ class ResetPasswordController extends MainController
             'form' => $form->createView(),
         ]);
     }
+
     #[Route('/reset/password/{commonHash}', name: 'app_reset_password_')]
     public function reset(Request $request, GetUsersListService $getGetUsersListService, string $commonHash, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $session = $request->getSession();
         $hash = $session->get('hash');
-        if(!$hash || ($commonHash !== $hash)) {
+        if (!$hash || ($commonHash !== $hash)) {
             return $this->render('error_page/index.html.twig', [
-               'message' => 'Link wygasł lub nie masz uprawnień do przeglądania tej strony'
+                'message' => 'Link wygasł lub nie masz uprawnień do przeglądania tej strony'
             ]);
         }
         $form = $this->createForm(ResetPasswordType::class);
@@ -70,8 +70,7 @@ class ResetPasswordController extends MainController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
             $emailToCheck = $session->get('email');
-            if($email !== $emailToCheck)
-            {
+            if ($email !== $emailToCheck) {
                 return $this->render('error_page/index.html.twig', [
                     'message' => 'Link wygasł lub nie masz uprawnień do przeglądania tej strony'
                 ]);
@@ -79,14 +78,13 @@ class ResetPasswordController extends MainController
             $password = $form->get('password')->getData();
             $repeatedPassword = $form->get('repeatPassword')->getData();
             $registeredEmails = $getGetUsersListService->getRegisteredEmails();
-            if(!in_array($email, $registeredEmails))
-            {
+            if (!in_array($email, $registeredEmails)) {
                 return $this->render('reset_password/index.html.twig', [
                     'form' => $form->createView(),
                     'message' => 'Brak użytkownika o podanym adresie e-mail'
                 ]);
             }
-            if($password !== $repeatedPassword) {
+            if ($password !== $repeatedPassword) {
                 return $this->render('reset_password/index.html.twig', [
                     'form' => $form->createView(),
                     'message' => 'Hasła muszą być takie same'

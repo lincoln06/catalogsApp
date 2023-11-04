@@ -16,17 +16,16 @@ class EditUserType extends AbstractType
         $builder
             ->add(
                 'roles', ChoiceType::class, [
-                    'choices' => [
-                        'Administrator' => 'ROLE_ADMIN',
-                        'Edytor' => 'ROLE_EDITOR',
-                        'Użytkownik' => 'ROLE_USER',
-                    ],
-                    'label' => 'Uprawnienia',
-                    'expanded' => true,
-                    'multiple' => true,
-                ])
-            ->add('Zapisz', SubmitType::class)
-        ;
+                'choices' => [
+                    'Administrator' => 'ROLE_ADMIN',
+                    'Edytor' => 'ROLE_EDITOR',
+                    'Użytkownik' => 'ROLE_USER',
+                ],
+                'label' => 'Uprawnienia',
+                'expanded' => true,
+                'multiple' => true,
+            ])
+            ->add('Zapisz', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

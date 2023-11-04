@@ -12,10 +12,11 @@ class CheckObjectNameService
     {
         $this->systemRepository = $systemRepository;
     }
+
     public function checkIfSystemExists(string $newSystemName): bool
     {
         $system = $this->systemRepository->findOneBy(['name' => $newSystemName]);
-        if($system) return false;
+        if ($system) return false;
         return true;
     }
 }

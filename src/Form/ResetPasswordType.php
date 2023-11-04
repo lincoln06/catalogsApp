@@ -43,7 +43,6 @@ class ResetPasswordType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('Zapisz', SubmitType::class)
-        ;
+            ->add('Zapisz', SubmitType::class);
     }
 }

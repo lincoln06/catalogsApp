@@ -10,7 +10,8 @@ use Symfony\Component\Mailer\Transport;
 class MailerService
 {
     private string $pageAddress = "localhost:8000";
-    public function sendEmail(string $emailAddress, string $title, string $body) : void
+
+    public function sendEmail(string $emailAddress, string $title, string $body): void
     {
         $transport = Transport::fromDsn('smtp://gabitcatalogs@gmx.com:Katalogi1!@mail.gmx.com:587');
         $mailer = new Mailer($transport);

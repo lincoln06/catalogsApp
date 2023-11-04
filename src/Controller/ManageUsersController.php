@@ -17,11 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class ManageUsersController extends MainController
 {
     private UserPrivilegeValidatingService $userPrivilegeValidatingService;
+
     public function __construct(UserPrivilegeValidatingService $userPrivilegeValidatingService, EntityManagerInterface $entityManager, CRUDService $crudService)
     {
         parent::__construct($entityManager, $crudService);
         $this->userPrivilegeValidatingService = $userPrivilegeValidatingService;
     }
+
     #[Route('/manage/users', name: 'app_manage_users')]
     public function index(GetUsersListService $getUsersListService): Response
     {
@@ -30,6 +32,7 @@ class ManageUsersController extends MainController
             'usersList' => $getUsersListService->getUsersFromDatabase(),
         ]);
     }
+
     #[Route('/manage/users/delete/{id}', name: 'app_delete_user')]
     public function delete(UserRepository $userRepository, int $id): Response
     {
@@ -38,7 +41,7 @@ class ManageUsersController extends MainController
 
         if (!$user) {
             $message = 'Nieprawidłowy id użytkownika';
-        } elseif(!$this->userPrivilegeValidatingService->checkManageUsersPrivileges($user)) {
+        } elseif (!$this->userPrivilegeValidatingService->checkManageUsersPrivileges($user)) {
             $message = 'Nie masz uprawnień do wykonania tej akcji';
         } else {
             $this->crudService->deleteEntity($user);
@@ -49,6 +52,7 @@ class ManageUsersController extends MainController
         ]);
 
     }
+
     #[Route('/manage/users/edit/{id}', name: 'app_edit_user')]
     public function edit(Request $request, UserRepository $userRepository, int $id): Response
     {
@@ -56,7 +60,7 @@ class ManageUsersController extends MainController
         $message = '';
         if (!$user) {
             $message = 'Nieprawidłowy id użytkownika';
-        } elseif($this->userPrivilegeValidatingService->checkManageUsersPrivileges($user) === false) {
+        } elseif ($this->userPrivilegeValidatingService->checkManageUsersPrivileges($user) === false) {
             $message = 'Nie masz uprawnień do wykonania tej akcji';
         } else {
             $form = $this->createForm(EditUserType::class, $user);
@@ -77,17 +81,19 @@ class ManageUsersController extends MainController
             'message' => $message,
         ]);
     }
+
     #[Route('/manage/requests', name: 'app_manage_requests')]
     public function requests(RegisterRequestRepository $registerRequestRepository): Response
     {
         $message = "Lista zapytań o rejestrację";
         $requests = $registerRequestRepository->findAll();
-        if(!$requests) $message = "Brak zapytań o rejestrację";
+        if (!$requests) $message = "Brak zapytań o rejestrację";
         return $this->render('manage_users/requests.html.twig', [
-            'caption' =>$message,
+            'caption' => $message,
             'requests' => $requests,
         ]);
     }
+
     #[Route('/manage/requests/confirm/{id}', name: 'app_request_confirm')]
     public function confirm(RegisterRequestRepository $registerRequestRepository, UserRegistrationService $userRegistrationService, int $id): Response
     {
@@ -97,6 +103,7 @@ class ManageUsersController extends MainController
         $userRegistrationService->allowToRegister($registerRequest);
         return $this->redirectToRoute('app_manage_requests');
     }
+
     #[Route('/manage/requests/deny/{id}', name: 'app_request_deny')]
     public function deny(RegisterRequestRepository $registerRequestRepository, UserRegistrationService $userRegistrationService, int $id): Response
     {
