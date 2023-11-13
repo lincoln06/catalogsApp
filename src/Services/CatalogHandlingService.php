@@ -36,7 +36,8 @@ class CatalogHandlingService extends AbstractController
                     $newFilename
                 );
             } catch (FileException $e) {
-                // ... handle exception if something happens during file upload
+                echo $e->getMessage();
+                die();
             }
             return $catalog;
         } else {
