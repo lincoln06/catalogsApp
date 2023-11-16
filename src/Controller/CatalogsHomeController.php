@@ -37,6 +37,10 @@ class CatalogsHomeController extends MainController
         if ($form->isSubmitted() && $form->isValid()) {
             $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
             if ($catalog) {
+                $this->logService->createLog(
+                    explode('::', $request->attributes->get('_controller'))[1],
+                    $catalog->getSystem()->getName().': '.$catalog->getName()
+                );
                 $this->crudService->persistEntity($catalog);
                 return $this->redirectToRoute('app_catalogs_home');
             }
@@ -69,6 +73,10 @@ class CatalogsHomeController extends MainController
                     $olfPdfFilePath = $this->getParameter('catalogs_directory') . '/' . $oldPdfFile;
                     $filesystem->remove($olfPdfFilePath);
                 }
+                $this->logService->createLog(
+                    explode('::', $request->attributes->get('_controller'))[1],
+                    $catalog->getSystem()->getName().': '.$catalog->getName()
+                );
                 return $this->redirectToRoute('app_catalogs_home');
             }
             return $this->render('catalogs_home/new.html.twig', [
@@ -82,7 +90,7 @@ class CatalogsHomeController extends MainController
     }
 
     #[Route('/catalog/delete/{id}', name: 'app_delete_catalog')]
-    public function delete(CatalogRepository $catalogRepository, CatalogHandlingService $catalogHandlingService, int $id): Response
+    public function delete(Request $request, $catalogRepository, CatalogHandlingService $catalogHandlingService, int $id): Response
     {
         $catalog = $catalogRepository->find($id);
         if (!$catalog) {
@@ -96,6 +104,10 @@ class CatalogsHomeController extends MainController
             ]);
         }
         $this->crudService->deleteEntity($catalog);
+        $this->logService->createLog(
+            explode('::', $request->attributes->get('_controller'))[1],
+            $catalog->getSystem()->getName().': '.$catalog->getName()
+        );
         return $this->redirectToRoute('app_catalogs_home');
     }
 }

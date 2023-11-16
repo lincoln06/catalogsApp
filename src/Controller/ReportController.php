@@ -76,6 +76,10 @@ class ReportController extends MainController
             $title = "[Rozwiązanie problemu: {$report->getCategory()->getName()}]";
             $solvedMessage = "Twoje zgłoszenie: \n{$report->getTopic()}\nzostało rozwiązane. \n Odpowiedź do zgłoszenia: \n {$answerToUser}";
             $mailerService->sendEmail($report->getReportFrom(), $title, $solvedMessage);
+            $this->logService->createLog(
+                explode('::', $request->attributes->get('_controller'))[1],
+                $report->getCategory()->getName().': '.$report->getTopic()
+            );
             $this->crudService->deleteEntity($report);
             return $this->redirectToRoute('app_show_report');
         }
