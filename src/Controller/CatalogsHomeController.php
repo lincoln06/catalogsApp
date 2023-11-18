@@ -29,7 +29,7 @@ class CatalogsHomeController extends MainController
     }
 
     #[Route('/catalog/add', name: 'app_add_catalog')]
-    public function new(Request $request, CatalogHandlingService $catalogHandlingService): Response
+    public function newCatalog(Request $request, CatalogHandlingService $catalogHandlingService): Response
     {
         $catalog = new Catalog();
         $form = $this->createForm(CatalogType::class, $catalog);
@@ -57,7 +57,7 @@ class CatalogsHomeController extends MainController
     }
 
     #[Route('/catalog/edit/{id}', name: 'app_edit_catalog')]
-    public function edit(Request $request, CatalogHandlingService $catalogHandlingService, CatalogRepository $catalogRepository, int $id): Response
+    public function editCatalog(Request $request, CatalogHandlingService $catalogHandlingService, CatalogRepository $catalogRepository, int $id): Response
     {
         $catalog = $catalogRepository->find($id);
         if ($catalog) {
@@ -90,7 +90,7 @@ class CatalogsHomeController extends MainController
     }
 
     #[Route('/catalog/delete/{id}', name: 'app_delete_catalog')]
-    public function delete(Request $request, $catalogRepository, CatalogHandlingService $catalogHandlingService, int $id): Response
+    public function deleteCatalog(Request $request,CatalogRepository $catalogRepository, CatalogHandlingService $catalogHandlingService, int $id): Response
     {
         $catalog = $catalogRepository->find($id);
         if (!$catalog) {

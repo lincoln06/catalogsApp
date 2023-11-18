@@ -15,7 +15,7 @@ class SystemController extends MainController
 {
 
     #[Route('/system/show', name: 'app_show_system')]
-    public function show(SystemRepository $systemRepository): Response
+    public function showSystems(SystemRepository $systemRepository): Response
     {
         $message = 'Lista systemów';
         $systems = $systemRepository->findAll();
@@ -29,7 +29,7 @@ class SystemController extends MainController
     }
 
     #[Route('/system/add', name: 'app_add_system')]
-    public function new(Request $request, CheckObjectNameService $checkObjectNameService): Response
+    public function newSystem(Request $request, CheckObjectNameService $checkObjectNameService): Response
     {
         $system = new System();
 
@@ -41,6 +41,10 @@ class SystemController extends MainController
             if ($checkObjectNameService->checkIfSystemExists($systemName)) {
                 $system->setName($form->get('name')->getData());
                 $this->crudService->persistEntity($system);
+                $this->logService->createLog(
+                    explode('::', $request->attributes->get('_controller'))[1],
+                    $system->getName()
+                );
                 return $this->redirectToRoute('app_show_system');
             }
             $error = "System o takiej nazwie już istnieje";
@@ -57,7 +61,7 @@ class SystemController extends MainController
     }
 
     #[Route('/system/edit/{id}', name: 'app_edit_system')]
-    public function edit(Request $request, CheckObjectNameService $checkObjectNameService, SystemRepository $systemRepository, int $id): Response
+    public function editSystem(Request $request, CheckObjectNameService $checkObjectNameService, SystemRepository $systemRepository, int $id): Response
     {
         $system = $systemRepository->find($id);
         $error = '';
@@ -72,6 +76,10 @@ class SystemController extends MainController
             if ($checkObjectNameService->checkIfSystemExists($systemName) || !($system->getName() !== $systemName)) {
                 $system->setName($systemName);
                 $this->crudService->persistEntity($system);
+                $this->logService->createLog(
+                    explode('::', $request->attributes->get('_controller'))[1],
+                    $system->getName()
+                );
                 return $this->redirectToRoute('app_show_system');
             }
             $error = 'System o takiej nazwie już istnieje';
@@ -84,13 +92,14 @@ class SystemController extends MainController
     }
 
     #[Route('/system/delete/{id}', name: 'app_delete_system')]
-    public function delete(CatalogHandlingService $catalogHandlingService, SystemRepository $systemRepository, int $id): Response
+    public function deleteSystem(Request $request,CatalogHandlingService $catalogHandlingService, SystemRepository $systemRepository, int $id): Response
     {
         $system = $systemRepository->find($id);
         $systemCatalogs = $system->getCatalogs();
-        if ($systemCatalogs) {
+        if (count($systemCatalogs)!==0) {
             foreach ($systemCatalogs as $systemCatalog) {
                 $this->crudService->deleteEntity($systemCatalog);
+
                 if (!$catalogHandlingService->deleteCatalogFile($systemCatalog)) {
                     return $this->render('error_page/index.html.twig', [
                         'message' => 'Błąd podczas usuwania pliku pdf'
@@ -99,6 +108,10 @@ class SystemController extends MainController
             }
         }
         $this->crudService->deleteEntity($system);
+        $this->logService->createLog(
+            explode('::', $request->attributes->get('_controller'))[1],
+            $system->getName()
+        );
         return $this->redirectToRoute('app_show_system');
     }
 }

@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ReportController extends MainController
 {
     #[Route('/report/show', name: 'app_show_report')]
-    public function index(GetReportsListService $getReportsListService): Response
+    public function showAllReports(GetReportsListService $getReportsListService): Response
     {
         $reports = $getReportsListService->getReportsList();
         if (!$reports) {
@@ -32,7 +32,7 @@ class ReportController extends MainController
     }
 
     #[Route('/report/add', name: 'app_add_report')]
-    public function new(Request $request, Security $security): Response
+    public function newReport(Request $request, Security $security): Response
     {
         $report = new Report();
         $form = $this->createForm(ReportType::class);
@@ -43,6 +43,10 @@ class ReportController extends MainController
             $report->setTopic($form->get('topic')->getData());
             $report->setDescription($form->get('description')->getData());
             $this->crudService->persistEntity($report);
+            $this->logService->createLog(
+                explode('::', $request->attributes->get('_controller'))[1],
+                $report->getCategory()->getName().': '.$report->getTopic()
+            );
             return $this->render('report/new.html.twig', [
                 'caption' => 'Wyślij zgłoszenie',
                 'form' => $form,
@@ -76,11 +80,11 @@ class ReportController extends MainController
             $title = "[Rozwiązanie problemu: {$report->getCategory()->getName()}]";
             $solvedMessage = "Twoje zgłoszenie: \n{$report->getTopic()}\nzostało rozwiązane. \n Odpowiedź do zgłoszenia: \n {$answerToUser}";
             $mailerService->sendEmail($report->getReportFrom(), $title, $solvedMessage);
+            $this->crudService->deleteEntity($report);
             $this->logService->createLog(
                 explode('::', $request->attributes->get('_controller'))[1],
                 $report->getCategory()->getName().': '.$report->getTopic()
             );
-            $this->crudService->deleteEntity($report);
             return $this->redirectToRoute('app_show_report');
         }
         return $this->render('report/solve.html.twig', [

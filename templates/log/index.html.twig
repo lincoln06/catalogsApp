@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ caption }}{% endblock %}
+
+{% block body %}
+    {{ parent () }}
+    <main>
+        <h1>{{ caption }}</h1>
+        <table>
+            <tr class="table-header">
+                <td>ID</td>
+                <td>Użytkownik</td>
+                <td>Akcja</td>
+                <td>Obiekt</td>
+                <td>Data i czas akcji</td>
+            </tr>
+            {% if logs %}
+                {% for log in logs %}
+                    <tr>
+                        <td>
+                            {{ log.id }}
+                        </td>
+                        <td>
+                            {{ log.whoDidTheAction }}
+                        </td>
+                        <td>
+                            {{ log.actionType }}
+                        </td>
+                        <td>
+                            {{ log.onWhatEntity }}
+                        </td>
+                        <td>
+                            {{ log.whenActionWasDone|date('Y-m-d H:i:s') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </main>
+{% endblock %}

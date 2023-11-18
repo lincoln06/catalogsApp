@@ -7,6 +7,7 @@ use App\Repository\RegisterRequestRepository;
 use App\Repository\UserRepository;
 use App\Services\CRUDService;
 use App\Services\GetUsersListService;
+use App\Services\LogService;
 use App\Services\UserPrivilegeValidatingService;
 use App\Services\UserRegistrationService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,9 +19,9 @@ class ManageUsersController extends MainController
 {
     private UserPrivilegeValidatingService $userPrivilegeValidatingService;
 
-    public function __construct(UserPrivilegeValidatingService $userPrivilegeValidatingService, EntityManagerInterface $entityManager, CRUDService $crudService)
+    public function __construct(UserPrivilegeValidatingService $userPrivilegeValidatingService, EntityManagerInterface $entityManager, CRUDService $crudService, LogService $logService)
     {
-        parent::__construct($entityManager, $crudService);
+        parent::__construct($entityManager, $crudService, $logService);
         $this->userPrivilegeValidatingService = $userPrivilegeValidatingService;
     }
 
@@ -34,7 +35,7 @@ class ManageUsersController extends MainController
     }
 
     #[Route('/manage/users/delete/{id}', name: 'app_delete_user')]
-    public function delete(UserRepository $userRepository, int $id): Response
+    public function deleteUser(Request $request, UserRepository $userRepository, int $id): Response
     {
         $message = '';
         $user = $userRepository->find($id);
@@ -45,6 +46,10 @@ class ManageUsersController extends MainController
             $message = 'Nie masz uprawnień do wykonania tej akcji';
         } else {
             $this->crudService->deleteEntity($user);
+            $this->logService->createLog(
+                explode('::', $request->attributes->get('_controller'))[1],
+                $user->getEmail()
+            );
             return $this->redirectToRoute('app_manage_users');
         }
         return $this->render('error_page/index.html.twig', [
@@ -54,7 +59,7 @@ class ManageUsersController extends MainController
     }
 
     #[Route('/manage/users/edit/{id}', name: 'app_edit_user')]
-    public function edit(Request $request, UserRepository $userRepository, int $id): Response
+    public function editUser(Request $request, UserRepository $userRepository, int $id): Response
     {
         $user = $userRepository->find($id);
         $message = '';
@@ -69,6 +74,10 @@ class ManageUsersController extends MainController
                 $data = $form->getData();
                 $user->setRoles($data->getRoles());
                 $this->crudService->persistEntity($user);
+                $this->logService->createLog(
+                    explode('::', $request->attributes->get('_controller'))[1],
+                    $user->getEmail()
+                );
                 return $this->redirectToRoute('app_manage_users');
             }
             return $this->render('manage_users/edit.html.twig', [
@@ -95,20 +104,27 @@ class ManageUsersController extends MainController
     }
 
     #[Route('/manage/requests/confirm/{id}', name: 'app_request_confirm')]
-    public function confirm(RegisterRequestRepository $registerRequestRepository, UserRegistrationService $userRegistrationService, int $id): Response
+    public function confirmRegistration(Request $request, RegisterRequestRepository $registerRequestRepository, UserRegistrationService $userRegistrationService, int $id): Response
     {
         $registerRequest = $registerRequestRepository->find($id);
         $registerRequest->setIsAccepted(true);
-        $this->crudService->persistEntity($registerRequest);
+        $this->crudService->persistEntity($registerRequest);$this->logService->createLog(
+        explode('::', $request->attributes->get('_controller'))[1],
+        $registerRequest->getEmail()
+    );
         $userRegistrationService->allowToRegister($registerRequest);
         return $this->redirectToRoute('app_manage_requests');
     }
 
     #[Route('/manage/requests/deny/{id}', name: 'app_request_deny')]
-    public function deny(RegisterRequestRepository $registerRequestRepository, UserRegistrationService $userRegistrationService, int $id): Response
+    public function denyRegistration(Request $request, RegisterRequestRepository $registerRequestRepository, UserRegistrationService $userRegistrationService, int $id): Response
     {
         $registerRequest = $registerRequestRepository->find($id);
         $userRegistrationService->deleteRegisterRequest($registerRequest);
+        $this->crudService->persistEntity($registerRequest);$this->logService->createLog(
+        explode('::', $request->attributes->get('_controller'))[1],
+        $registerRequest->getEmail()
+    );
         return $this->redirectToRoute('app_manage_requests');
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReportCategoryController extends MainController
 {
     #[Route('/report/category/add', name: 'app_add_report_category')]
-    public function add(Request $request): Response
+    public function addReportCategory(Request $request): Response
     {
         $reportCategory = new ReportCategory();
         $form = $this->createForm(ReportCategoryType::class);
@@ -30,7 +30,7 @@ class ReportCategoryController extends MainController
     }
 
     #[Route('/report/category/show', name: 'app_show_report_category')]
-    public function show(ReportCategoryRepository $reportCategoryRepository): Response
+    public function showReportCategories(ReportCategoryRepository $reportCategoryRepository): Response
     {
         $reportCategories = $reportCategoryRepository->findAll();
         if (!$reportCategories) {
@@ -46,7 +46,7 @@ class ReportCategoryController extends MainController
     }
 
     #[Route('/report/category/delete/{id}', name: 'app_delete_report_category')]
-    public function delete(ReportCategoryRepository $reportCategoryRepository, int $id): Response
+    public function deleteReportCategory(ReportCategoryRepository $reportCategoryRepository, int $id): Response
     {
         $reportCategory = $reportCategoryRepository->find($id);
         if (!$reportCategory) {
@@ -59,7 +59,7 @@ class ReportCategoryController extends MainController
     }
 
     #[Route('/report/category/edit/{id}', name: 'app_edit_report_category')]
-    public function edit(Request $request, ReportCategoryRepository $reportCategoryRepository, int $id): Response
+    public function editReportCategory(Request $request, ReportCategoryRepository $reportCategoryRepository, int $id): Response
     {
         $reportCategory = $reportCategoryRepository->find($id);
         if ($reportCategory) {

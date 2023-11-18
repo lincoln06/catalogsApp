@@ -40,6 +40,9 @@
                 <div id="top-menu-option">
                     <a href="{{ path('app_show_system') }}">Systemodawcy</a>
                 </div>
+                <div id="top-menu-option">
+                    <a href="{{ path('app_log') }}">Dziennik</a>
+                </div>
             {% endif %}
             {% if is_granted('ROLE_GOD') %}
                 <div id="top-menu-option">
