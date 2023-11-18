@@ -19,4 +19,15 @@ class LogController extends AbstractController
             'logs' => $logs
         ]);
     }
+    #[Route('/log/order-by/{columnName}/{orderRule}', name: 'app_log_order')]
+    public function showLogsBy(LogRepository $logRepository, string $columnName, string $orderRule): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $logs = $logRepository->findBy(array(), array($columnName => $orderRule));
+        return $this->render('log/index.html.twig', [
+            'caption' => 'Dziennik',
+            'logs' => $logs
+        ]);
+    }
+
 }
