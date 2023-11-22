@@ -31,7 +31,7 @@ CREATE TABLE `catalog` (
   PRIMARY KEY (`id`),
   KEY `IDX_1B2C3247D0952FA5` (`system_id`),
   CONSTRAINT `FK_1B2C3247D0952FA5` FOREIGN KEY (`system_id`) REFERENCES `system` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `catalog` (
 
 LOCK TABLES `catalog` WRITE;
 /*!40000 ALTER TABLE `catalog` DISABLE KEYS */;
-INSERT INTO `catalog` VALUES (26,18,'Genesis 75','2018-01-01','GENESIS-75-27-07-2023-654648e65462d.pdf'),(28,19,'5200 DK RC2','2023-01-01','TDOH48-6546498294338.pdf'),(29,20,'Okno RU RC2','2018-01-01','test-6536a05540d66.pdf');
+INSERT INTO `catalog` VALUES (28,19,'5200 DK RC2','2023-01-01','TDOH48-6546498294338.pdf'),(35,18,'Genesis 755','2023-07-27','GENESIS-75-27-07-2023-6558a61e7944c.pdf'),(36,18,'Superial','2023-06-15','SUPERIAL-15-06-2023-6558a774b9a52.pdf'),(53,18,'test','2018-01-01','GENESIS-75-27-07-2023-655e38dd1129a.pdf'),(54,18,'test2','2018-01-01','GENESIS-75-27-07-2023-655e3901646b5.pdf');
 /*!40000 ALTER TABLE `catalog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,8 +65,35 @@ CREATE TABLE `doctrine_migration_versions` (
 
 LOCK TABLES `doctrine_migration_versions` WRITE;
 /*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20230914164806','2023-09-15 16:57:58',109),('DoctrineMigrations\\Version20230915163030','2023-09-15 17:04:50',51),('DoctrineMigrations\\Version20230915163458','2023-09-15 17:04:51',39),('DoctrineMigrations\\Version20230915163753','2023-09-15 17:04:51',113),('DoctrineMigrations\\Version20230915170439','2023-09-15 17:08:20',116),('DoctrineMigrations\\Version20230921143809','2023-09-21 14:38:26',64),('DoctrineMigrations\\Version20230923094558','2023-09-23 09:46:19',38),('DoctrineMigrations\\Version20230928184247','2023-09-28 18:43:03',45),('DoctrineMigrations\\Version20231003132735','2023-10-03 13:27:59',119),('DoctrineMigrations\\Version20231004133459','2023-10-04 13:35:12',41);
+INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20230914164806','2023-09-15 16:57:58',109),('DoctrineMigrations\\Version20230915163030','2023-09-15 17:04:50',51),('DoctrineMigrations\\Version20230915163458','2023-09-15 17:04:51',39),('DoctrineMigrations\\Version20230915163753','2023-09-15 17:04:51',113),('DoctrineMigrations\\Version20230915170439','2023-09-15 17:08:20',116),('DoctrineMigrations\\Version20230921143809','2023-09-21 14:38:26',64),('DoctrineMigrations\\Version20230923094558','2023-09-23 09:46:19',38),('DoctrineMigrations\\Version20230928184247','2023-09-28 18:43:03',45),('DoctrineMigrations\\Version20231003132735','2023-10-03 13:27:59',119),('DoctrineMigrations\\Version20231004133459','2023-10-04 13:35:12',41),('DoctrineMigrations\\Version20231116175029','2023-11-16 17:50:56',57);
 /*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `log`
+--
+
+DROP TABLE IF EXISTS `log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `who_did_the_action` varchar(50) NOT NULL,
+  `action_type` varchar(100) NOT NULL,
+  `on_what_entity` varchar(100) NOT NULL,
+  `when_action_was_done` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `log`
+--
+
+LOCK TABLES `log` WRITE;
+/*!40000 ALTER TABLE `log` DISABLE KEYS */;
+INSERT INTO `log` VALUES (7,'god@cata.logs','deleteSystem','Aluprof','2023-11-18 10:13:17'),(8,'god@cata.logs','solveReport','Brak uprawnień: Test','2023-11-18 10:40:22'),(9,'god@cata.logs','solveReport','Brak uprawnień: Test','2023-11-18 10:40:22'),(10,'god@cata.logs','solveReport','Nieprawidłowe działanie strony: fdgffggg','2023-11-18 10:41:31'),(11,'god@cata.logs','newCatalog','Aliplast: JakiśTamkatalog','2023-11-18 10:41:55'),(12,'god@cata.logs','deleteCatalog','Aliplast: JakiśTamkatalog','2023-11-18 10:42:31'),(13,'god@cata.logs','editUser','maciekjl1993@gmail.com','2023-11-18 10:51:30'),(14,'maciekjl1993@gmail.com','editCatalog','Aliplast: Testowyy','2023-11-18 11:37:51'),(15,'god@cata.logs','editUser','maciekjl1993@gmail.com','2023-11-18 11:38:29'),(16,'maciekjl1993@gmail.com','deleteCatalog','Aliplast: Testowyy','2023-11-18 11:54:38'),(17,'maciekjl1993@gmail.com','newCatalog','Aliplast: Genesis 75','2023-11-18 11:55:10'),(18,'maciekjl1993@gmail.com','newCatalog','Aliplast: Superial','2023-11-18 12:00:52'),(19,'maciekjl1993@gmail.com','editCatalog','Aliplast: gówno','2023-11-18 12:04:03'),(20,'maciekjl1993@gmail.com','editCatalog','Aliplast: Superial','2023-11-18 12:04:19'),(21,'god@cata.logs','deleteCatalog','Winkhaus: Okno RU RC2','2023-11-19 08:39:48'),(22,'god@cata.logs','deleteUser','maciekjl1993@gmail.com','2023-11-19 08:40:51'),(23,'god@cata.logs','denyRegistration','maciekjl1993@gmail.com','2023-11-19 08:41:37'),(24,'god@cata.logs','denyRegistration','maciekjl1993@gmail.com','2023-11-19 08:41:41'),(25,'god@cata.logs','denyRegistration','maciekjl1993@gmail.com','2023-11-19 08:41:42'),(26,'god@cata.logs','denyRegistration','maciekjl1993@gmail.com','2023-11-19 08:41:43'),(27,'god@cata.logs','denyRegistration','maciekjl1993@gmail.com','2023-11-19 08:41:43'),(28,'god@cata.logs','denyRegistration','maciekjl1993@gmail.com','2023-11-19 08:41:48'),(29,'god@cata.logs','denyRegistration','test@test.com','2023-11-19 08:42:12'),(30,'god@cata.logs','denyRegistration','maciekjl1993@gmail.com','2023-11-19 08:43:55'),(31,'god@cata.logs','denyRegistration','test@test.com','2023-11-19 08:48:35'),(32,'god@cata.logs','confirmRegistration','maciekjl1993@gmail.com','2023-11-19 08:49:04'),(33,'god@cata.logs','deleteUser','maciekjl1993@gmail.com','2023-11-19 08:51:13'),(34,'god@cata.logs','editUser','editor@cata.logs','2023-11-19 08:56:56'),(35,'god@cata.logs','editUser','editor@cata.logs','2023-11-19 08:58:00'),(36,'god@cata.logs','editUser','editor@cata.logs','2023-11-19 09:00:59'),(37,'god@cata.logs','editUser','admin@cata.logs','2023-11-19 09:01:26'),(38,'god@cata.logs','editUser','admin@cata.logs','2023-11-19 09:05:09'),(39,'god@cata.logs','editUser','editor@cata.logs','2023-11-19 09:06:30'),(40,'god@cata.logs','editUser','editor@cata.logs','2023-11-19 09:07:29'),(41,'god@cata.logs','editUser','editor@cata.logs','2023-11-19 09:09:55'),(42,'god@cata.logs','editUser','editor@cata.logs','2023-11-19 09:10:22'),(43,'god@cata.logs','editUser','admin@cata.logs','2023-11-19 09:10:29'),(44,'god@cata.logs','editUser','editor@cata.logs','2023-11-19 11:55:48'),(45,'god@cata.logs','editUser','admin@cata.logs','2023-11-19 11:57:34'),(46,'god@cata.logs','confirmRegistration','maciekjl1993@gmail.com','2023-11-22 15:18:53'),(47,'god@cata.logs','deleteUser','maciekjl1993@gmail.com','2023-11-22 15:19:52'),(48,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:34:27'),(49,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:34:31'),(50,'god@cata.logs','newCatalog','Aliplast: Test','2023-11-22 15:35:27'),(51,'god@cata.logs','deleteCatalog','Aliplast: Test','2023-11-22 15:35:33'),(52,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:36:14'),(53,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:36:18'),(54,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:37:33'),(55,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:37:36'),(56,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:38:10'),(57,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:38:14'),(58,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:39:38'),(59,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:39:41'),(60,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:41:11'),(61,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:41:14'),(62,'god@cata.logs','newCatalog','Aliplast: text','2023-11-22 15:42:50'),(63,'god@cata.logs','deleteCatalog','Aliplast: text','2023-11-22 15:43:00'),(64,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:43:34'),(65,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:44:13'),(66,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:44:41'),(67,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:44:55'),(68,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:45:53'),(69,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:45:57'),(70,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:46:23'),(71,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:46:26'),(72,'god@cata.logs','newCatalog','Aliplast: tet','2023-11-22 15:46:59'),(73,'god@cata.logs','deleteCatalog','Aliplast: tet','2023-11-22 15:47:02'),(74,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:48:37'),(75,'god@cata.logs','editCatalog','Aliplast: Superial','2023-11-22 15:49:18'),(76,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 15:49:46'),(77,'god@cata.logs','deleteCatalog','Aliplast: test','2023-11-22 15:49:49'),(78,'god@cata.logs','editCatalog','Aliplast: Superial','2023-11-22 15:50:19'),(79,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:50:38'),(80,'god@cata.logs','newCatalog','Aliplast: tesy','2023-11-22 15:51:52'),(81,'god@cata.logs','newCatalog','Aliplast: tesy','2023-11-22 15:52:00'),(82,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:52:04'),(83,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:52:33'),(84,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:52:39'),(85,'god@cata.logs','editCatalog','Aliplast: tesy','2023-11-22 15:52:45'),(86,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:56:00'),(87,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:57:07'),(88,'god@cata.logs','deleteCatalog','Aliplast: tesy','2023-11-22 15:57:12'),(89,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:58:21'),(90,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:58:34'),(91,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:58:43'),(92,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 15:59:01'),(93,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:00:06'),(94,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:00:43'),(95,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:01:02'),(96,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:01:09'),(97,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:01:36'),(98,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:01:41'),(99,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:02:15'),(100,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:03:48'),(101,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:05:01'),(102,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:06:48'),(103,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:08:16'),(104,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:08:34'),(105,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:08:48'),(106,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:10:25'),(107,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:10:39'),(108,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:11:01'),(109,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:11:12'),(110,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:11:34'),(111,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:11:44'),(112,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:13:39'),(113,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:13:53'),(114,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:14:07'),(115,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:14:15'),(116,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:14:29'),(117,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:14:55'),(118,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:15:08'),(119,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:15:28'),(120,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:15:41'),(121,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:15:57'),(122,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:16:17'),(123,'god@cata.logs','editCatalog','Aliplast: Superial','2023-11-22 16:16:28'),(124,'god@cata.logs','editCatalog','Aliplast: tesy','2023-11-22 16:16:40'),(125,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:17:03'),(126,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:17:19'),(127,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:19:15'),(128,'god@cata.logs','editCatalog','Aliplast: tesy','2023-11-22 16:19:42'),(129,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:19:56'),(130,'god@cata.logs','editCatalog','Aliplast: Superial','2023-11-22 16:20:15'),(131,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:20:25'),(132,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:20:33'),(133,'god@cata.logs','editCatalog','Aliplast: tesy','2023-11-22 16:20:49'),(134,'god@cata.logs','editCatalog','Aliplast: tesy','2023-11-22 16:21:30'),(135,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:22:05'),(136,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:22:13'),(137,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:22:35'),(138,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:23:05'),(139,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:24:25'),(140,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:25:58'),(141,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:27:31'),(142,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:28:21'),(143,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:28:36'),(144,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:28:56'),(145,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:30:35'),(146,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:30:39'),(147,'god@cata.logs','editCatalog','Aliplast: Superial','2023-11-22 16:31:16'),(148,'god@cata.logs','editCatalog','Aliplast: Superial','2023-11-22 16:31:47'),(149,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:31:50'),(150,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:32:36'),(151,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:33:29'),(152,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 16:33:39'),(153,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 17:13:29'),(154,'god@cata.logs','deleteCatalog','Aliplast: tesy','2023-11-22 17:13:36'),(155,'god@cata.logs','editUser','admin@cata.logs','2023-11-22 17:13:45'),(156,'god@cata.logs','editSystem','Aliplast','2023-11-22 17:13:49'),(157,'god@cata.logs','newSystem','Test','2023-11-22 17:20:49'),(158,'god@cata.logs','editSystem','Aliplast','2023-11-22 17:21:25'),(159,'god@cata.logs','editUser','admin@cata.logs','2023-11-22 17:21:32'),(160,'god@cata.logs','editSystem','Aliplast','2023-11-22 17:21:36'),(161,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 17:22:11'),(162,'god@cata.logs','editCatalog','Aliplast: Genesis 755','2023-11-22 17:22:27'),(163,'god@cata.logs','newCatalog','Aliplast: test','2023-11-22 17:22:37'),(164,'god@cata.logs','newCatalog','Aliplast: test2','2023-11-22 17:23:13'),(165,'god@cata.logs','editSystem','Aliplast','2023-11-22 17:23:29'),(166,'god@cata.logs','deleteSystem','Test','2023-11-22 17:23:33'),(167,'god@cata.logs','newSystem','test','2023-11-22 17:23:38'),(168,'god@cata.logs','deleteSystem','test','2023-11-22 17:24:16'),(169,'god@cata.logs','confirmRegistration','maciekjl1993@gmail.com','2023-11-22 17:35:48'),(170,'maciekjl1993@gmail.com','newReport','Nieprawidłowe działanie strony: test','2023-11-22 17:36:31'),(171,'maciekjl1993@gmail.com','newReport','Nieprawidłowe działanie strony: test','2023-11-22 17:36:38'),(172,'maciekjl1993@gmail.com','newReport','Nieprawidłowe działanie strony: test2','2023-11-22 17:36:47'),(173,'maciekjl1993@gmail.com','newReport','Brak uprawnień: test','2023-11-22 17:39:58'),(174,'god@cata.logs','deleteUser','maciekjl1993@gmail.com','2023-11-22 17:45:23'),(175,'god@cata.logs','confirmRegistration','maciekjl1993@gmail.com','2023-11-22 17:45:34'),(176,'god@cata.logs','denyRegistration','maciekjl1993@gmail.com','2023-11-22 17:46:31'),(177,'god@cata.logs','confirmRegistration','maciekjl1993@gmail.com','2023-11-22 17:58:46'),(178,'god@cata.logs','solveReport','Brak uprawnień: test','2023-11-22 18:00:28'),(179,'maciekjl1993@gmail.com','newReport','Brak uprawnień: test','2023-11-22 18:02:09'),(180,'god@cata.logs','solveReport','Brak uprawnień: test','2023-11-22 18:02:20'),(181,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 18:48:22'),(182,'god@cata.logs','solveReport','Test: test','2023-11-22 18:49:16'),(183,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 18:50:03'),(184,'god@cata.logs','solveReport','Test: test','2023-11-22 18:50:13'),(185,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 18:50:28'),(186,'god@cata.logs','solveReport','Test: test','2023-11-22 18:50:36'),(187,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 18:51:14'),(188,'god@cata.logs','solveReport','Test: test','2023-11-22 18:51:22'),(189,'god@cata.logs','deleteUser','maciekjl1993@gmail.com','2023-11-22 18:56:48'),(190,'god@cata.logs','confirmRegistration','maciekjl1993@gmail.com','2023-11-22 18:57:03'),(191,'god@cata.logs','confirmRegistration','maciekjl1993@gmail.com','2023-11-22 18:58:00'),(192,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 19:05:48'),(193,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 19:05:49'),(194,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 19:05:50'),(195,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 19:05:50'),(196,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 19:05:51'),(197,'god@cata.logs','solveReport','Test: test','2023-11-22 19:06:15'),(198,'god@cata.logs','solveReport','Test: test','2023-11-22 19:06:20'),(199,'god@cata.logs','solveReport','Test: test','2023-11-22 19:06:25'),(200,'god@cata.logs','solveReport','Test: test','2023-11-22 19:06:28'),(201,'god@cata.logs','solveReport','Test: test','2023-11-22 19:07:45'),(202,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 19:07:58'),(203,'god@cata.logs','solveReport','Test: test','2023-11-22 19:08:05'),(204,'maciekjl1993@gmail.com','newReport','Test: test','2023-11-22 19:09:36'),(205,'god@cata.logs','solveReport','Test: test','2023-11-22 19:09:43');
+/*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -114,7 +141,7 @@ CREATE TABLE `register_request` (
   `hash` varchar(255) NOT NULL,
   `is_accepted` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,7 +169,7 @@ CREATE TABLE `report` (
   PRIMARY KEY (`id`),
   KEY `IDX_C42F778412469DE2` (`category_id`),
   CONSTRAINT `FK_C42F778412469DE2` FOREIGN KEY (`category_id`) REFERENCES `report_category` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,7 +178,6 @@ CREATE TABLE `report` (
 
 LOCK TABLES `report` WRITE;
 /*!40000 ALTER TABLE `report` DISABLE KEYS */;
-INSERT INTO `report` VALUES (43,7,'maciekjl1993@gmail.com','fdgffggg','fggfggfgfgf');
 /*!40000 ALTER TABLE `report` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,7 +193,7 @@ CREATE TABLE `report_category` (
   `name` varchar(100) NOT NULL,
   `role` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,7 +202,7 @@ CREATE TABLE `report_category` (
 
 LOCK TABLES `report_category` WRITE;
 /*!40000 ALTER TABLE `report_category` DISABLE KEYS */;
-INSERT INTO `report_category` VALUES (4,'Brak uprawnień','ROLE_ADMIN'),(5,'Brak katalogu','ROLE_EDITOR'),(6,'Nieaktualny katalog','ROLE_EDITOR'),(7,'Nieprawidłowe działanie strony','ROLE_GOD');
+INSERT INTO `report_category` VALUES (10,'Test','ROLE_ADMIN');
 /*!40000 ALTER TABLE `report_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,7 +217,7 @@ CREATE TABLE `system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +226,7 @@ CREATE TABLE `system` (
 
 LOCK TABLES `system` WRITE;
 /*!40000 ALTER TABLE `system` DISABLE KEYS */;
-INSERT INTO `system` VALUES (18,'Aliplast'),(19,'Siegenia'),(20,'Winkhaus'),(21,'Aluprof');
+INSERT INTO `system` VALUES (18,'Aliplast'),(19,'Siegenia'),(20,'Winkhaus');
 /*!40000 ALTER TABLE `system` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,11 +240,11 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(180) NOT NULL,
-  `roles` longtext NOT NULL COMMENT '(DC2Type:json)',
+  `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +253,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'god@cata.logs','[\"ROLE_USER\",\"ROLE_EDITOR\",\"ROLE_ADMIN\",\"ROLE_GOD\"]','$2y$13$aeFYZxeiJNS1aev3NiVKCe.nMP0e6p9Or1.s3d8.bET7xoWPRedAG'),(2,'admin@cata.logs','[\"ROLE_ADMIN\",\"ROLE_USER\"]','$2y$13$sfY6fJsO77KLGqika.RjruZkm4rrY9y1NVi4rmPbw8jRHTLipc3SC'),(4,'editor@cata.logs','[\"ROLE_EDITOR\",\"ROLE_USER\"]','$2y$13$nAnUVSfgW8FXCaQy/Q3FLO7PBMUbxbRQAyczWKyOpSXvS4BOiFwrG'),(27,'maciekjl1993@gmail.com','[]','$2y$13$eukV73amoINsFfN5TEiNK.Ny76pNG5LUyngVZEJ0p6qV6CI5jTltC');
+INSERT INTO `user` VALUES (1,'god@cata.logs','[\"ROLE_USER\",\"ROLE_EDITOR\",\"ROLE_ADMIN\",\"ROLE_GOD\"]','$2y$13$aeFYZxeiJNS1aev3NiVKCe.nMP0e6p9Or1.s3d8.bET7xoWPRedAG'),(2,'admin@cata.logs','[\"ROLE_ADMIN\",\"ROLE_USER\"]','$2y$13$sfY6fJsO77KLGqika.RjruZkm4rrY9y1NVi4rmPbw8jRHTLipc3SC'),(4,'editor@cata.logs','[\"ROLE_EDITOR\",\"ROLE_USER\"]','$2y$13$nAnUVSfgW8FXCaQy/Q3FLO7PBMUbxbRQAyczWKyOpSXvS4BOiFwrG'),(32,'maciekjl1993@gmail.com','[]','$2y$13$d/gsezovwoPpGKinEkTFx.q2twO8VCL753z0zDOQ6NC4/RlanOMdW');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -240,4 +266,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-13 16:09:00
+-- Dump completed on 2023-11-22 20:15:47
