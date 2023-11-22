@@ -21,7 +21,9 @@ class UserRegistrationService
         $this->mailerService->sendEmail(
             $registerRequest->getEmail(),
             "Katalogi GABIT - link do rejestracji",
-            "Aby dokończyć rejestrację, skopiuj ten link do okna przeglądarki:\nzajecia.koplin.pl/register/allowed/{$registerRequest->getHash()}"
+            "Aby dokończyć rejestrację, skopiuj ten link do przeglądarki: ",
+            "/register/allowed/",
+            $registerRequest->getHash()
         );
     }
 

@@ -26,7 +26,7 @@ class ReportController extends MainController
     }
 
     #[Route('/report/add', name: 'app_add_report')]
-    public function newReport(Request $request, Security $security): Response
+    public function newReport(ReportRepository $reportRepository, Request $request, Security $security): Response
     {
         $report = new Report();
         $form = $this->createForm(ReportType::class);
@@ -36,6 +36,14 @@ class ReportController extends MainController
             $report->setCategory($form->get('category')->getData());
             $report->setTopic($form->get('topic')->getData());
             $report->setDescription($form->get('description')->getData());
+            $reportFromActualUser = $reportRepository->findBy(['reportFrom' => $report->getReportFrom()]);
+            if(count($reportFromActualUser) >= 5) {
+                return $this->render('report/new.html.twig', [
+                    'caption' => 'Wyślij zgłoszenie',
+                    'form' => $form,
+                    'message' => 'Makssymalna liczba nierozwiązanych zgłoszeń wynosi 5. Poczekaj na rozwiązanie aktualnych zgłoszeń'
+                ]);
+            }
             $this->crudService->persistEntity($report);
             $this->logService->createLog(
                 explode('::', $request->attributes->get('_controller'))[1],
@@ -59,7 +67,7 @@ class ReportController extends MainController
         $report = $reportRepository->find($id);
         if (!$report) {
             return $this->render('error_page/index.html.twig', [
-                'message' => 'Brak raportu'
+                'message' => 'Brak zgłoszenia'
             ]);
         }
         if (!$this->isGranted($report->getCategory()->getRole())) {
@@ -72,14 +80,21 @@ class ReportController extends MainController
         if ($form->isSubmitted() && $form->isValid()) {
             $answerToUser = $form->get('answer')->getData();
             $title = "[Rozwiązanie problemu: {$report->getCategory()->getName()}]";
-            $solvedMessage = "Twoje zgłoszenie: \n{$report->getTopic()}\nzostało rozwiązane. \n Odpowiedź do zgłoszenia: \n {$answerToUser}";
-            $mailerService->sendEmail($report->getReportFrom(), $title, $solvedMessage);
+            $solvedMessage = "Twoje zgłoszenie: \n{$report->getTopic()}\nzostało rozwiązane. \n Odpowiedź do zgłoszenia: \n {$answerToUser}\n";
+            $mailerService->sendEmail(
+                $report->getReportFrom(),
+                $title,
+                $solvedMessage
+            );
             $this->crudService->deleteEntity($report);
             $this->logService->createLog(
                 explode('::', $request->attributes->get('_controller'))[1],
                 $report->getCategory()->getName().': '.$report->getTopic()
             );
-            return $this->redirectToRoute('app_show_report');
+            return $this->render('report/index.html.twig', [
+                'reports' => $reportRepository->findAll(),
+                'message' => 'Zgłoszenie zostało rozwiązane'
+            ]);
         }
         return $this->render('report/solve.html.twig', [
             'caption' => 'Rozwiązywanie zgłoszenia',

@@ -41,7 +41,9 @@ class ResetPasswordController extends MainController
             $mailerService->sendEmail(
                 $email,
                 "Katalogi GABIT - Link do resetowania hasła",
-                "Aby zresetować hasło, skopiuj ten link do przeglądarki: zajecia.koplin.pl/reset/password/$hash"
+                "Aby zresetować hasło, skopiuj ten link do przeglądarki: \n\n",
+                "/reset/password/",
+                $hash
             );
             return $this->render('registration/register_request.html.twig', [
                 'form' => $form->createView(),
