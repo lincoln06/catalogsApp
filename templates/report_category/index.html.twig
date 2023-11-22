@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% set caption = 'Kategorie zgłoszeń' %}
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
@@ -27,12 +27,15 @@
                                             class="iconify" data-icon="mdi-pencil"></span></a>
                             </td>
                             <td class="button-cell">
-                                <a href="{{ path('app_delete_report_category', {'id':category.id}) }}"><span
-                                            class="iconify" data-icon="mdi-delete"></span></a>
+                                <a href="#" onclick="confirmDelete({{ category.id }}, 'report/category')">
+                                    <span class="iconify" data-icon="mdi-delete"></span>
+                                </a>
                             </td>
                         {% endif %}
                     </tr>
                 {% endfor %}
+                {% else %}
+                <h2>Nic do wyświetlenia</h2>
             {% endif %}
         </table>
     </main>

@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
-
+{% set caption = 'Prośby o rejestrację' %}
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
     {{ parent () }}
     <main>
         <h1>{{ caption }}</h1>
+        {% if requests %}
         {% for request in requests %}
             <table>
                 <tr>
@@ -24,5 +25,8 @@
                 </tr>
             </table>
         {% endfor %}
+        {% else %}
+        <h2>Nic do wyświetlenia</h2>
+        {% endif %}
     </main>
 {% endblock %}

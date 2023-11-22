@@ -1,13 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Rejestracja{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <h1>Rejestracja</h1>
     <section class="login-form">
-
-
         {{ form(form) }}
     </section>
+    <span><a href="{{ path('app_catalogs_home') }}">Powrót</a></span>
 
 {% endblock %}

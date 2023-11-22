@@ -15,7 +15,6 @@ class LogController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $logs = $logRepository->findBy(array(), array('id' => 'DESC'));
         return $this->render('log/index.html.twig', [
-            'caption' => 'Dziennik',
             'logs' => $logs
         ]);
     }
@@ -25,7 +24,6 @@ class LogController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $logs = $logRepository->findBy(array(), array($columnName => $orderRule));
         return $this->render('log/index.html.twig', [
-            'caption' => 'Dziennik',
             'logs' => $logs
         ]);
     }

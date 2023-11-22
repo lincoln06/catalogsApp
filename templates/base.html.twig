@@ -12,8 +12,7 @@
         <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
     {% endblock %}
 
-    {% block javascripts %}
-    {% endblock %}
+
 </head>
 <body>
 {% block body %}
@@ -62,7 +61,32 @@
         </div>
 
     </nav>
+    {% if message is defined %}
+    <span class="ok-message-element" id="ok-message-element">{{ message }}
+        <span id="close-message-icon">
+            <span class="iconify" data-icon="mdi-close"></span>
+        </span>
+    </span>
+    {% endif %}
 {% endblock %}
+{% block javascripts %}
+    <script>
+        let message = "Usunięcie spowoduje bezpowrotne skasowanie wszystkich danych. Czy chcesz kontynuować?";
 
+        function confirmDelete(id, entity) {
+            if (window.confirm("Czy na pewno chcesz usunąć ten element? Tej operacji nie można cofnąć.")) {
+                window.location.href = `/${entity}/delete/${id}`;
+            }
+        }
+    </script>
+    <script>
+        let closeMessageEl = document.getElementById("close-message-icon");
+        let okMessageEl=document.getElementById("ok-message-element");
+        closeMessageEl?.addEventListener('click', (event) => {
+            okMessageEl?.remove();
+            event.preventDefault();
+        });
+    </script>
+{% endblock %}
 </body>
 </html>

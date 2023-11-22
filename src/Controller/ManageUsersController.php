@@ -34,8 +34,8 @@ class ManageUsersController extends MainController
         ]);
     }
 
-    #[Route('/manage/users/delete/{id}', name: 'app_delete_user')]
-    public function deleteUser(Request $request, UserRepository $userRepository, int $id): Response
+    #[Route('manage/users/delete/{id}', name: 'app_delete_user')]
+    public function deleteUser(Request $request, UserRepository $userRepository, int $id, GetUsersListService $getUsersListService): Response
     {
         $message = '';
         $user = $userRepository->find($id);
@@ -50,7 +50,11 @@ class ManageUsersController extends MainController
                 explode('::', $request->attributes->get('_controller'))[1],
                 $user->getEmail()
             );
-            return $this->redirectToRoute('app_manage_users');
+            return $this->render('manage_users/index.html.twig', [
+                'caption' => 'Lista użytkowników',
+                'message' => 'Użytkownik został usunięty',
+                'usersList' => $getUsersListService->getUsersFromDatabase(),
+            ]);
         }
         return $this->render('error_page/index.html.twig', [
             'message' => $message,
@@ -59,7 +63,7 @@ class ManageUsersController extends MainController
     }
 
     #[Route('/manage/users/edit/{id}', name: 'app_edit_user')]
-    public function editUser(Request $request, UserRepository $userRepository, int $id): Response
+    public function editUser(Request $request, UserRepository $userRepository, int $id, GetUsersListService $getUsersListService): Response
     {
         $user = $userRepository->find($id);
         $message = '';
@@ -78,7 +82,11 @@ class ManageUsersController extends MainController
                     explode('::', $request->attributes->get('_controller'))[1],
                     $user->getEmail()
                 );
-                return $this->redirectToRoute('app_manage_users');
+                return $this->render('manage_users/index.html.twig', [
+                    'caption' => 'Lista użytkowników',
+                    'message' => 'Zmiany zostały zapisane',
+                    'usersList' => $getUsersListService->getUsersFromDatabase(),
+                ]);
             }
             return $this->render('manage_users/edit.html.twig', [
                 'caption' => 'Edycja użytkownika',
@@ -94,11 +102,8 @@ class ManageUsersController extends MainController
     #[Route('/manage/requests', name: 'app_manage_requests')]
     public function requests(RegisterRequestRepository $registerRequestRepository): Response
     {
-        $message = "Lista zapytań o rejestrację";
         $requests = $registerRequestRepository->findAll();
-        if (!$requests) $message = "Brak zapytań o rejestrację";
         return $this->render('manage_users/requests.html.twig', [
-            'caption' => $message,
             'requests' => $requests,
         ]);
     }
@@ -113,7 +118,10 @@ class ManageUsersController extends MainController
         $registerRequest->getEmail()
     );
         $userRegistrationService->allowToRegister($registerRequest);
-        return $this->redirectToRoute('app_manage_requests');
+        return $this->render('manage_users/requests.html.twig', [
+            'requests' => $registerRequestRepository->findAll(),
+            'message' => 'Wysłano link aktywacyjny'
+        ]);
     }
 
     #[Route('/manage/requests/deny/{id}', name: 'app_request_deny')]
@@ -121,10 +129,13 @@ class ManageUsersController extends MainController
     {
         $registerRequest = $registerRequestRepository->find($id);
         $userRegistrationService->deleteRegisterRequest($registerRequest);
-        $this->crudService->persistEntity($registerRequest);$this->logService->createLog(
+        $this->logService->createLog(
         explode('::', $request->attributes->get('_controller'))[1],
         $registerRequest->getEmail()
     );
-        return $this->redirectToRoute('app_manage_requests');
+        return $this->render('manage_users/requests.html.twig', [
+        'requests' => $registerRequestRepository->findAll(),
+        'message' => 'Zapytanie zostało usunięte'
+    ]);
     }
 }

@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% set caption = 'Systemodawcy' %}
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
@@ -14,37 +14,31 @@
                         nowy</a>
                 </td>
             </tr>
-            {% for system in systems %}
-                <tr>
-                    <td>
-                        {{ system.name }}
-                    </td>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <td class="button-cell">
-                            <a href="{{ path('app_edit_system', {'id':system.id}) }}"><span class="iconify"
-                                                                                            data-icon="mdi-pencil"></span></a>
+            {% if systems %}
+                {% for system in systems %}
+                    <tr>
+                        <td>
+                            {{ system.name }}
                         </td>
-                    {% endif %}
-                    {% if is_granted('ROLE_GOD') %}
-                        <td class="button-cell">
-                            <a href="#" onclick="confirmDelete({{ system.id }})"><span class="iconify"
-                                                                                       data-icon="mdi-delete"></span></a>
-                        </td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td class="button-cell">
+                                <a href="{{ path('app_edit_system', {'id':system.id}) }}"><span class="iconify"
+                                                                                                data-icon="mdi-pencil"></span></a>
+                            </td>
+                        {% endif %}
+                        {% if is_granted('ROLE_GOD') %}
+                            <td class="button-cell">
+                                <a href="#" onclick="confirmDelete({{ system.id }}, 'system')"><span class="iconify"
+                                                                                           data-icon="mdi-delete"></span></a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                {% else %}
+                <h2>Nic do wyświetlenia</h2>
+            {% endif %}
         </table>
     </main>
 
-    <script>
-        let message = "Usunięcie systemu spowoduje usunięcie wszystkich powiązanych katalogów wraz z plikami. Tej operacji nie można cofnąć! Czy chcesz kontynuować?";
 
-        function confirmDelete(id) {
-            if (window.confirm(message)) {
-                let url = "{{ path('app_delete_system', {'id': 'entity_id'}) }}";
-                url = url.replace('entity_id', id);
-                window.location.href = url;
-            }
-        }
-    </script>
 {% endblock %}

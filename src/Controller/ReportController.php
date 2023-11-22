@@ -20,13 +20,7 @@ class ReportController extends MainController
     public function showAllReports(GetReportsListService $getReportsListService): Response
     {
         $reports = $getReportsListService->getReportsList();
-        if (!$reports) {
-            return $this->render('report/index.html.twig', [
-                'caption' => 'Nic do wyświetlenia'
-            ]);
-        }
         return $this->render('report/index.html.twig', [
-            'caption' => 'Lista zgłoszeń',
             'reports' => $reports
         ]);
     }

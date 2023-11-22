@@ -156,11 +156,6 @@ select {
     font-family: 'Montserrat', sans-serif;
     margin-top: 5px;
 }
-
-.ok-message {
-    color: green;
-}
-
 button {
     height: 2.2em;
     margin-top: 5px;
@@ -184,7 +179,6 @@ a:hover {
 .container {
     width: 60%;
 }
-
 #error {
     color: #ff0000;
     padding: 5px;
@@ -214,27 +208,39 @@ a:hover {
 }
 
 .iconify {
+    margin-top: -5px;
     font-size: 25px;
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 ul {
     display: flex;
     list-style: none;
     flex-direction: column;
+    width: 100vh;
 }
-
 li {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
     line-height: 3em;
-    width: 100%;
     margin-left: -2em;
 }
-
+.catalog-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: stretch;
+    width: 100vh;
+}
+.system-content {
+    display: flex;
+    flex-direction: column;
+    width: 100vh;
+}
 .system-header {
     background-color: #c0c0c0;
-    width: 100%;
+    width: 100vh;
     padding: 10px;
-    display: block;
 }
 
 .system-header:hover, .system-header span:hover {
@@ -248,7 +254,7 @@ li {
 
 .catalogs-home-list {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 70%;
 }
 
@@ -276,4 +282,11 @@ a.link-like-normal-text {
 }
 textarea {
     resize: none;
+}
+.ok-message-element {
+    display: flex;
+    align-items: center;
+    color: green;
+    padding: 0;
+    text-align: right;
 }

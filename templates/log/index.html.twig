@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% set caption = 'Dziennik' %}
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
@@ -50,6 +50,8 @@
                         </td>
                     </tr>
                 {% endfor %}
+                {% else %}
+                <h2>Nic do wyświetlenia</h2>
             {% endif %}
         </table>
     </main>

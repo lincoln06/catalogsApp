@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ReportCategory;
 use App\Form\ReportCategoryType;
 use App\Repository\ReportCategoryRepository;
+use App\Services\ReportCategoryHandlingService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReportCategoryController extends MainController
 {
     #[Route('/report/category/add', name: 'app_add_report_category')]
-    public function addReportCategory(Request $request): Response
+    public function addReportCategory(Request $request, ReportCategoryRepository $reportCategoryRepository): Response
     {
         $reportCategory = new ReportCategory();
         $form = $this->createForm(ReportCategoryType::class);
@@ -21,7 +22,11 @@ class ReportCategoryController extends MainController
             $reportCategory->setName($form->get('name')->getData());
             $reportCategory->setRole($form->get('role')->getData());
             $this->crudService->persistEntity($reportCategory);
-            return $this->redirectToRoute('app_show_report_category');
+            return $this->render('report_category/index.html.twig', [
+                'caption' => 'Lista kategorii',
+                'categories' => $reportCategoryRepository->findAll(),
+                'message' => 'Kategoria została dodana'
+            ]);
         }
         return $this->render('report_category/new.html.twig', [
             'caption' => 'Dodawanie kategorii zgłoszeń',
@@ -46,7 +51,7 @@ class ReportCategoryController extends MainController
     }
 
     #[Route('/report/category/delete/{id}', name: 'app_delete_report_category')]
-    public function deleteReportCategory(ReportCategoryRepository $reportCategoryRepository, int $id): Response
+    public function deleteReportCategory(ReportCategoryRepository $reportCategoryRepository, ReportCategoryHandlingService $reportCategoryHandlingService, int $id): Response
     {
         $reportCategory = $reportCategoryRepository->find($id);
         if (!$reportCategory) {
@@ -54,8 +59,12 @@ class ReportCategoryController extends MainController
                 'message' => 'Brak danych do usunięcia'
             ]);
         }
-        $this->crudService->deleteEntity($reportCategory);
-        return $this->redirectToRoute('app_show_report_category');
+        $reportCategoryHandlingService->deleteReportCategory($reportCategory);
+        return $this->render('report_category/index.html.twig', [
+            'caption' => 'Lista kategorii',
+            'categories' => $reportCategoryRepository->findAll(),
+            'message' => 'Kategoria została usunięta'
+        ]);
     }
 
     #[Route('/report/category/edit/{id}', name: 'app_edit_report_category')]
@@ -69,10 +78,12 @@ class ReportCategoryController extends MainController
                 $reportCategory->setName($form->get('name')->getData());
                 $reportCategory->setRole($form->get('role')->getData());
                 $this->crudService->persistEntity($reportCategory);
-                return $this->redirectToRoute('app_show_report_category');
+                return $this->render('report_category/index.html.twig', [
+                    'categories' => $reportCategoryRepository->findAll(),
+                    'message' => 'Zmiany zostały zapisane'
+                ]);
             }
             return $this->render('report_category/new.html.twig', [
-                'caption' => 'Edycja kategorii zgłoszeń',
                 'form' => $form
             ]);
         }

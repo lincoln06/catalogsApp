@@ -7,6 +7,7 @@ use App\Form\CatalogType;
 use App\Repository\CatalogRepository;
 use App\Repository\SystemRepository;
 use App\Services\CatalogHandlingService;
+use App\Services\GetAllCatalogsService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,21 +16,16 @@ use Symfony\Component\Filesystem\Filesystem;
 class CatalogsHomeController extends MainController
 {
     #[Route('/', name: 'app_catalogs_home')]
-    public function index(SystemRepository $systemRepository): Response
+    public function index(GetAllCatalogsService $getAllCatalogsService): Response
     {
-        $systems = $systemRepository->findAll();
-        $catalogs = [];
-        foreach ($systems as $system) {
-            $catalogs[$system->getName()] = $system->getCatalogs();
-        }
         return $this->render('catalogs_home/index.html.twig', [
-            'systems' => $systems,
-            'catalogs' => $catalogs
+            'systems' => $getAllCatalogsService->getAllSystems(),
+            'catalogs' => $getAllCatalogsService->getAllCatalogs()
         ]);
     }
 
     #[Route('/catalog/add', name: 'app_add_catalog')]
-    public function newCatalog(Request $request, CatalogHandlingService $catalogHandlingService): Response
+    public function newCatalog(Request $request, CatalogHandlingService $catalogHandlingService, GetAllCatalogsService $getAllCatalogsService): Response
     {
         $catalog = new Catalog();
         $form = $this->createForm(CatalogType::class, $catalog);
@@ -42,22 +38,24 @@ class CatalogsHomeController extends MainController
                     $catalog->getSystem()->getName().': '.$catalog->getName()
                 );
                 $this->crudService->persistEntity($catalog);
-                return $this->redirectToRoute('app_catalogs_home');
+                return $this->render('catalogs_home/index.html.twig', [
+                    'systems' => $getAllCatalogsService->getAllSystems(),
+                    'catalogs' => $getAllCatalogsService->getAllCatalogs(),
+                    'message' => 'Katalog został dodany'
+                ]);
             }
             return $this->render('catalogs_home/new.html.twig', [
-                'caption' => 'Dodaj katalog',
                 'error' => 'Nie dodano pliku',
                 'form' => $form->createView(),
             ]);
         }
         return $this->render('catalogs_home/new.html.twig', [
-            'caption' => 'Dodaj katalog',
             'form' => $form->createView(),
         ]);
     }
 
     #[Route('/catalog/edit/{id}', name: 'app_edit_catalog')]
-    public function editCatalog(Request $request, CatalogHandlingService $catalogHandlingService, CatalogRepository $catalogRepository, int $id): Response
+    public function editCatalog(Request $request, GetAllCatalogsService $getAllCatalogsService, CatalogHandlingService $catalogHandlingService, CatalogRepository $catalogRepository, int $id): Response
     {
         $catalog = $catalogRepository->find($id);
         if ($catalog) {
@@ -77,10 +75,13 @@ class CatalogsHomeController extends MainController
                     explode('::', $request->attributes->get('_controller'))[1],
                     $catalog->getSystem()->getName().': '.$catalog->getName()
                 );
-                return $this->redirectToRoute('app_catalogs_home');
+                return $this->render('catalogs_home/index.html.twig', [
+                    'systems' => $getAllCatalogsService->getAllSystems(),
+                    'catalogs' => $getAllCatalogsService->getAllCatalogs(),
+                    'message' => 'Zmiany zostały zapisane'
+                ]);
             }
             return $this->render('catalogs_home/new.html.twig', [
-                'caption' => 'Edytuj Katalog',
                 'form' => $form->createView()
             ]);
         }
@@ -90,7 +91,7 @@ class CatalogsHomeController extends MainController
     }
 
     #[Route('/catalog/delete/{id}', name: 'app_delete_catalog')]
-    public function deleteCatalog(Request $request,CatalogRepository $catalogRepository, CatalogHandlingService $catalogHandlingService, int $id): Response
+    public function deleteCatalog(Request $request,CatalogRepository $catalogRepository,GetAllCatalogsService $getAllCatalogsService, CatalogHandlingService $catalogHandlingService, int $id): Response
     {
         $catalog = $catalogRepository->find($id);
         if (!$catalog) {
@@ -108,6 +109,10 @@ class CatalogsHomeController extends MainController
             explode('::', $request->attributes->get('_controller'))[1],
             $catalog->getSystem()->getName().': '.$catalog->getName()
         );
-        return $this->redirectToRoute('app_catalogs_home');
+        return $this->render('catalogs_home/index.html.twig', [
+            'systems' => $getAllCatalogsService->getAllSystems(),
+            'catalogs' => $getAllCatalogsService->getAllCatalogs(),
+            'message' => 'Katalog został usunięty'
+        ]);
     }
 }

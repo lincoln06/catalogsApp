@@ -17,19 +17,17 @@ class SystemController extends MainController
     #[Route('/system/show', name: 'app_show_system')]
     public function showSystems(SystemRepository $systemRepository): Response
     {
-        $message = 'Lista systemów';
         $systems = $systemRepository->findAll();
         if (!$systems) {
             $message = 'Nic do wyświetlenia';
         }
         return $this->render('system/list.html.twig', [
             'systems' => $systems,
-            'caption' => $message
         ]);
     }
 
     #[Route('/system/add', name: 'app_add_system')]
-    public function newSystem(Request $request, CheckObjectNameService $checkObjectNameService): Response
+    public function newSystem(Request $request, CheckObjectNameService $checkObjectNameService, SystemRepository $systemRepository): Response
     {
         $system = new System();
 
@@ -45,17 +43,18 @@ class SystemController extends MainController
                     explode('::', $request->attributes->get('_controller'))[1],
                     $system->getName()
                 );
-                return $this->redirectToRoute('app_show_system');
+                return $this->render('system/list.html.twig', [
+                    'systems' => $systemRepository->findAll(),
+                    'message' => 'System został dodany'
+                ]);
             }
             $error = "System o takiej nazwie już istnieje";
             return $this->render('system/index.html.twig', [
-                'caption' => 'Dodaj system',
                 'form' => $form->createView(),
                 'error' => $error
             ]);
         }
         return $this->render('system/index.html.twig', [
-            'caption' => 'Dodaj system',
             'form' => $form->createView(),
         ]);
     }
@@ -80,12 +79,14 @@ class SystemController extends MainController
                     explode('::', $request->attributes->get('_controller'))[1],
                     $system->getName()
                 );
-                return $this->redirectToRoute('app_show_system');
+                return $this->render('system/list.html.twig', [
+                    'systems' => $systemRepository->findAll(),
+                    'message' => 'Zmiany zostały zapisane'
+                ]);
             }
             $error = 'System o takiej nazwie już istnieje';
         }
         return $this->render('system/index.html.twig', [
-            'caption' => 'Edytuj system',
             'form' => $form->createView(),
             'error' => $error
         ]);
@@ -112,6 +113,9 @@ class SystemController extends MainController
             explode('::', $request->attributes->get('_controller'))[1],
             $system->getName()
         );
-        return $this->redirectToRoute('app_show_system');
+        return $this->render('system/list.html.twig', [
+            'systems' => $systemRepository->findAll(),
+            'message' => 'System został usunięty'
+        ]);
     }
 }

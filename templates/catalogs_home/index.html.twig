@@ -19,22 +19,27 @@
                 </li>
                 {% for system in systems %}
                     <li>
+                        <span class="system-content">
                         <span class="system-header" id="{{ system.name }}">{{ system.name }}</span>
                         <ul id="{{ system.name }}-catalogs" class="catalogs-list">
                             {% for catalog in catalogs[system.name] %}
-                                <li class="catalog"><a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}"
-                                                       target="_blank">{{ catalog.name }}</a>
+                                <li class="catalog">
+                                    <span class="catalog-info">
+                                    <a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}" target="_blank">{{ catalog.name }}</a>
                                     <span class="date-added">{{ catalog.dateAdded|date('d-m-Y') }}</span>
                                     {% if is_granted('ROLE_EDITOR') %}
+                                        <span class="editor-buttons">
                                         <a href="{{ path('app_edit_catalog', {'id':catalog.id}) }}"><span
                                                     class="iconify" data-icon="mdi-pencil"></span></a>
-                                        <a href="{{ path('app_delete_catalog', {'id':catalog.id}) }}"><span
-                                                    class="iconify" data-icon="mdi-delete"></span></a>
+                                        <a href="#" onclick="confirmDelete({{ catalog.id }}, 'catalog')"><span class="iconify"
+                                                                                                             data-icon="mdi-delete"></span></a>
+                                            </span>
                                     {% endif %}
+                                    </span>
                                 </li>
                             {% endfor %}
                         </ul>
-
+                    </span>
                     </li>
                 {% endfor %}
             </ul>

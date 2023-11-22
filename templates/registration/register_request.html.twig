@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Rejestracja{% endblock %}
 
 {% block body %}
     <h1>Prośba o dostęp</h1>
@@ -13,4 +13,5 @@
             {{ form(form) }}
         </div>
     </section>
+    <span><a href="{{ path('app_catalogs_home') }}">Powrót</a></span>
 {% endblock %}

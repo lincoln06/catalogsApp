@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
-
+{%  set caption = "Lista użytkowników" %}
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
     {{ parent () }}
     <main>
         <h1>{{ caption }}</h1>
-        {% if usersList is defined %}
+        {% if usersList%}
             {% for user in usersList %}
                 <table>
                     <tr class="table-header">
@@ -18,8 +18,8 @@
                                                                                         data-icon="mdi-pencil"></span></a>
                         </td>
                         <td class="button-cell">
-                            <a href="{{ path('app_delete_user', {'id':user.id}) }}"><span class="iconify"
-                                                                                          data-icon="mdi-delete"></span></a>
+                            <a href="#" onclick="confirmDelete({{ user.id }}, 'manage/users')"><span class="iconify"
+                                                                                                   data-icon="mdi-delete"></span></a>
                         </td>
                     </tr>
                     {% for role in user.roles %}
@@ -31,6 +31,8 @@
                     {% endfor %}
                 </table>
             {% endfor %}
+            {% else %}
+            <h2>Nic do wyświetlenia</h2>
         {% endif %}
     </main>
 {% endblock %}
