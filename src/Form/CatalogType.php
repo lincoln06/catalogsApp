@@ -41,7 +41,8 @@ class CatalogType extends AbstractType
                     ]),
                 ]])
             ->add('dateAdded', DateType::class, [
-                'label' => 'Data wydania'
+                'label' => 'Data wydania',
+
             ])
             ->add('pdfFile', FileType::class, [
                 'label' => 'Plik',

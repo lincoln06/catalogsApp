@@ -5,7 +5,8 @@
 {% block body %}
     {{ parent () }}
     <main>
-        <h1>{{ caption }}</h1>
+        <h1>{{ caption }}<span id="info-icon"><span class="iconify" data-icon="mdi-information-outline"></span></span></h1>
+        <span id="info-text" style="height: 1em;"></span>
         <div>
             <label for="select-box-via-column">Sortowanie:</label>
             <select name="select-box-via-column" id="select-box-via-column">
@@ -58,7 +59,6 @@
     <script>
         const sortBtn = document.getElementById("sort-button");
 
-
         sortBtn?.addEventListener('click', () => {
             const selectBoxViaColumnValue = document.getElementById("select-box-via-column").value;
             const selectBoxOrderValue = document.getElementById("select-box-order").value;
@@ -66,5 +66,16 @@
         })
 
         //  /log/order-by/{columnName}/{orderRule}
+    </script>
+    <script>
+        const infoIconEl = document.getElementById("info-icon");
+        const infoTextEl = document.getElementById("info-text");
+        infoIconEl?.addEventListener('mouseover', (event) => {
+            infoTextEl.innerText = "Zdarzenia starsze niż 30 dni będą automatycznie usuwane";
+            event.preventDefault();
+        });
+        infoIconEl?.addEventListener('mouseout', (event) => {
+           infoTextEl.innerText=null;
+        });
     </script>
 {% endblock %}

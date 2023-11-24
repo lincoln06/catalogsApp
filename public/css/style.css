@@ -295,4 +295,7 @@ textarea {
     display: flex;
     justify-content: flex-end;
 }
+#info-text {
+    color: #005596;
+}
 /*TODO fix editor buttons*/
