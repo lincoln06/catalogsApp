@@ -287,9 +287,11 @@ textarea {
 .ok-message-element {
     display: flex;
     align-items: center;
+    margin-top: 0.5em;
     color: green;
     padding: 0;
     text-align: right;
+    height: 1em;
 }
 .editor-buttons {
     display: flex;

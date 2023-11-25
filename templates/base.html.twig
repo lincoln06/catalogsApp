@@ -61,14 +61,15 @@
         </div>
 
     </nav>
-    {% if app.session.flashBag.has('success') %}
     <span class="ok-message-element" id="ok-message-element">
+        {% if app.session.flashBag.has('success') %}
         {{ app.session.flashBag.get('success')[0] }}
         <span id="close-message-icon">
             <span class="iconify" data-icon="mdi-close"></span>
         </span>
+        {% endif %}
     </span>
-    {% endif %}
+
 {% endblock %}
 {% block javascripts %}
     <script>
@@ -84,7 +85,7 @@
         let closeMessageEl = document.getElementById("close-message-icon");
         let okMessageEl=document.getElementById("ok-message-element");
         closeMessageEl?.addEventListener('click', (event) => {
-            okMessageEl?.remove();
+            okMessageEl.innerText = null;
             event.preventDefault();
         });
     </script>

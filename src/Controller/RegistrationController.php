@@ -20,7 +20,6 @@ class RegistrationController extends MainController
     #[Route('/register', name: 'app_register')]
     public function registrationRequest(Request $request, GetUsersListService $getUsersListService, HashSetterService $hashSetter): Response
     {
-        $session = $request->getSession();
 
         $registerRequest = new RegisterRequest();
         $form = $this->createForm(RegisterRequestType::class, $registerRequest);
@@ -30,7 +29,6 @@ class RegistrationController extends MainController
             $isEmailRegistered = $getUsersListService->checkIfIsEmailRegistered($emailToCheck);
             $email = $form->get('email')->getData();
             $hash = $hashSetter->makeHash();
-            $session->set('hash', $hash);
             if ($isEmailRegistered) {
                 return $this->render('registration/register_request.html.twig', [
                     'message' => 'Na ten adres e-mail już zostało utworzone konto lub zostało wysłane zapytanie',
@@ -54,11 +52,10 @@ class RegistrationController extends MainController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, RegisterRequestRepository $registerRequestRepository, string $commonHash, UserRegistrationService $userRegistrationService): Response
     {
         $registerRequest = $registerRequestRepository->findOneBy(['hash' => $commonHash]);
-        $session = $request->getSession();
-        $hash = $session->get('hash');
-        if ($hash !== $commonHash || !$registerRequest) {
+        if (!$registerRequest) {
             return $this->redirectToroute('app_access_denied');
         }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -74,7 +71,6 @@ class RegistrationController extends MainController
             $user->setPassword($userPasswordHasher->hashPassword($user, $password));
 
             $this->crudService->persistEntity($user);
-            $session->remove('hash');
             $userRegistrationService->deleteRegisterRequest($registerRequest);
             return $this->redirectToRoute('app_catalogs_home');
         }
