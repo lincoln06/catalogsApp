@@ -18,16 +18,13 @@ class SystemController extends MainController
     public function showSystems(SystemRepository $systemRepository): Response
     {
         $systems = $systemRepository->findAll();
-        if (!$systems) {
-            $message = 'Nic do wyświetlenia';
-        }
         return $this->render('system/list.html.twig', [
             'systems' => $systems,
         ]);
     }
 
     #[Route('/system/add', name: 'app_add_system')]
-    public function newSystem(Request $request, CheckObjectNameService $checkObjectNameService, SystemRepository $systemRepository): Response
+    public function newSystem(Request $request, CheckObjectNameService $checkObjectNameService): Response
     {
         $system = new System();
 
@@ -43,10 +40,11 @@ class SystemController extends MainController
                     explode('::', $request->attributes->get('_controller'))[1],
                     $system->getName()
                 );
-                return $this->render('system/list.html.twig', [
-                    'systems' => $systemRepository->findAll(),
-                    'message' => 'System został dodany'
-                ]);
+                $this->addFlash(
+                    'success',
+                    'System został dodany'
+                );
+                return $this->redirectToRoute('app_show_system');
             }
             $error = "System o takiej nazwie już istnieje";
             return $this->render('system/index.html.twig', [
@@ -79,10 +77,11 @@ class SystemController extends MainController
                     explode('::', $request->attributes->get('_controller'))[1],
                     $system->getName()
                 );
-                return $this->render('system/list.html.twig', [
-                    'systems' => $systemRepository->findAll(),
-                    'message' => 'Zmiany zostały zapisane'
-                ]);
+                $this->addFlash(
+                    'success',
+                    'Zmiany zostały zapisane'
+                );
+                return $this->redirectToRoute('app_show_system');
             }
             $error = 'System o takiej nazwie już istnieje';
         }
@@ -113,9 +112,10 @@ class SystemController extends MainController
             explode('::', $request->attributes->get('_controller'))[1],
             $system->getName()
         );
-        return $this->render('system/list.html.twig', [
-            'systems' => $systemRepository->findAll(),
-            'message' => 'System został usunięty'
-        ]);
+        $this->addFlash(
+            'success',
+            'System został usunięty'
+        );
+        return $this->redirectToRoute('app_show_system');
     }
 }

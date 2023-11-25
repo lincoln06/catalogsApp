@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Log;
 use App\Services\CRUDService;
 use App\Services\LogService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {

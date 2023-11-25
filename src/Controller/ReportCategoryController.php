@@ -22,11 +22,11 @@ class ReportCategoryController extends MainController
             $reportCategory->setName($form->get('name')->getData());
             $reportCategory->setRole($form->get('role')->getData());
             $this->crudService->persistEntity($reportCategory);
-            return $this->render('report_category/index.html.twig', [
-                'caption' => 'Lista kategorii',
-                'categories' => $reportCategoryRepository->findAll(),
-                'message' => 'Kategoria została dodana'
-            ]);
+            $this->addFlash(
+                'success',
+                'Kategoria została dodana'
+            );
+            return $this->redirectToRoute('app_show_report_category');
         }
         return $this->render('report_category/new.html.twig', [
             'caption' => 'Dodawanie kategorii zgłoszeń',
@@ -46,7 +46,6 @@ class ReportCategoryController extends MainController
         return $this->render('report_category/index.html.twig', [
             'caption' => $message,
             'categories' => $reportCategories
-
         ]);
     }
 
@@ -60,11 +59,11 @@ class ReportCategoryController extends MainController
             ]);
         }
         $reportCategoryHandlingService->deleteReportCategory($reportCategory);
-        return $this->render('report_category/index.html.twig', [
-            'caption' => 'Lista kategorii',
-            'categories' => $reportCategoryRepository->findAll(),
-            'message' => 'Kategoria została usunięta'
-        ]);
+        $this->addFlash(
+            'success',
+            'Kategoria została usunięta'
+        );
+        return $this->redirectToRoute('app_show_report_category');
     }
 
     #[Route('/report/category/edit/{id}', name: 'app_edit_report_category')]
@@ -78,10 +77,11 @@ class ReportCategoryController extends MainController
                 $reportCategory->setName($form->get('name')->getData());
                 $reportCategory->setRole($form->get('role')->getData());
                 $this->crudService->persistEntity($reportCategory);
-                return $this->render('report_category/index.html.twig', [
-                    'categories' => $reportCategoryRepository->findAll(),
-                    'message' => 'Zmiany zostały zapisane'
-                ]);
+                $this->addFlash(
+                    'success',
+                    'Zmiany zostały zapisane'
+                );
+                return $this->redirectToRoute('app_show_report_category');
             }
             return $this->render('report_category/new.html.twig', [
                 'form' => $form

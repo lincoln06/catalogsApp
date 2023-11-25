@@ -49,11 +49,11 @@ class ReportController extends MainController
                 explode('::', $request->attributes->get('_controller'))[1],
                 $report->getCategory()->getName().': '.$report->getTopic()
             );
-            return $this->render('report/new.html.twig', [
-                'caption' => 'Wyślij zgłoszenie',
-                'form' => $form,
-                'message' => 'Zgłoszenie zostało wysłane'
-            ]);
+            $this->addFlash(
+                'success',
+                'Zgłoszenie zostało wysłane'
+            );
+            return $this->redirectToRoute('app_catalogs_home');
         }
         return $this->render('report/new.html.twig', [
             'caption' => 'Wyślij zgłoszenie',
@@ -91,10 +91,11 @@ class ReportController extends MainController
                 explode('::', $request->attributes->get('_controller'))[1],
                 $report->getCategory()->getName().': '.$report->getTopic()
             );
-            return $this->render('report/index.html.twig', [
-                'reports' => $reportRepository->findAll(),
-                'message' => 'Zgłoszenie zostało rozwiązane'
-            ]);
+            $this->addFlash(
+                'success',
+                'Zgłoszenie zostało rozwiązane'
+            );
+            return $this->redirectToRoute('app_show_report');
         }
         return $this->render('report/solve.html.twig', [
             'caption' => 'Rozwiązywanie zgłoszenia',

@@ -50,11 +50,11 @@ class ManageUsersController extends MainController
                 explode('::', $request->attributes->get('_controller'))[1],
                 $user->getEmail()
             );
-            return $this->render('manage_users/index.html.twig', [
-                'caption' => 'Lista użytkowników',
-                'message' => 'Użytkownik został usunięty',
-                'usersList' => $getUsersListService->getUsersFromDatabase(),
-            ]);
+            $this->addFlash(
+                'success',
+                'Użytkownik został usunięty'
+            );
+            return $this->redirectToRoute('app_manage_users');
         }
         return $this->render('error_page/index.html.twig', [
             'message' => $message,
@@ -82,11 +82,11 @@ class ManageUsersController extends MainController
                     explode('::', $request->attributes->get('_controller'))[1],
                     $user->getEmail()
                 );
-                return $this->render('manage_users/index.html.twig', [
-                    'caption' => 'Lista użytkowników',
-                    'message' => 'Zmiany zostały zapisane',
-                    'usersList' => $getUsersListService->getUsersFromDatabase(),
-                ]);
+                $this->addFlash(
+                    'success',
+                    'Zmiany zostały zapisane'
+                );
+                return $this->redirectToRoute('app_manage_users');
             }
             return $this->render('manage_users/edit.html.twig', [
                 'caption' => 'Edycja użytkownika',
@@ -118,10 +118,11 @@ class ManageUsersController extends MainController
         $registerRequest->getEmail()
     );
         $userRegistrationService->allowToRegister($registerRequest);
-        return $this->render('manage_users/requests.html.twig', [
-            'requests' => $registerRequestRepository->findAll(),
-            'message' => 'Wysłano link aktywacyjny'
-        ]);
+        $this->addFlash(
+            'success',
+            'Wysłano link aktywacyjny'
+        );
+        return $this->redirectToRoute('app_manage_requests');
     }
 
     #[Route('/manage/requests/deny/{id}', name: 'app_request_deny')]
@@ -131,11 +132,12 @@ class ManageUsersController extends MainController
         $userRegistrationService->deleteRegisterRequest($registerRequest);
         $this->logService->createLog(
         explode('::', $request->attributes->get('_controller'))[1],
-        $registerRequest->getEmail()
-    );
-        return $this->render('manage_users/requests.html.twig', [
-        'requests' => $registerRequestRepository->findAll(),
-        'message' => 'Zapytanie zostało usunięte'
-    ]);
+            $registerRequest->getEmail()
+        );
+        $this->addFlash(
+            'success',
+            'Prośba została usunięta'
+        );
+        return $this->redirectToRoute('app_manage_requests');
     }
 }

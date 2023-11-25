@@ -61,8 +61,9 @@
         </div>
 
     </nav>
-    {% if message is defined %}
-    <span class="ok-message-element" id="ok-message-element">{{ message }}
+    {% if app.session.flashBag.has('success') %}
+    <span class="ok-message-element" id="ok-message-element">
+        {{ app.session.flashBag.get('success')[0] }}
         <span id="close-message-icon">
             <span class="iconify" data-icon="mdi-close"></span>
         </span>
