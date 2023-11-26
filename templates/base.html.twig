@@ -96,48 +96,52 @@
         });
     </script>
     <script>
-        const reportNotificationCountEl = document.getElementById("report-notification-count");
-        const requestNotificationCountEl = document.getElementById("request-notification-count");
-        (async () => {
-            const notifications = await fetchData();
+        getNotifications();
+        setInterval(getNotifications, 300000);
+        function getNotifications() {
+            const reportNotificationCountEl = document.getElementById("report-notification-count");
+            const requestNotificationCountEl = document.getElementById("request-notification-count");
+            (async () => {
+                const notifications = await fetchData();
 
-            if(requestNotificationCountEl) {
-                if (notifications.numberOfRegisterRequests != null) {
-                    requestNotificationCountEl.style.display = 'flex;'
-                    requestNotificationCountEl.innerText = notifications.numberOfRegisterRequests;
-                } else {
-                    requestNotificationCountEl.style.display = 'none';
-                    requestNotificationCountEl.innerText = null;
+                if (requestNotificationCountEl) {
+                    if (notifications.numberOfRegisterRequests != null) {
+                        requestNotificationCountEl.style.display = 'flex;'
+                        requestNotificationCountEl.innerText = notifications.numberOfRegisterRequests;
+                    } else {
+                        requestNotificationCountEl.style.display = 'none';
+                        requestNotificationCountEl.innerText = null;
+                    }
                 }
-            }
 
-            if(reportNotificationCountEl) {
-                if (notifications.numberOfReports != null) {
-                    reportNotificationCountEl.style.display = 'flex';
-                    reportNotificationCountEl.innerText = notifications.numberOfReports;
-                } else {
-                    reportNotificationCountEl.style.display = 'none';
-                    reportNotificationCountEl.innerText = null;
+                if (reportNotificationCountEl) {
+                    if (notifications.numberOfReports != null) {
+                        reportNotificationCountEl.style.display = 'flex';
+                        reportNotificationCountEl.innerText = notifications.numberOfReports;
+                    } else {
+                        reportNotificationCountEl.style.display = 'none';
+                        reportNotificationCountEl.innerText = null;
+                    }
                 }
-            }
 
 
-        })();
+            })();
 
-        async function fetchData() {
-            try {
-                const response = await fetch('/get-notifications', {
-                    method: 'POST'
-                });
+            async function fetchData() {
+                try {
+                    const response = await fetch('/get-notifications', {
+                        method: 'POST'
+                    });
 
-                const data = await response.json();
-                console.log(data.numberOfReports);
-                return {
-                    numberOfRegisterRequests: Number(data.numberOfRegisterRequests),
-                    numberOfReports: Number(data.numberOfReports)
+                    const data = await response.json();
+                    console.log(data.numberOfReports);
+                    return {
+                        numberOfRegisterRequests: Number(data.numberOfRegisterRequests),
+                        numberOfReports: Number(data.numberOfReports)
+                    }
+                } catch (error) {
+                    console.error("Unable to fetch notifications data from server", error);
                 }
-            } catch (error) {
-                console.error("Błąd:", error);
             }
         } //TODO FIX IT
     </script>
