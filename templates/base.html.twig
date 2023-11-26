@@ -30,6 +30,9 @@
             {% if is_granted('ROLE_EDITOR') %}
                 <div id="top-menu-option">
                     <a href="{{ path('app_show_report') }}">Zgłoszenia</a>
+                    <span id="report-notification-count">
+
+                    </span>
                 </div>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
@@ -46,6 +49,9 @@
             {% if is_granted('ROLE_GOD') %}
                 <div id="top-menu-option">
                     <a href="{{ path('app_manage_requests') }}">Prośby o rejestrację</a>
+                    <span id="request-notification-count">
+
+                    </span>
                 </div>
                 <div id="top-menu-option">
                     <a href="{{ path('app_show_report_category') }}">Kategorie zgłoszeń</a>
@@ -88,6 +94,52 @@
             okMessageEl.innerText = null;
             event.preventDefault();
         });
+    </script>
+    <script>
+        const reportNotificationCountEl = document.getElementById("report-notification-count");
+        const requestNotificationCountEl = document.getElementById("request-notification-count");
+        (async () => {
+            const notifications = await fetchData();
+
+            if(requestNotificationCountEl) {
+                if (notifications.numberOfRegisterRequests != null) {
+                    requestNotificationCountEl.style.display = 'flex;'
+                    requestNotificationCountEl.innerText = notifications.numberOfRegisterRequests;
+                } else {
+                    requestNotificationCountEl.style.display = 'none';
+                    requestNotificationCountEl.innerText = null;
+                }
+            }
+
+            if(reportNotificationCountEl) {
+                if (notifications.numberOfReports != null) {
+                    reportNotificationCountEl.style.display = 'flex';
+                    reportNotificationCountEl.innerText = notifications.numberOfReports;
+                } else {
+                    reportNotificationCountEl.style.display = 'none';
+                    reportNotificationCountEl.innerText = null;
+                }
+            }
+
+
+        })();
+
+        async function fetchData() {
+            try {
+                const response = await fetch('/get-notifications', {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+                console.log(data.numberOfReports);
+                return {
+                    numberOfRegisterRequests: Number(data.numberOfRegisterRequests),
+                    numberOfReports: Number(data.numberOfReports)
+                }
+            } catch (error) {
+                console.error("Błąd:", error);
+            }
+        } //TODO FIX IT
     </script>
 {% endblock %}
 </body>

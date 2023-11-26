@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Services\CRUDService;
 use App\Services\LogService;
+use App\Services\NotificationsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,5 +22,11 @@ class MainController extends AbstractController
         $this->entityManager = $entityManager;
         $this->crudService = $crudService;
         $this->logService = $logService;
+    }
+    #[Route('/get-notifications', name: 'app_get_notifications')]
+    public function getNotifications(NotificationsService $notificationsService): JsonResponse
+    {
+        $notifications = $notificationsService->getNotifications();
+        return new JsonResponse($notifications);
     }
 }
