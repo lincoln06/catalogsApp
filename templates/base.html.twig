@@ -22,17 +22,17 @@
             <div id="top-menu-option">
                 <a href="{{ path('app_catalogs_home') }}">Strona główna</a>
             </div>
-            {% if not is_granted('ROLE_GOD') %}
-                <div id="top-menu-option">
-                    <a href="{{ path('app_add_report') }}">Wyślij zgłoszenie</a> -
-                </div>
-            {% endif %}
             {% if is_granted('ROLE_EDITOR') %}
                 <div id="top-menu-option">
                     <a href="{{ path('app_show_report') }}">Zgłoszenia</a>
-                    <span id="report-notification-count" class="notification">
-
+                    <span id="report-notification-icon">
+                        <span class="iconify" data-icon="mdi-circle-medium"></span>
                     </span>
+                </div>
+            {% endif %}
+            {% if not is_granted('ROLE_GOD') %}
+                <div id="top-menu-option">
+                    <a href="{{ path('app_add_report') }}">Wyślij zgłoszenie</a>
                 </div>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
@@ -49,8 +49,8 @@
             {% if is_granted('ROLE_GOD') %}
                 <div id="top-menu-option">
                     <a href="{{ path('app_manage_requests') }}">Prośby o dostęp</a>
-                    <span id="request-notification-count" class="notification">
-
+                    <span id="request-notification-icon">
+                        <span class="iconify" data-icon="mdi-circle-medium"></span>
                     </span>
                 </div>
                 <div id="top-menu-option">
@@ -99,28 +99,24 @@
         getNotifications();
         setInterval(getNotifications, 300000);
         function getNotifications() {
-            const reportNotificationCountEl = document.getElementById("report-notification-count");
-            const requestNotificationCountEl = document.getElementById("request-notification-count");
+            const reportNotificationCountEl = document.getElementById("report-notification-icon");
+            const requestNotificationCountEl = document.getElementById("request-notification-icon");
             (async () => {
                 const notifications = await fetchData();
 
                 if (requestNotificationCountEl) {
-                    if (notifications.numberOfRegisterRequests != null) {
+                    if (notifications.numberOfRegisterRequests != null && notifications.numberOfRegisterRequests != 0) {
                         requestNotificationCountEl.style.display = 'flex;'
-                        requestNotificationCountEl.innerText = notifications.numberOfRegisterRequests;
                     } else {
                         requestNotificationCountEl.style.display = 'none';
-                        requestNotificationCountEl.innerText = null;
                     }
                 }
 
                 if (reportNotificationCountEl) {
-                    if (notifications.numberOfReports != null) {
+                    if (notifications.numberOfReports != null&& notifications.numberOfReports != 0) {
                         reportNotificationCountEl.style.display = 'flex';
-                        reportNotificationCountEl.innerText = notifications.numberOfReports;
                     } else {
                         reportNotificationCountEl.style.display = 'none';
-                        reportNotificationCountEl.innerText = null;
                     }
                 }
 
