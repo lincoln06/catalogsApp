@@ -30,7 +30,7 @@
             {% if is_granted('ROLE_EDITOR') %}
                 <div id="top-menu-option">
                     <a href="{{ path('app_show_report') }}">Zgłoszenia</a>
-                    <span id="report-notification-count">
+                    <span id="report-notification-count" class="notification">
 
                     </span>
                 </div>
@@ -48,8 +48,8 @@
             {% endif %}
             {% if is_granted('ROLE_GOD') %}
                 <div id="top-menu-option">
-                    <a href="{{ path('app_manage_requests') }}">Prośby o rejestrację</a>
-                    <span id="request-notification-count">
+                    <a href="{{ path('app_manage_requests') }}">Prośby o dostęp</a>
+                    <span id="request-notification-count" class="notification">
 
                     </span>
                 </div>
