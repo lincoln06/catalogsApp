@@ -7,24 +7,28 @@
     <main>
         <h1>{{ caption }}</h1>
         {% if requests %}
-        {% for request in requests %}
             <table>
+        {% for request in requests %}
+
                 <tr>
                     <td>
                         {{ request.email }}
                     </td>
 
-                    {% if not request.isAccepted %}
+
                         <td class="button-cell">
+                            {% if not request.isAccepted %}
                             <a href="{{ path('app_request_confirm', {'id':request.id}) }}">Zatwierdź</a>
+                            {% endif %}
                         </td>
-                    {% endif %}
+
                     <td class="button-cell">
                         <a href="{{ path('app_request_deny', {'id':request.id}) }}">Usuń</a>
                     </td>
                 </tr>
-            </table>
+
         {% endfor %}
+            </table>
         {% else %}
         <h2>Nic do wyświetlenia</h2>
         {% endif %}

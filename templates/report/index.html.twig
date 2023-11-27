@@ -8,13 +8,14 @@
         <h1>{{ caption }}</h1>
 
         {% if reports %}
+            <table>
             {% for report in reports %}
-                <table>
+
                     <tr class="table-header">
                         <td>
                             {{ report.category.name }}
                         </td>
-                        <td>
+                        <td class="button-cell">
                             <a href="{{ path('app_solve_report', {'id':report.id}) }}">Rozwiąż</a>
                         </td>
                     </tr>
@@ -33,8 +34,9 @@
                             {{ report.reportFrom }}
                         </td>
                     </tr>
-                </table>
+
             {% endfor %}
+            </table>
             {% else %}
             <h2>Nic do wyświetlenia</h2>
         {% endif %}

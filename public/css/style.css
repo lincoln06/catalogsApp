@@ -15,6 +15,17 @@ nav {
     top: 0;
 }
 
+footer {
+    font-size: 10pt;
+    display: flex;
+    position: absolute;
+    flex-direction: row;
+    width: 100%;
+    margin: 0;
+    bottom: 0;
+    justify-content: center;
+}
+
 main {
     display: flex;
     width: 100vb;
@@ -86,8 +97,24 @@ section {
 }
 
 table {
+    width: 80%;
     border-spacing: 10px;
     text-align: left;
+    border-collapse: collapse;
+}
+table.report-table {
+    width: 90%;
+    border: 0;
+}
+table.report-table td {
+    height: auto;
+    word-wrap: break-word;
+}
+tr {
+    border-bottom: 1px solid #c0c0c0;
+}
+td {
+    padding: 10px;
 }
 
 .login-form, .login-form div {
@@ -98,12 +125,14 @@ table {
 }
 
 .button-cell {
-    padding: 5px;
+    width: 12%;
+    text-align: right;
 }
 
 
 
 .table-header {
+    background-color: #c0c0c0;
     font-size: 20px;
 }
 
@@ -173,7 +202,7 @@ a {
 }
 
 a:hover {
-    color: #c0c0c0;
+    color: #102e44;
     text-decoration: none;
 }
 

@@ -75,7 +75,9 @@
         </span>
         {% endif %}
     </span>
-
+<footer>
+    &copy;2023 Maciej Janta-Lipiński
+</footer>
 {% endblock %}
 {% block javascripts %}
     <script>
@@ -130,7 +132,6 @@
                     });
 
                     const data = await response.json();
-                    console.log(data.numberOfReports);
                     return {
                         numberOfRegisterRequests: Number(data.numberOfRegisterRequests),
                         numberOfReports: Number(data.numberOfReports)
