@@ -14,6 +14,12 @@ nav {
     margin: 0;
     top: 0;
 }
+@media (max-width: 1023px) {
+    nav {
+        width: 100%;
+        flex-direction: column-reverse;
+    }
+}
 
 footer {
     font-size: 10pt;
@@ -28,22 +34,37 @@ footer {
 
 main {
     display: flex;
-    width: 100vb;
+    width: 100%;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    padding-right: 0.15em;
 }
-    #top-menu {
-        justify-content: space-between;
-        background-color: #102E44;
-        font-size: 18px;
-        height: auto;
-    }
+
+#top-menu {
+    justify-content: space-between;
+    background-color: #102E44;
+    font-size: 18px;
+    height: auto;
+}
 
 #top-menu-options {
     display: flex;
     align-items: flex-start;
     flex-direction: row;
 }
+@media (max-width: 1023px) {
+    #top-menu-options {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    #top-menu-options.visible {
+        display: flex;
+    }
+}
+
 
 #top-menu-option {
     display: flex;
@@ -52,6 +73,14 @@ main {
     height: 100%;
     text-align: center;padding: 0 10px 0 10px;
     border-left: 1px solid rgba(255, 255, 255, 0.10);
+}
+@media (max-width: 1023px) {
+    #top-menu-option {
+        padding: 10px;
+        width: 100%;
+        border-left: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    }
 }
 
 #top-menu-option span {
@@ -235,6 +264,7 @@ a:hover {
 
 .catalogs-list.visible {
     display: flex;
+    width: 100%;
 }
 
 .iconify {
@@ -247,31 +277,37 @@ ul {
     display: flex;
     list-style: none;
     flex-direction: column;
-    width: 100vh;
+    margin-left: -2.3em;
+    width: 100%;
 }
 li {
     display: flex;
+    width: 100%;
+    line-height: 3em;
+}
+li.catalog {
+    display: flex;
     flex-direction: row;
-    align-items: stretch;
     line-height: 3em;
     margin-left: -2em;
+    width: 100%;
 }
 .catalog-info {
     display: grid;
     grid-template-columns: 60% 20% 20%;
     column-gap: inherit;
     justify-content: stretch;
-    width: 100vh;
+    width: 100%;
 }
 .system-content {
     display: flex;
     flex-direction: column;
-    width: 100vh;
+    width: 100%;
 }
 .system-header {
     background-color: #c0c0c0;
-    width: 100vh;
-    padding: 10px;
+    width: 100%;
+    padding: 10px 0 10px 10px;
 }
 
 .system-header:hover, .system-header span:hover {
@@ -286,7 +322,13 @@ li {
 .catalogs-home-list {
     display: flex;
     flex-direction: row;
-    width: 100vb;
+    width: 100%;
+}
+@media(max-width: 1023px) {
+    .catalogs-home-list {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 .login-form div ul {
