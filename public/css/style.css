@@ -482,13 +482,13 @@ textarea {
     display: flex;
     justify-content: flex-end;
 }
-/*@media(max-width: 1023px)*/
-/*{*/
-/*    .editor-buttons {*/
-/*        font-size: 50px;*/
-/*        margin-left: 2.5em;*/
-/*    }*/
-/*}*/
+@media(max-width: 1023px)
+{
+    .editor-buttons {
+        /*font-size: 50px;*/
+        margin-left: 2.5em;
+    }
+}
 #info-text {
     color: #005596;
 }
