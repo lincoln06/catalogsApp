@@ -40,11 +40,11 @@ main {
     justify-content: center;
     padding-right: 0.15em;
 }
-@media(max-width: 1023px) {
-    main {
-        font-size: 50px;
-    }
-}
+/*@media(max-width: 1023px) {*/
+/*    main {*/
+/*        font-size: 50px;*/
+/*    }*/
+/*}*/
 
 #top-menu {
     justify-content: space-between;
@@ -52,11 +52,11 @@ main {
     font-size: 18px;
     height: auto;
 }
-@media(max-width: 1023px) {
-    #top-menu {
-        font-size: 50px;
-    }
-}
+/*@media(max-width: 1023px) {*/
+/*    #top-menu {*/
+/*        font-size: 50px;*/
+/*    }*/
+/*}*/
 #top-menu-options {
     display: flex;
 }
@@ -185,7 +185,7 @@ td {
 @media (max-width: 1023px) {
     .login-form, .login-form div {
         width: 100%;
-        font-size: 50px;
+        /*font-size: 50px;*/
     }
     .login-form span {
         margin-left: 20px;
@@ -236,7 +236,7 @@ form > input, button, form span, label {
 @media(max-width: 1023px) {
     #logo-placeholder {
         width: 100%;
-        font-size: 30px;
+        /*font-size: 30px;*/
     }
 
 }
@@ -245,21 +245,21 @@ form > input, button, form span, label {
     font-size: 50px;
 }
 
-@media(max-width: 1023px) {
-    .logo-placeholder-big {
-        font-size: 120px;
-    }
-}
+/*@media(max-width: 1023px) {*/
+/*    .logo-placeholder-big {*/
+/*        font-size: 120px;*/
+/*    }*/
+/*}*/
 
 .logo-placeholder-small {
     font-size: 15px;
 }
 
-@media(max-width: 1023px) {
-    .logo-placeholder-small {
-        font-size: 40px;
-    }
-}
+/*@media(max-width: 1023px) {*/
+/*    .logo-placeholder-small {*/
+/*        font-size: 40px;*/
+/*    }*/
+/*}*/
 
 input, button {
     padding: 5px;
@@ -287,8 +287,8 @@ button {
     input, button {
         margin: 20px 20px 0 20px;
         padding: 5px;
-        height: 2.5em;
-        font-size: 50px;
+        /*height: 2.5em;*/
+        /*font-size: 50px;*/
     }
 }
 
@@ -347,14 +347,14 @@ a:hover {
     font-size: 25px;
     margin-left: 10px;
 }
-@media(max-width: 1023px) {
-    .iconify {
-        font-size: 70px;
-    }
-    a {
-      font-size: 50px;
-    }
-}
+/*@media(max-width: 1023px) {*/
+/*    .iconify {*/
+/*        font-size: 70px;*/
+/*    }*/
+/*    a {*/
+/*      font-size: 50px;*/
+/*    }*/
+/*}*/
 
 ul {
     display: flex;
@@ -482,13 +482,13 @@ textarea {
     display: flex;
     justify-content: flex-end;
 }
-@media(max-width: 1023px)
-{
-    .editor-buttons {
-        font-size: 50px;
-        margin-left: 2.5em;
-    }
-}
+/*@media(max-width: 1023px)*/
+/*{*/
+/*    .editor-buttons {*/
+/*        font-size: 50px;*/
+/*        margin-left: 2.5em;*/
+/*    }*/
+/*}*/
 #info-text {
     color: #005596;
 }
