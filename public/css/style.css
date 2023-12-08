@@ -452,6 +452,10 @@ li.catalog {
     display: flex;
     flex-direction: row;
     width: 90%;
+    padding: 0;
+}
+.catalogs-home-list>ul {
+    padding: 0;
 }
 
 @media (max-width: 1023px) {
@@ -525,6 +529,11 @@ textarea {
     flex-direction: column;
     width: 80%;
     justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+.items-list>ul {
+    padding-left: 0;
 }
 
 .list-content {
@@ -544,7 +553,9 @@ textarea {
 @media (max-width: 1023px) {
     .editor-buttons {
         /*font-size: 50px;*/
-        margin-left: 2.5em;
+        justify-content: flex-start;
+        align-self: flex-start;
+        margin-left: 0;
     }
 
     .list-content {
@@ -563,7 +574,7 @@ textarea {
 .list-item-underlined, .list-item {
     justify-content: space-between;
     margin-right: 1.3em;
-    width: 96%;
+    width: 100%;
 }
 .list-item-underlined {
     border-bottom: 1px solid #c0c0c0;
@@ -584,5 +595,9 @@ textarea {
     .catalogs-list.visible {
         display: flex;
         width: 100%;
+    }
+    .list-header {
+        flex-direction: column;
+        justify-content: start;
     }
 }
