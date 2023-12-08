@@ -38,7 +38,7 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-right: 0.15em;
+    padding-right: 1em;
 }
 
 /*@media(max-width: 1023px) {*/
@@ -451,12 +451,12 @@ li.catalog {
 .catalogs-home-list {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 90%;
 }
 
 @media (max-width: 1023px) {
     .catalogs-home-list {
-        width: 100%;
+        width: 90%;
         justify-content: center;
     }
 }
@@ -581,7 +581,8 @@ textarea {
     .logout-icon {
         display: flex;
     }
-    main {
-        align-items: stretch;
+    .catalogs-list.visible {
+        display: flex;
+        width: 115%;
     }
 }
