@@ -1,37 +1,32 @@
 {% extends 'base.html.twig' %}
-{%  set caption = "Lista użytkowników" %}
+{% set caption = "Lista użytkowników" %}
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
     {{ parent () }}
     <main>
         <h1>{{ caption }}</h1>
-        {% if usersList%}
-            {% for user in usersList %}
-                <table>
-                    <tr class="table-header">
-                        <td>
-                            {{ user.email }}
-                        </td>
-                        <td class="button-cell">
+        {% if usersList %}
+            <section class="items-list">
+                {% for user in usersList %}
+                    <ul>
+                        <li class="list-header">{{ user.email }}
+                            <span class="editor-buttons">
                             <a href="{{ path('app_edit_user', {'id':user.id}) }}"><span class="iconify"
                                                                                         data-icon="mdi-pencil"></span></a>
-                        </td>
-                        <td class="button-cell">
                             <a href="#" onclick="confirmDelete({{ user.id }}, 'manage/users')"><span class="iconify"
-                                                                                                   data-icon="mdi-delete"></span></a>
-                        </td>
-                    </tr>
-                    {% for role in user.roles %}
-                        <tr>
-                            <td colspan="2">
-                                {{ role }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endfor %}
-            {% else %}
+                                                                                                     data-icon="mdi-delete"></span></a>
+                        </span>
+                        </li>
+                        <ul class="list-content">
+                            {% for role in user.roles %}
+                                <li class="list-item-underlined">{{ role }}</li>
+                            {% endfor %}
+                        </ul>
+                    </ul>
+                {% endfor %}
+            </section>
+        {% else %}
             <h2>Nic do wyświetlenia</h2>
         {% endif %}
     </main>

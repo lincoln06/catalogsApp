@@ -6,40 +6,32 @@
     {{ parent() }}
     <main>
         <h1>{{ caption }}</h1>
-        <table>
-            <tr class="table-header">
-                <td colspan="3">
+        <section class="items-list">
+            <ul>
+                <li class="list-header">
                     <a href="{{ path('app_add_report_category') }}"><span class="iconify"
                                                                           data-icon="mdi-note-plus-outline"></span>
                         Dodaj</a>
-                </td>
-            </tr>
-
-            {% if categories %}
-                {% for category in categories %}
-
-                        <tr>
-                            <td>
-                                {{ category.name }}
-                            </td>
-
+                </li>
+                {% if categories %}
+                    {% for category in categories %}
+                        <ul class="list-content">
+                            <li class="list-item-underlined">{{ category.name }}
+                                <span class="editor-buttons">
                             {% if is_granted('ROLE_GOD') %}
-                                <td class="button-cell">
-                                    <a href="{{ path('app_edit_report_category', {'id':category.id}) }}"><span
-                                                class="iconify" data-icon="mdi-pencil"></span></a>
-                                </td>
-                                <td class="button-cell">
-                                    <a href="#" onclick="confirmDelete({{ category.id }}, 'report/category')">
-                                        <span class="iconify" data-icon="mdi-delete"></span>
-                                    </a>
-                                </td>
-                            {% endif %}
-                        </tr>
+                                <a href="{{ path('app_edit_report_category', {'id':category.id}) }}"><span
+                                            class="iconify" data-icon="mdi-pencil"></span></a>
 
-                {% endfor %}
-                {% else %}
-                <h2>Nic do wyświetlenia</h2>
-            {% endif %}
-        </table>
+                                <a href="#" onclick="confirmDelete({{ category.id }}, 'report/category')">
+                                    <span class="iconify" data-icon="mdi-delete"></span>
+                                </a>
+                            {% endif %}
+                                </span>
+                            </li>
+                        </ul>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </section>
     </main>
 {% endblock %}
