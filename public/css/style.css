@@ -581,4 +581,7 @@ textarea {
     .logout-icon {
         display: flex;
     }
+    main {
+        align-items: stretch;
+    }
 }
