@@ -13,9 +13,27 @@
                             nowy</a></li>
                 {% endif %}
                 <li>
+                    <span class="system-content">
                     <span class="system-header">
                         <a style="text-decoration: none; color: black" href="https://docucenter.schueco.com" target="_blank">Schüco</a>
                     </span>
+                        <ul class="catalogs-list">
+                            <li class="catalog">
+                                <span id="catalog-info">
+                                    <a href="#">&nbsp;</a>
+                                    <span class="date-added">&nbsp;</span>
+                                    {% if is_granted('ROLE_EDITOR') %}
+                                        <span class="editor-buttons">
+                                        <a href="#"><span
+                                                    class="iconify" data-icon="mdi-pencil"></span></a>
+                                        <a href="#"><span class="iconify" data-icon="mdi-delete"></span></a>
+                                            </span>
+                                    {% endif %}
+                                </span>
+
+                            </li>
+                        </ul>
+                        </span>
                 </li>
                 {% for system in systems %}
                     <li>

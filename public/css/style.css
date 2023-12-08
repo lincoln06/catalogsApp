@@ -574,7 +574,7 @@ textarea {
 .list-item-underlined, .list-item {
     justify-content: space-between;
     margin-right: 1.3em;
-    width: 100%;
+    width: 97%;
 }
 .list-item-underlined {
     border-bottom: 1px solid #c0c0c0;
@@ -599,5 +599,8 @@ textarea {
     .list-header {
         flex-direction: column;
         justify-content: start;
+    }
+    .system-header {
+        width: 100%;
     }
 }
