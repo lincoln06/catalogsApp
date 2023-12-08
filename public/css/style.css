@@ -24,12 +24,11 @@ nav {
 
 footer {
     font-size: 10pt;
-    position: absolute;
-    bottom: 0;
-    flex-direction: row;
     width: 100%;
-    margin: 0;
-    justify-content: center;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
 }
 
 main {
