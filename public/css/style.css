@@ -583,6 +583,6 @@ textarea {
     }
     .catalogs-list.visible {
         display: flex;
-        width: 115%;
+        width: 100%;
     }
 }
