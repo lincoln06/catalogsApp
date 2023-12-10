@@ -14,26 +14,11 @@
                 {% endif %}
                 <li>
                     <span class="system-content">
-                    <span class="system-header">
-                        <a style="text-decoration: none; color: black" href="https://docucenter.schueco.com" target="_blank">Schüco</a>
-                    </span>
-                        <ul class="catalogs-list">
-                            <li class="catalog">
-                                <span id="catalog-info">
-                                    <a href="#">&nbsp;</a>
-                                    <span class="date-added">&nbsp;</span>
-                                    {% if is_granted('ROLE_EDITOR') %}
-                                        <span class="editor-buttons">
-                                        <a href="#"><span
-                                                    class="iconify" data-icon="mdi-pencil"></span></a>
-                                        <a href="#"><span class="iconify" data-icon="mdi-delete"></span></a>
-                                            </span>
-                                    {% endif %}
-                                </span>
-
-                            </li>
-                        </ul>
+                        <span class="system-header">
+                            <a style="text-decoration: none; color: black" href="https://docucenter.schueco.com"
+                               target="_blank">Schüco</a>
                         </span>
+                    </span>
                 </li>
                 {% for system in systems %}
                     <li>
@@ -43,14 +28,16 @@
                             {% for catalog in catalogs[system.name] %}
                                 <li class="catalog">
                                     <span class="catalog-info">
-                                    <a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}" target="_blank">{{ catalog.name }}</a>
+                                    <a href="{{ asset('uploads/pdfFiles/' ~ catalog.pdfFile) }}"
+                                       target="_blank">{{ catalog.name }}</a>
                                     <span class="date-added">{{ catalog.dateAdded|date('d-m-Y') }}</span>
                                     {% if is_granted('ROLE_EDITOR') %}
                                         <span class="editor-buttons">
                                         <a href="{{ path('app_edit_catalog', {'id':catalog.id}) }}"><span
                                                     class="iconify" data-icon="mdi-pencil"></span></a>
-                                        <a href="#" onclick="confirmDelete({{ catalog.id }}, 'catalog')"><span class="iconify"
-                                                                                                             data-icon="mdi-delete"></span></a>
+                                        <a href="#" onclick="confirmDelete({{ catalog.id }}, 'catalog')"><span
+                                                    class="iconify"
+                                                    data-icon="mdi-delete"></span></a>
                                             </span>
                                     {% endif %}
                                     </span>
