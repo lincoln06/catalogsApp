@@ -8,12 +8,12 @@
         <h2>{{ message }}</h2>
     {% endif %}
     <section class="login-form">
-    {{ form_errors(form) }}
+        {{ form_errors(form) }}
 
-    {{ form_start(form) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.password) }}
-    {{ form_row(form.repeatPassword) }}
-    {{ form_end(form) }}
+        {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+        {{ form_row(form.repeatPassword) }}
+        {{ form_end(form) }}
     </section>
 {% endblock %}

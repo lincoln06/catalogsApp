@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\System;
 use App\Form\SystemType;
 use App\Repository\SystemRepository;
 use App\Services\CatalogHandlingService;
@@ -9,7 +10,6 @@ use App\Services\CheckObjectNameService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\System;
 
 class SystemController extends MainController
 {
@@ -94,11 +94,11 @@ class SystemController extends MainController
     }
 
     #[Route('/system/delete/{id}', name: 'app_delete_system')]
-    public function deleteSystem(Request $request,CatalogHandlingService $catalogHandlingService, SystemRepository $systemRepository, int $id): Response
+    public function deleteSystem(Request $request, CatalogHandlingService $catalogHandlingService, SystemRepository $systemRepository, int $id): Response
     {
         $system = $systemRepository->find($id);
         $systemCatalogs = $system->getCatalogs();
-        if (count($systemCatalogs)!==0) {
+        if (count($systemCatalogs) !== 0) {
             foreach ($systemCatalogs as $systemCatalog) {
                 $this->crudService->deleteEntity($systemCatalog);
 

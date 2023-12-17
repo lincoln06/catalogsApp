@@ -2,10 +2,7 @@
 
 namespace App\Services;
 
-use App\Entity\User;
-use App\Repository\RegisterRequestRepository;
 use App\Repository\ReportRepository;
-use App\Repository\UserRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class GetReportsListService

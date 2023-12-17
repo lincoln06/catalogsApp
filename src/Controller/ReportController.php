@@ -10,9 +10,9 @@ use App\Services\GetReportsListService;
 use App\Services\MailerService;
 use App\Services\UserPrivilegeValidatingService;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 class ReportController extends MainController
 {
@@ -37,7 +37,7 @@ class ReportController extends MainController
             $report->setTopic($form->get('topic')->getData());
             $report->setDescription($form->get('description')->getData());
             $reportFromActualUser = $reportRepository->findBy(['reportFrom' => $report->getReportFrom()]);
-            if(count($reportFromActualUser) >= 5) {
+            if (count($reportFromActualUser) >= 5) {
                 return $this->render('report/new.html.twig', [
                     'caption' => 'Wyślij zgłoszenie',
                     'form' => $form,
@@ -47,7 +47,7 @@ class ReportController extends MainController
             $this->crudService->persistEntity($report);
             $this->logService->createLog(
                 explode('::', $request->attributes->get('_controller'))[1],
-                $report->getCategory()->getName().': '.$report->getTopic()
+                $report->getCategory()->getName() . ': ' . $report->getTopic()
             );
             $this->addFlash(
                 'success',
@@ -89,7 +89,7 @@ class ReportController extends MainController
             $this->crudService->deleteEntity($report);
             $this->logService->createLog(
                 explode('::', $request->attributes->get('_controller'))[1],
-                $report->getCategory()->getName().': '.$report->getTopic()
+                $report->getCategory()->getName() . ': ' . $report->getTopic()
             );
             $this->addFlash(
                 'success',

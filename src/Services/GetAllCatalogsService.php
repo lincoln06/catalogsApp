@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Repository\SystemRepository;
-use PhpParser\Node\Expr\Array_;
 
 class GetAllCatalogsService
 {
@@ -13,29 +12,31 @@ class GetAllCatalogsService
     {
         $this->systemRepository = $systemRepository;
     }
+
     public function getAllCatalogs(): array
     {
         $systems = $this->getAllSystems();
         $catalogs = [];
         foreach ($systems as $system) {
-            if(count($system->getCatalogs()) !==0 ) {
+            if (count($system->getCatalogs()) !== 0) {
                 $catalogs[$system->getName()] = $system->getCatalogs();
             }
         }
         return $catalogs;
     }
+
     public function getAllSystems(): array
     {
         return $this->systemRepository->findAll();
 
     }
+
     public function getSystemsWithCatalogs(): array
     {
         $systems = [];
         $allSystems = $this->systemRepository->findAll();
-        foreach ($allSystems as $system)
-        {
-            if(count($system->getCatalogs()) !== 0) {
+        foreach ($allSystems as $system) {
+            if (count($system->getCatalogs()) !== 0) {
                 $systems[] = $system;
             }
         }

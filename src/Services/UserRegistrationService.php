@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Entity\RegisterRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserRegistrationService extends AbstractController
 {
@@ -30,9 +28,22 @@ class UserRegistrationService extends AbstractController
         );
     }
 
-    public function deleteRegisterRequest($registerRequest)
+    public function deleteRegisterRequest($registerRequest): void
     {
-            $this->entityManager->remove($registerRequest);
-            $this->entityManager->flush();
+        $this->entityManager->remove($registerRequest);
+        $this->entityManager->flush();
     }
+//    public function deleteOldRegisterRequests() {
+//        $date = new \DateTime('now');
+//        $date = $date->modify("-30 day");
+//        $logs = $this->entityManager->getRepository(RegisterRequest::class)->findAll();
+//        foreach($logs as $log) {
+//            if($log->getWhenActionWasDone() < $date) {
+//                $this->crudService->deleteEntity($log);
+//            }
+//        }
+//    }
+//TODO insert 'date' column in reqister request table
+//TODO edit register request creation - it must contain actual date
+//TODO implement function that deletes all the requests older than 3 days
 }

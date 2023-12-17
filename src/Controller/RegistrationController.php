@@ -10,7 +10,6 @@ use App\Repository\RegisterRequestRepository;
 use App\Services\GetUsersListService;
 use App\Services\HashSetterService;
 use App\Services\UserRegistrationService;
-use PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +55,7 @@ class RegistrationController extends MainController
     #[Route('/register/allowed/{commonHash}', name: 'app_register_allowed')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, RegisterRequestRepository $registerRequestRepository, string $commonHash, UserRegistrationService $userRegistrationService): Response
     {
-        if($security->isGranted('ROLE_USER')) {
+        if ($security->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_catalogs_home');
         }
         $registerRequest = $registerRequestRepository->findOneBy(['hash' => $commonHash]);

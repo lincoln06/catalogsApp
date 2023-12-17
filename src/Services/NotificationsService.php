@@ -8,11 +8,13 @@ class NotificationsService
 {
     protected RegisterRequestRepository $registerRequestRepository;
     protected GetReportsListService $getReportsListService;
+
     public function __construct(RegisterRequestRepository $registerRequestRepository, GetReportsListService $getReportsListService)
     {
         $this->registerRequestRepository = $registerRequestRepository;
         $this->getReportsListService = $getReportsListService;
     }
+
     public function getNotifications(): array
     {
         $numberOfRegisterRequests = count($this->registerRequestRepository->findAll());

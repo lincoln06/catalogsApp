@@ -3,10 +3,10 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-        <section class="normal-form">
-            <h1>{{ caption }}</h1>
-            {{ form(form) }}
-            {% if message is defined %}
-            {% endif %}
-        </section>
+    <section class="normal-form">
+        <h1>{{ caption }}</h1>
+        {{ form(form) }}
+        {% if message is defined %}
+        {% endif %}
+    </section>
 {% endblock %}

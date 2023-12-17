@@ -25,35 +25,35 @@
     {% if message is defined %}
         <h2>{{ message }}</h2>
     {% endif %}
-        <div id="logo-placeholder">
+    <div id="logo-placeholder">
             <span class="logo-placeholder-big">
                 GABIT
             </span>
-            <span class="logo-placeholder-small">
+        <span class="logo-placeholder-small">
                 Baza wiedzy | Aluminium
             </span>
+    </div>
+    <section class="login-form">
+        <div>
+            <form action="{{ path('app_login') }}" method="post">
+                <label for="username">Email:</label>
+                <input type="text" id="username" name="_username" value="{{ last_username }}">
+                <label for="password">Hasło:</label>
+                <input type="password" id="password" name="_password">
+                <input type="hidden" name="_target_path" value="/">
+                <button type="submit">Zaloguj</button>
+            </form>
         </div>
-        <section class="login-form">
-            <div>
-                <form action="{{ path('app_login') }}" method="post">
-                    <label for="username">Email:</label>
-                    <input type="text" id="username" name="_username" value="{{ last_username }}">
-                    <label for="password">Hasło:</label>
-                    <input type="password" id="password" name="_password">
-                    <input type="hidden" name="_target_path" value="/">
-                    <button type="submit">Zaloguj</button>
-                </form>
-            </div>
-            <span>
+        <span>
                 <a href="{{ path('app_forgot_password_request') }}">Zapomniałem hasła</a>
             </span>
-            <span>
+        <span>
                 <p>Nie masz konta? <a href="{{ path('app_register') }}">Poproś o dostęp</a></p>
             </span>
-        </section>
-        <div id="error">
-            {% if error %}
-                <div>{{ error }}</div>
-            {% endif %}
-        </div>
+    </section>
+    <div id="error">
+        {% if error %}
+            <div>{{ error }}</div>
+        {% endif %}
+    </div>
 {% endblock %}

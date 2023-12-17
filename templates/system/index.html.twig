@@ -4,14 +4,14 @@
 {% block body %}
     {{ parent () }}
     <main>
-    <section class="normal-form">
-        <h1>{{ caption }}</h1>
-        {{ form(form) }}
-        {% if error is defined %}
-            <div id="error">
-                {{ error }}
-            </div>
-        {% endif %}
-    </section>
+        <section class="normal-form">
+            <h1>{{ caption }}</h1>
+            {{ form(form) }}
+            {% if error is defined %}
+                <div id="error">
+                    {{ error }}
+                </div>
+            {% endif %}
+        </section>
     </main>
 {% endblock %}

@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
-{%  set caption = "Edytuj użytkownika" %}
+{% set caption = "Edytuj użytkownika" %}
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-        <section class="normal-form">
-            <h1>{{ caption }}</h1>
-            {% if message is defined %}
-                <h1>{{ message }}</h1>
-            {% endif %}
-            <h3>{{ username }}</h3>
-            {{ form(form) }}
-        </section>
+    <section class="normal-form">
+        <h1>{{ caption }}</h1>
+        {% if message is defined %}
+            <h1>{{ message }}</h1>
+        {% endif %}
+        <h3>{{ username }}</h3>
+        {{ form(form) }}
+    </section>
 {% endblock %}

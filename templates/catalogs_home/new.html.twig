@@ -2,11 +2,11 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-        <section class="normal-form">
-            <h1>{{ caption }}</h1>
-            {{ form(form) }}
-            {% if error is defined %}
-                <span id="error">{{ error }}</span>
-            {% endif %}
-        </section>
+    <section class="normal-form">
+        <h1>{{ caption }}</h1>
+        {{ form(form) }}
+        {% if error is defined %}
+            <span id="error">{{ error }}</span>
+        {% endif %}
+    </section>
 {% endblock %}

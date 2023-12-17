@@ -7,10 +7,10 @@ use App\Form\CatalogType;
 use App\Repository\CatalogRepository;
 use App\Services\CatalogHandlingService;
 use App\Services\GetAllCatalogsService;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Filesystem\Filesystem;
 
 class CatalogsHomeController extends MainController
 {
@@ -34,7 +34,7 @@ class CatalogsHomeController extends MainController
             if ($catalog) {
                 $this->logService->createLog(
                     explode('::', $request->attributes->get('_controller'))[1],
-                    $catalog->getSystem()->getName().': '.$catalog->getName()
+                    $catalog->getSystem()->getName() . ': ' . $catalog->getName()
                 );
                 $this->crudService->persistEntity($catalog);
                 $this->addFlash(
@@ -73,7 +73,7 @@ class CatalogsHomeController extends MainController
                 }
                 $this->logService->createLog(
                     explode('::', $request->attributes->get('_controller'))[1],
-                    $catalog->getSystem()->getName().': '.$catalog->getName()
+                    $catalog->getSystem()->getName() . ': ' . $catalog->getName()
                 );
                 $this->addFlash(
                     'success',
@@ -93,7 +93,7 @@ class CatalogsHomeController extends MainController
     }
 
     #[Route('/catalog/delete/{id}', name: 'app_delete_catalog')]
-    public function deleteCatalog(Request $request,CatalogRepository $catalogRepository, CatalogHandlingService $catalogHandlingService, int $id): Response
+    public function deleteCatalog(Request $request, CatalogRepository $catalogRepository, CatalogHandlingService $catalogHandlingService, int $id): Response
     {
         $catalog = $catalogRepository->find($id);
         if (!$catalog) {
@@ -109,7 +109,7 @@ class CatalogsHomeController extends MainController
         $this->crudService->deleteEntity($catalog);
         $this->logService->createLog(
             explode('::', $request->attributes->get('_controller'))[1],
-            $catalog->getSystem()->getName().': '.$catalog->getName()
+            $catalog->getSystem()->getName() . ': ' . $catalog->getName()
         );
         $this->addFlash(
             'success',

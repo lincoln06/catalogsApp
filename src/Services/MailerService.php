@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
 
 class MailerService
 {
@@ -13,7 +13,7 @@ class MailerService
 
     public function sendEmail(string $emailAddress, string $title, string $body, string $path = '', string $hash = ''): void
     {
-        $messageBody = $body.' '.$this->pageAddress.$path.$hash;
+        $messageBody = $body . ' ' . $this->pageAddress . $path . $hash;
         $transport = Transport::fromDsn('smtp://gabitcatalogs@gmx.com:Katalogi1!@mail.gmx.com:587');
         $mailer = new Mailer($transport);
         $email = (new Email())

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Entity\Report;
 use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 

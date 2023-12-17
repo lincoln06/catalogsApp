@@ -3,23 +3,23 @@
 {% block title %}GABIT | Katalogi{% endblock %}
 
 {% block body %}
-        <section id="catalogs-home-list" class="catalogs-home-list">
-            <ul>
-                {% if is_granted('ROLE_EDITOR') %}
-                    <li><a href="{{ path('app_add_catalog') }}"><span class="iconify"
-                                                                      data-icon="mdi-note-plus-outline"></span> Dodaj
-                            nowy</a></li>
-                {% endif %}
-                <li>
+    <section id="catalogs-home-list" class="catalogs-home-list">
+        <ul>
+            {% if is_granted('ROLE_EDITOR') %}
+                <li><a href="{{ path('app_add_catalog') }}"><span class="iconify"
+                                                                  data-icon="mdi-note-plus-outline"></span> Dodaj
+                        nowy</a></li>
+            {% endif %}
+            <li>
                     <span class="system-content">
                         <span class="system-header">
                             <a style="text-decoration: none; color: black" href="https://docucenter.schueco.com"
                                target="_blank">Schüco</a>
                         </span>
                     </span>
-                </li>
-                {% for system in systems %}
-                    <li>
+            </li>
+            {% for system in systems %}
+                <li>
                         <span class="system-content">
                         <span class="system-header" id="{{ system.name }}">{{ system.name }}</span>
                         <ul id="{{ system.name }}-catalogs" class="catalogs-list">
@@ -43,10 +43,10 @@
                             {% endfor %}
                         </ul>
                     </span>
-                    </li>
-                {% endfor %}
-            </ul>
-        </section>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
 
 
     <script>

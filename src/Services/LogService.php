@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\Log;
 use App\Repository\LogRepository;
+use DateTime;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class LogService
@@ -22,7 +23,7 @@ class LogService
     public function createLog(string $actionType, string $entityType): void
     {
         $userName = $this->security->getUser()->getEmail();
-        $actualTime = new \DateTime('now');
+        $actualTime = new DateTime('now');
         $log = new Log();
         $log->setWhoDidTheAction($userName);
         $log->setActionType($actionType);
@@ -31,13 +32,14 @@ class LogService
         $this->deleteOldLogs();
         $this->crudService->persistEntity($log);
     }
-    private function deleteOldLogs()
+
+    private function deleteOldLogs(): void
     {
-        $date = new \DateTime('now');
+        $date = new DateTime('now');
         $date = $date->modify("-30 day");
         $logs = $this->logRepository->findAll();
-        foreach($logs as $log) {
-            if($log->getWhenActionWasDone() < $date) {
+        foreach ($logs as $log) {
+            if ($log->getWhenActionWasDone() < $date) {
                 $this->crudService->deleteEntity($log);
             }
         }

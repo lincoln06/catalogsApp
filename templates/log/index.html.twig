@@ -3,56 +3,65 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-        <h1>{{ caption }}<span id="info-icon"><span class="iconify" data-icon="mdi-information-outline"></span></span></h1>
-        <span id="info-text" style="height: 1em;"></span>
-        <div>
-            <label for="select-box-via-column">Sortowanie:</label>
-            <select name="select-box-via-column" id="select-box-via-column">
-                <option value="id">ID</option>
-                <option value="whoDidTheAction">Użytkownik</option>
-                <option value="actionType">Akcja</option>
-                <option value="onWhatEntity">Obiekt</option>
-                <option value="whenActionWasDone">Data i czas akcji</option>
-            </select>
-            <label for="select-box-order">Kolejność</label>
-            <select name="select-box-order" id="select-box-order">
-                <option value="ASC">Rosnąco</option>
-                <option value="DESC">Malejąco</option>
-            </select>
-            <button id="sort-button">Sortuj</button>
-        </div>
+    <h1>{{ caption }}<span id="info-icon"><span class="iconify" data-icon="mdi-information-outline"></span></span></h1>
+    <span id="info-text">Zdarzenia starsze niż 30 dni będą automatycznie usuwane</span>
+    <div class="sort-options">
+        <label for="select-box-via-column">Sortowanie:</label>
+        <select name="select-box-via-column" id="select-box-via-column">
+            <option value="id">ID</option>
+            <option value="whoDidTheAction">Użytkownik</option>
+            <option value="actionType">Akcja</option>
+            <option value="onWhatEntity">Obiekt</option>
+            <option value="whenActionWasDone">Data i czas akcji</option>
+        </select>
+        <label for="select-box-order">Kolejność</label>
+        <select name="select-box-order" id="select-box-order">
+            <option value="ASC">Rosnąco</option>
+            <option value="DESC">Malejąco</option>
+        </select>
+        <button id="sort-button">Sortuj</button>
+    </div>
+
+    {% if logs %}
+
         <table class="report-table">
-            <tr class="table-header">
-                <td>ID</td>
-                <td>Użytkownik</td>
-                <td>Akcja</td>
-                <td>Obiekt</td>
-                <td>Data i czas akcji</td>
-            </tr>
-            {% if logs %}
-                {% for log in logs %}
-                    <tr>
-                        <td>
-                            {{ log.id }}
-                        </td>
-                        <td>
-                            {{ log.whoDidTheAction }}
-                        </td>
-                        <td>
-                            {{ log.actionType }}
-                        </td>
-                        <td>
-                            {{ log.onWhatEntity }}
-                        </td>
-                        <td>
-                            {{ log.whenActionWasDone|date('Y-m-d H:i:s') }}
-                        </td>
-                    </tr>
-                {% endfor %}
-                {% else %}
-                <h2>Nic do wyświetlenia</h2>
-            {% endif %}
+            {% for log in logs %}
+                <tr>
+                    <td class="table-header">
+                        ID
+                    </td>
+                    <td>{{ log.id }}</td>
+                </tr>
+                <tr>
+                    <td class="table-header">
+                        Użytkownik
+                    </td>
+                    <td>{{ log.whoDidTheAction }}</td>
+                </tr>
+                <tr>
+                    <td class="table-header">
+                        Akcja
+                    </td>
+                    <td>{{ log.actionType }}</td>
+                </tr>
+                <tr>
+                    <td class="table-header">
+                        Obiekt
+                    </td>
+                    <td>{{ log.onWhatEntity }}</td>
+                </tr>
+                <tr>
+                    <td class="table-header">
+                        Data i czas akcji
+                    </td>
+                    <td>{{ log.whenActionWasDone|date('Y-m-d H:i:s') }}</td>
+                </tr>
+                <tr style="height: 1em; border: 0;"></tr>
+            {% endfor %}
         </table>
+    {% else %}
+        <h2>Nic do wyświetlenia</h2>
+    {% endif %}
     <script>
         const sortBtn = document.getElementById("sort-button");
 
@@ -65,14 +74,14 @@
         //  /log/order-by/{columnName}/{orderRule}
     </script>
     <script>
+        const INFOTEXT_VISIBLE_CLASS = 'visible';
         const infoIconEl = document.getElementById("info-icon");
         const infoTextEl = document.getElementById("info-text");
         infoIconEl?.addEventListener('mouseover', (event) => {
-            infoTextEl.innerText = "Zdarzenia starsze niż 30 dni będą automatycznie usuwane";
-            event.preventDefault();
+            infoTextEl.classList.add(INFOTEXT_VISIBLE_CLASS);
         });
         infoIconEl?.addEventListener('mouseout', (event) => {
-           infoTextEl.innerText=null;
+            infoTextEl.classList.remove(INFOTEXT_VISIBLE_CLASS);
         });
     </script>
 {% endblock %}

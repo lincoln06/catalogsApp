@@ -3,38 +3,37 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-    <main>
-        <h1>{{ caption }}</h1>
-        <section class="items-list">
-            <ul>
-                <li class="list-header">
-                    <a href="{{ path('app_add_system') }}"><span class="iconify"
-                                                                 data-icon="mdi-note-plus-outline"></span> Dodaj
-                        nowy</a>
-                </li>
-                {% if systems %}
-                    {% for system in systems %}
-                        <ul class="list-content">
-                            <li class="list-item-underlined">{{ system.name }}
-                                <span class="editor-buttons">
+<main>
+    <h1>{{ caption }}</h1>
+    <section class="items-list">
+        <ul>
+            <li class="list-header">
+                <a href="{{ path('app_add_system') }}"><span class="iconify"
+                                                             data-icon="mdi-note-plus-outline"></span> Dodaj
+                    nowy</a>
+            </li>
+            {% if systems %}
+                {% for system in systems %}
+                    <ul class="list-content">
+                        <li class="list-item-underlined">{{ system.name }}
+                            <span class="editor-buttons">
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('app_edit_system', {'id':system.id}) }}"><span class="iconify"
                                                                                                 data-icon="mdi-pencil"></span></a>
 
                             {% endif %}
-                                    {% if is_granted('ROLE_GOD') %}
-                                        <a href="#" onclick="confirmDelete({{ system.id }}, 'system')"><span
-                                                    class="iconify"
-                                                    data-icon="mdi-delete"></span></a>
-                                    {% endif %}
+                                {% if is_granted('ROLE_GOD') %}
+                                    <a href="#" onclick="confirmDelete({{ system.id }}, 'system')"><span
+                                                class="iconify"
+                                                data-icon="mdi-delete"></span></a>
+                                {% endif %}
                                 </span>
-                            </li>
-                        </ul>
-                    {% endfor %}
-                {% endif %}
-            </ul>
-        </section>
+                        </li>
+                    </ul>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </section>
 
 
-
-{% endblock %}
+    {% endblock %}

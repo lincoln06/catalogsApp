@@ -3,19 +3,19 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-        <h1>{{ caption }}</h1>
-        <section class="items-list">
-            <ul>
-                <li class="list-header">
-                    <a href="{{ path('app_add_report_category') }}"><span class="iconify"
-                                                                          data-icon="mdi-note-plus-outline"></span>
-                        Dodaj</a>
-                </li>
-                {% if categories %}
-                    {% for category in categories %}
-                        <ul class="list-content">
-                            <li class="list-item-underlined">{{ category.name }}
-                                <span class="editor-buttons">
+    <h1>{{ caption }}</h1>
+    <section class="items-list">
+        <ul>
+            <li class="list-header">
+                <a href="{{ path('app_add_report_category') }}"><span class="iconify"
+                                                                      data-icon="mdi-note-plus-outline"></span>
+                    Dodaj</a>
+            </li>
+            {% if categories %}
+                {% for category in categories %}
+                    <ul class="list-content">
+                        <li class="list-item-underlined">{{ category.name }}
+                            <span class="editor-buttons">
                             {% if is_granted('ROLE_GOD') %}
                                 <a href="{{ path('app_edit_report_category', {'id':category.id}) }}"><span
                                             class="iconify" data-icon="mdi-pencil"></span></a>
@@ -25,10 +25,10 @@
                                 </a>
                             {% endif %}
                                 </span>
-                            </li>
-                        </ul>
-                    {% endfor %}
-                {% endif %}
-            </ul>
-        </section>
+                        </li>
+                    </ul>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </section>
 {% endblock %}

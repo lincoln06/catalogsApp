@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 class CRUDService
 {

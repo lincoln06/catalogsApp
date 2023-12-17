@@ -18,6 +18,7 @@ class LogController extends AbstractController
             'logs' => $logs
         ]);
     }
+
     #[Route('/log/order-by/{columnName}/{orderRule}', name: 'app_log_order')]
     public function showLogsBy(LogRepository $logRepository, string $columnName, string $orderRule): Response
     {

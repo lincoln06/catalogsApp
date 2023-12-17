@@ -7,25 +7,25 @@
     <link rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
     {% block stylesheets %}
     {% endblock %}
 
 
 </head>
 <body>
-    <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
-    {% if is_granted('ROLE_USER') %}
+<script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+{% if is_granted('ROLE_USER') %}
     <nav id="top-menu">
         <div id="top-menu-options">
-            <div id="top-menu-option">
+            <div class="top-menu-option">
                 <a href="{{ path('app_catalogs_home') }}">Strona główna</a>
             </div>
             {% if is_granted('ROLE_EDITOR') %}
-                <div id="top-menu-option">
+                <div class="top-menu-option">
                     <a href="{{ path('app_show_report') }}">Zgłoszenia</a>
                     <span id="report-notification-icon">
                         <span class="iconify" data-icon="mdi-circle-medium"></span>
@@ -33,52 +33,50 @@
                 </div>
             {% endif %}
             {% if not is_granted('ROLE_GOD') %}
-                <div id="top-menu-option">
+                <div class="top-menu-option">
                     <a href="{{ path('app_add_report') }}">Wyślij zgłoszenie</a>
                 </div>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
-                <div id="top-menu-option">
+                <div class="top-menu-option">
                     <a href="{{ path('app_manage_users') }}">Użytkownicy</a>
                 </div>
-                <div id="top-menu-option">
+                <div class="top-menu-option">
                     <a href="{{ path('app_show_system') }}">Systemodawcy</a>
                 </div>
-                <div id="top-menu-option">
+                <div class="top-menu-option">
                     <a href="{{ path('app_log') }}">Dziennik</a>
                 </div>
             {% endif %}
             {% if is_granted('ROLE_GOD') %}
-                <div id="top-menu-option">
+                <div class="top-menu-option">
                     <a href="{{ path('app_manage_requests') }}">Prośby o dostęp</a>
                     <span id="request-notification-icon">
                         <span class="iconify" data-icon="mdi-circle-medium"></span>
                     </span>
                 </div>
-                <div id="top-menu-option">
+                <div class="top-menu-option">
                     <a href="{{ path('app_show_report_category') }}">Kategorie zgłoszeń</a>
                 </div>
             {% endif %}
         </div>
 
-            <div id="user-info">
-                <div id="menu-button">
-                    <span class="iconify" data-icon="mdi-menu"></span>
-                </div>
-                <span class="user-element">{{ app.user.email }}</span>
-                <span class="user-element logout-icon"><a href="{{ path('app_logout') }}"><span class="iconify" data-icon="mdi-logout"></span></a></span>
-
+        <div id="user-info">
+            <div id="menu-button">
+                <span class="iconify" data-icon="mdi-menu"></span>
             </div>
+            <span class="user-element">{{ app.user.email }}</span>
+            <span class="user-element logout-icon"><a href="{{ path('app_logout') }}"><span class="iconify"
+                                                                                            data-icon="mdi-logout"></span></a></span>
+
+        </div>
 
 
     </nav>
 {% endif %}
 
 
-<footer>
-    &copy;2023 Maciej Janta-Lipiński
-</footer>
-    <main>
+<main>
         <span class="ok-message-element" id="ok-message-element">
         {% if app.session.flashBag.has('success') %}
             {{ app.session.flashBag.get('success')[0] }}
@@ -90,7 +88,10 @@
     {% block body %}
 
     {% endblock %}
-    </main>
+    <footer>
+        &copy;2023 Maciej Janta-Lipiński
+    </footer>
+</main>
 {% block javascripts %}
     <script>
         let message = "Usunięcie spowoduje bezpowrotne skasowanie wszystkich danych. Czy chcesz kontynuować?";
@@ -103,7 +104,7 @@
     </script>
     <script>
         let closeMessageEl = document.getElementById("close-message-icon");
-        let okMessageEl=document.getElementById("ok-message-element");
+        let okMessageEl = document.getElementById("ok-message-element");
         closeMessageEl?.addEventListener('click', (event) => {
             okMessageEl.innerText = null;
             event.preventDefault();
@@ -112,6 +113,7 @@
     <script>
         getNotifications();
         setInterval(getNotifications, 300000);
+
         function getNotifications() {
             const reportNotificationCountEl = document.getElementById("report-notification-icon");
             const requestNotificationCountEl = document.getElementById("request-notification-icon");
@@ -161,19 +163,21 @@
         const menuOptionsEl = document.getElementById("top-menu-options");
         const mainEl = document.querySelector("main");
 
-            menuButtonEl?.addEventListener('click', (event) => {
-                menuOptionsEl.classList.toggle(TOP_MENU_VISIBLE_CLASS);
-                menuButtonEl.classList.toggle(TOP_MENU_ACTIVE_CLASS);
-                event.preventDefault();
-            });
-            mainEl?.addEventListener('click', (event) => {
-               menuOptionsEl.classList.remove(TOP_MENU_VISIBLE_CLASS);
-            });
+        menuButtonEl?.addEventListener('click', (event) => {
+            menuOptionsEl.classList.toggle(TOP_MENU_VISIBLE_CLASS);
+            menuButtonEl.classList.toggle(TOP_MENU_ACTIVE_CLASS);
+            event.preventDefault();
+        });
+        mainEl?.addEventListener('click', (event) => {
+            menuOptionsEl.classList.remove(TOP_MENU_VISIBLE_CLASS);
+            menuButtonEl.classList.remove(TOP_MENU_ACTIVE_CLASS);
+        });
         let breakpoint = window.matchMedia('(max-width: 1023px)');
-        breakpoint.addEventListener('change', function(event) {
+        breakpoint.addEventListener('change', function (event) {
             if (event.matches) {
                 menuOptionsEl.classList.remove(TOP_MENU_VISIBLE_CLASS);
-            }});
+            }
+        });
 
     </script>
 {% endblock %}

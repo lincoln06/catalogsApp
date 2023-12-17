@@ -3,26 +3,26 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-        <h1>{{ caption }}</h1>
+    <h1>{{ caption }}</h1>
 
-        {% if reports %}
-            <section class="items-list">
-                {% for report in reports %}
-                    <ul>
-                        <li class="list-header">{{ report.category.name }}
-                            <span class="editor-buttons">
+    {% if reports %}
+        <section class="items-list">
+            {% for report in reports %}
+                <ul>
+                    <li class="list-header">{{ report.category.name }}
+                        <span class="editor-buttons">
                                 <a href="{{ path('app_solve_report', {'id':report.id}) }}">Rozwiąż</a>
                             </span>
-                        </li>
-                        <ul class="list-content">
-                            <li class="list-topic list-item">{{ report.topic }}</li>
-                            <li class="list-description list-item">{{ report.description }}</li>
-                            <li class="author-info list-item">{{ report.reportFrom }}</li>
-                        </ul>
+                    </li>
+                    <ul class="list-content">
+                        <li class="list-topic list-item">{{ report.topic }}</li>
+                        <li class="list-description list-item">{{ report.description }}</li>
+                        <li class="author-info list-item">{{ report.reportFrom }}</li>
                     </ul>
-                {% endfor %}
-            </section>
-        {% else %}
-            <h2>Nic do wyświetlenia</h2>
-        {% endif %}
+                </ul>
+            {% endfor %}
+        </section>
+    {% else %}
+        <h2>Nic do wyświetlenia</h2>
+    {% endif %}
 {% endblock %}
