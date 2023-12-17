@@ -2,7 +2,6 @@
 
 {% block title %}GABIT | Baza wiedzy{% endblock %}
 {% block stylesheets %}
-    {{ parent() }}
     <style>
         body {
             display: flex;
@@ -26,8 +25,6 @@
     {% if message is defined %}
         <h2>{{ message }}</h2>
     {% endif %}
-
-    <main>
         <div id="logo-placeholder">
             <span class="logo-placeholder-big">
                 GABIT
@@ -59,5 +56,4 @@
                 <div>{{ error }}</div>
             {% endif %}
         </div>
-    </main>
 {% endblock %}

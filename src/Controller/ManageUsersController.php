@@ -129,6 +129,11 @@ class ManageUsersController extends MainController
     public function denyRegistration(Request $request, RegisterRequestRepository $registerRequestRepository, UserRegistrationService $userRegistrationService, int $id): Response
     {
         $registerRequest = $registerRequestRepository->find($id);
+        if(!$registerRequest) {
+            return $this->render('error_page/index.html.twig',[
+               'message' => 'Brak danych'
+            ]);
+        }
         $userRegistrationService->deleteRegisterRequest($registerRequest);
         $this->logService->createLog(
         explode('::', $request->attributes->get('_controller'))[1],

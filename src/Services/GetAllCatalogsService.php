@@ -18,12 +18,27 @@ class GetAllCatalogsService
         $systems = $this->getAllSystems();
         $catalogs = [];
         foreach ($systems as $system) {
-            $catalogs[$system->getName()] = $system->getCatalogs();
+            if(count($system->getCatalogs()) !==0 ) {
+                $catalogs[$system->getName()] = $system->getCatalogs();
+            }
         }
         return $catalogs;
     }
     public function getAllSystems(): array
     {
         return $this->systemRepository->findAll();
+
+    }
+    public function getSystemsWithCatalogs(): array
+    {
+        $systems = [];
+        $allSystems = $this->systemRepository->findAll();
+        foreach ($allSystems as $system)
+        {
+            if(count($system->getCatalogs()) !== 0) {
+                $systems[] = $system;
+            }
+        }
+        return $systems;
     }
 }

@@ -2,22 +2,23 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-    {% block stylesheets %}
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+    {% block stylesheets %}
     {% endblock %}
 
 
 </head>
 <body>
-{% block body %}
     <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+    {% if is_granted('ROLE_USER') %}
     <nav id="top-menu">
         <div id="top-menu-options">
             <div id="top-menu-option">
@@ -65,26 +66,31 @@
                     <span class="iconify" data-icon="mdi-menu"></span>
                 </div>
                 <span class="user-element">{{ app.user.email }}</span>
-                <span class="user-element logout-text"><a href="{{ path('app_logout') }}">Wyloguj</a></span>
                 <span class="user-element logout-icon"><a href="{{ path('app_logout') }}"><span class="iconify" data-icon="mdi-logout"></span></a></span>
 
             </div>
 
 
     </nav>
-    <span class="ok-message-element" id="ok-message-element">
+{% endif %}
+
+
+<footer>
+    &copy;2023 Maciej Janta-Lipiński
+</footer>
+    <main>
+        <span class="ok-message-element" id="ok-message-element">
         {% if app.session.flashBag.has('success') %}
-        {{ app.session.flashBag.get('success')[0] }}
-        <span id="close-message-icon">
+            {{ app.session.flashBag.get('success')[0] }}
+            <span id="close-message-icon">
             <span class="iconify" data-icon="mdi-close"></span>
         </span>
         {% endif %}
     </span>
+    {% block body %}
 
-{% endblock %}
-<footer>
-    &copy;2023 Maciej Janta-Lipiński
-</footer>
+    {% endblock %}
+    </main>
 {% block javascripts %}
     <script>
         let message = "Usunięcie spowoduje bezpowrotne skasowanie wszystkich danych. Czy chcesz kontynuować?";
@@ -121,7 +127,7 @@
                 }
 
                 if (reportNotificationCountEl) {
-                    if (notifications.numberOfReports != null&& notifications.numberOfReports != 0) {
+                    if (notifications.numberOfReports != null && notifications.numberOfReports != 0) {
                         reportNotificationCountEl.style.display = 'flex';
                     } else {
                         reportNotificationCountEl.style.display = 'none';
@@ -153,11 +159,15 @@
         const TOP_MENU_ACTIVE_CLASS = 'active';
         const menuButtonEl = document.getElementById("menu-button");
         const menuOptionsEl = document.getElementById("top-menu-options");
+        const mainEl = document.querySelector("main");
 
             menuButtonEl?.addEventListener('click', (event) => {
                 menuOptionsEl.classList.toggle(TOP_MENU_VISIBLE_CLASS);
                 menuButtonEl.classList.toggle(TOP_MENU_ACTIVE_CLASS);
                 event.preventDefault();
+            });
+            mainEl?.addEventListener('click', (event) => {
+               menuOptionsEl.classList.remove(TOP_MENU_VISIBLE_CLASS);
             });
         let breakpoint = window.matchMedia('(max-width: 1023px)');
         breakpoint.addEventListener('change', function(event) {

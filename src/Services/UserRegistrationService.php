@@ -4,8 +4,11 @@ namespace App\Services;
 
 use App\Entity\RegisterRequest;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\Response;
 
-class UserRegistrationService
+class UserRegistrationService extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private MailerService $mailerService;
@@ -27,9 +30,9 @@ class UserRegistrationService
         );
     }
 
-    public function deleteRegisterRequest(RegisterRequest $registerRequest): void
+    public function deleteRegisterRequest($registerRequest)
     {
-        $this->entityManager->remove($registerRequest);
-        $this->entityManager->flush();
+            $this->entityManager->remove($registerRequest);
+            $this->entityManager->flush();
     }
 }

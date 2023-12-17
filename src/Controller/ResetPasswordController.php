@@ -30,7 +30,8 @@ class ResetPasswordController extends MainController
             if (!in_array($email, $registeredEmails)) {
                 return $this->render('registration/register_request.html.twig', [
                     'form' => $form->createView(),
-                    'message' => 'Brak użytkownika o podanym adresie e-mail'
+                    'message' => 'Brak użytkownika o podanym adresie e-mail',
+                    'caption' => 'Resetowanie hasła'
                 ]);
             }
             $session = $request->getSession();
@@ -47,11 +48,13 @@ class ResetPasswordController extends MainController
             );
             return $this->render('registration/register_request.html.twig', [
                 'form' => $form->createView(),
-                'message' => $message
+                'message' => $message,
+                'caption' => 'Resetowanie hasła'
             ]);
         }
 
         return $this->render('registration/register_request.html.twig', [
+            'caption' => 'Resetowanie hasła',
             'form' => $form->createView(),
         ]);
     }
@@ -89,7 +92,8 @@ class ResetPasswordController extends MainController
             if ($password !== $repeatedPassword) {
                 return $this->render('reset_password/index.html.twig', [
                     'form' => $form->createView(),
-                    'message' => 'Hasła muszą być takie same'
+                    'message' => 'Hasła muszą być takie same',
+                    'caption' => 'Resetowanie hasła'
                 ]);
             }
             $usersRepository = $entityManager->getRepository(User::class);
@@ -103,6 +107,7 @@ class ResetPasswordController extends MainController
 
         return $this->render('reset_password/index.html.twig', [
             'form' => $form->createView(),
+            'caption' => 'Resetowanie hasła'
         ]);
     }
 }

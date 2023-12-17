@@ -3,8 +3,6 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-    {{ parent () }}
-    <main>
         <h1>{{ caption }}</h1>
         {% if usersList %}
             <section class="items-list">
@@ -29,5 +27,4 @@
         {% else %}
             <h2>Nic do wyświetlenia</h2>
         {% endif %}
-    </main>
 {% endblock %}

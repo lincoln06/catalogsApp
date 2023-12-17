@@ -18,7 +18,7 @@ class CatalogsHomeController extends MainController
     public function index(GetAllCatalogsService $getAllCatalogsService): Response
     {
         return $this->render('catalogs_home/index.html.twig', [
-            'systems' => $getAllCatalogsService->getAllSystems(),
+            'systems' => $getAllCatalogsService->getSystemsWithCatalogs(),
             'catalogs' => $getAllCatalogsService->getAllCatalogs()
         ]);
     }
@@ -49,6 +49,7 @@ class CatalogsHomeController extends MainController
             ]);
         }
         return $this->render('catalogs_home/new.html.twig', [
+            'caption' => 'Dodawanie katalogu',
             'form' => $form->createView(),
         ]);
     }
@@ -81,6 +82,8 @@ class CatalogsHomeController extends MainController
                 return $this->redirectToRoute('app_catalogs_home');
             }
             return $this->render('catalogs_home/new.html.twig', [
+
+                'caption' => 'Edycja katalogu',
                 'form' => $form->createView()
             ]);
         }

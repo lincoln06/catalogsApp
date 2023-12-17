@@ -1,23 +1,30 @@
 body {
     font-family: 'Montserrat', sans-serif;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
     font-size: 17px;
     margin: 0;
     padding: 0;
+    background-color: #fff;
+    height: 100vh;
 }
 
 nav {
+    z-index: 1;
     display: flex;
     position: sticky;
-    flex-direction: row;
-    width: 100%;
+    flex-direction: column-reverse;
+    width: auto;
     margin: 0;
     top: 0;
+    box-shadow: 0 0 10px black;
 }
 
 @media (max-width: 1023px) {
+    body {
+        flex-direction: column;
+    }
     nav {
         width: 100%;
         margin-left: 0;
@@ -41,12 +48,13 @@ footer {
 }
 
 main {
+    z-index: 0;
     display: flex;
     width: 100%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 0;
+    margin-left: 10px;
     padding: 0;
 }
 
@@ -57,10 +65,10 @@ main {
 /*}*/
 
 #top-menu {
-    justify-content: space-between;
+    justify-content: flex-end;
     background-color: #102E44;
     font-size: 18px;
-    height: auto;
+    height: 100%;
 }
 
 /*@media(max-width: 1023px) {*/
@@ -70,9 +78,13 @@ main {
 /*}*/
 #top-menu-options {
     display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 1023px) {
+    #top-menu {
+        height: auto;
+    }
     #top-menu-options {
         display: none;
     }
@@ -91,6 +103,7 @@ main {
     flex-direction: row;
     align-items: center;
     height: 100%;
+    line-height: 3em;
     text-align: center;
     padding: 0 10px 0 10px;
     border-left: 1px solid rgba(255, 255, 255, 0.10);
@@ -114,6 +127,7 @@ main {
 
 #top-menu-option:hover {
     background-color: #005596;
+    padding-left: 20px;
 }
 
 #top-menu a {
@@ -134,10 +148,10 @@ main {
 #user-info {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     padding: 10px;
     background-color: #005596;
     color: #fff;
-    border-left: 1px solid #c0c0c0;
 }
 
 @media (max-width: 1023px) {
@@ -374,7 +388,6 @@ a:hover {
 }
 
 .iconify {
-    margin-top: -5px;
     font-size: 25px;
     margin-left: 10px;
 }
@@ -588,19 +601,11 @@ textarea {
 .list-item-underlined {
     border-bottom: 1px solid #c0c0c0;
 }
-.logout-text {
+.logout-icon {
     display: flex;
 }
-.logout-icon {
-    display: none;
-}
 @media (max-width: 1023px) {
-    .logout-text {
-        display: none;
-    }
-    .logout-icon {
-        display: flex;
-    }
+
     .catalogs-list.visible {
         display: flex;
         width: 100%;

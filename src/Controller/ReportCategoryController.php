@@ -84,6 +84,7 @@ class ReportCategoryController extends MainController
                 return $this->redirectToRoute('app_show_report_category');
             }
             return $this->render('report_category/new.html.twig', [
+                'caption' => 'Edycja kategorii zgłoszeń',
                 'form' => $form
             ]);
         }

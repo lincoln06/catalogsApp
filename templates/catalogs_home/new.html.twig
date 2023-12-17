@@ -1,10 +1,7 @@
 {% extends 'base.html.twig' %}
-{% set caption = 'Dodawanie katalogu' %}
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-    {{ parent() }}
-    <main>
         <section class="normal-form">
             <h1>{{ caption }}</h1>
             {{ form(form) }}
@@ -12,5 +9,4 @@
                 <span id="error">{{ error }}</span>
             {% endif %}
         </section>
-    </main>
 {% endblock %}

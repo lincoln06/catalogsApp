@@ -3,8 +3,6 @@
 {% block title %}GABIT | Katalogi{% endblock %}
 
 {% block body %}
-    {{ parent() }}
-    <main>
         <section id="catalogs-home-list" class="catalogs-home-list">
             <ul>
                 {% if is_granted('ROLE_EDITOR') %}
@@ -49,7 +47,7 @@
                 {% endfor %}
             </ul>
         </section>
-    </main>
+
 
     <script>
         const MENU_VISIBLE_CLASS = 'visible';

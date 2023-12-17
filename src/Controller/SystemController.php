@@ -53,6 +53,7 @@ class SystemController extends MainController
             ]);
         }
         return $this->render('system/index.html.twig', [
+            'caption' => 'Dodawanie systemodawcy',
             'form' => $form->createView(),
         ]);
     }
@@ -86,6 +87,7 @@ class SystemController extends MainController
             $error = 'System o takiej nazwie już istnieje';
         }
         return $this->render('system/index.html.twig', [
+            'caption' => 'Edycja systemodawcy',
             'form' => $form->createView(),
             'error' => $error
         ]);

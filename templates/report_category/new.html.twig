@@ -1,15 +1,11 @@
 {% extends 'base.html.twig' %}
-{% set caption = 'Dodawanie kategorii zgłoszeń' %}
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-    {{ parent() }}
-    <main>
         <section class="normal-form">
 
             <h1>{{ caption }}</h1>
 
             {{ form(form) }}
         </section>
-    </main>
 {% endblock %}

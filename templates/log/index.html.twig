@@ -3,8 +3,6 @@
 {% block title %}{{ caption }}{% endblock %}
 
 {% block body %}
-    {{ parent () }}
-    <main>
         <h1>{{ caption }}<span id="info-icon"><span class="iconify" data-icon="mdi-information-outline"></span></span></h1>
         <span id="info-text" style="height: 1em;"></span>
         <div>
@@ -55,7 +53,6 @@
                 <h2>Nic do wyświetlenia</h2>
             {% endif %}
         </table>
-    </main>
     <script>
         const sortBtn = document.getElementById("sort-button");
 
