@@ -70,8 +70,6 @@
             const selectBoxOrderValue = document.getElementById("select-box-order").value;
             location.href = `/log/order-by/${selectBoxViaColumnValue}/${selectBoxOrderValue}`;
         })
-
-        //  /log/order-by/{columnName}/{orderRule}
     </script>
     <script>
         const INFOTEXT_VISIBLE_CLASS = 'visible';
@@ -79,9 +77,13 @@
         const infoTextEl = document.getElementById("info-text");
         infoIconEl?.addEventListener('mouseover', (event) => {
             infoTextEl.classList.add(INFOTEXT_VISIBLE_CLASS);
+            setTimeout(() => {
+                infoTextEl.classList.remove(INFOTEXT_VISIBLE_CLASS);
+            }, 5000);
         });
         infoIconEl?.addEventListener('mouseout', (event) => {
             infoTextEl.classList.remove(INFOTEXT_VISIBLE_CLASS);
         });
+
     </script>
 {% endblock %}
