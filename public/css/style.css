@@ -472,6 +472,9 @@ textarea {
     margin-bottom: 0.5em;
 }
 
+.normal-form a:hover {
+    color: #c0c0c0;
+}
 @media (max-width: 1023px) {
 
     body {
