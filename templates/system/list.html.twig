@@ -21,8 +21,6 @@
                                 <a href="{{ path('app_edit_system', {'id':system.id}) }}"><span class="iconify"
                                                                                                 data-icon="mdi-pencil"></span></a>
 
-                            {% endif %}
-                                {% if is_granted('ROLE_GOD') %}
                                     <a href="#" onclick="confirmDelete({{ system.id }}, 'system')"><span
                                                 class="iconify"
                                                 data-icon="mdi-delete"></span></a>

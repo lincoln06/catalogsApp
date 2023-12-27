@@ -44,7 +44,7 @@ class CatalogType extends AbstractType
 
             ])
             ->add('pdfFile', FileType::class, [
-                'label' => 'Plik',
+                'label' => 'Plik (max. 200 MB, format PDF)',
 
 
                 // unmapped means that this field is not associated to any entity property
