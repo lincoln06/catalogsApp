@@ -27,7 +27,7 @@ class GetUsersListService
     public function getUsersFromDatabase(): array
     {
         $listOfUsersToExport = [];
-        $listOfAllUsers = $this->userRepository->findAll();
+        $listOfAllUsers = $this->userRepository->findBy(array(), array('email' => 'ASC'));
         foreach ($listOfAllUsers as $user) {
             if ($this->security->isGranted('ROLE_GOD')) {
                 if (!in_array('ROLE_GOD', $user->getRoles())) $listOfUsersToExport[] = $user;

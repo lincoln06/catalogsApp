@@ -37,7 +37,7 @@ class ReportCategoryController extends MainController
     #[Route('/report/category/show', name: 'app_show_report_category')]
     public function showReportCategories(ReportCategoryRepository $reportCategoryRepository): Response
     {
-        $reportCategories = $reportCategoryRepository->findAll();
+        $reportCategories = $reportCategoryRepository->findBy(array(), array('name' => 'ASC'));
         if (!$reportCategories) {
             $message = 'Nic do wyświetlenia';
         } else {
