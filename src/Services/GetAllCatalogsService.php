@@ -27,14 +27,14 @@ class GetAllCatalogsService
 
     public function getAllSystems(): array
     {
-        return $this->systemRepository->findAll();
+        return $this->systemRepository->findBy(array(), array('name' => 'ASC'));
 
     }
 
     public function getSystemsWithCatalogs(): array
     {
         $systems = [];
-        $allSystems = $this->systemRepository->findAll();
+        $allSystems = $this->systemRepository->findBy(array(), array('name' => 'ASC'));
         foreach ($allSystems as $system) {
             if (count($system->getCatalogs()) !== 0) {
                 $systems[] = $system;
