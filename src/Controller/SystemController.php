@@ -17,7 +17,7 @@ class SystemController extends MainController
     #[Route('/system/show', name: 'app_show_system')]
     public function showSystems(SystemRepository $systemRepository): Response
     {
-        $systems = $systemRepository->findAll();
+        $systems = $systemRepository->findBy(array(), array('name' => 'ASC'));
         return $this->render('system/list.html.twig', [
             'systems' => $systems,
         ]);
