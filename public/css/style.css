@@ -623,5 +623,17 @@ textarea {
     .list-item-underlined {
         flex-direction: column;
     }
+    table.report-table td {
+        display: block;
+        width: 95%;
+    }
+    .id-header {
+        background-color: #005596;
+        color: white;
+    }
+    table.report-table tr {
+        border: 0;
+    }
+
 
 }

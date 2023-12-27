@@ -27,7 +27,7 @@
         <table class="report-table">
             {% for log in logs %}
                 <tr>
-                    <td class="table-header">
+                    <td class="table-header id-header">
                         ID
                     </td>
                     <td>{{ log.id }}</td>
@@ -56,7 +56,7 @@
                     </td>
                     <td>{{ log.whenActionWasDone|date('Y-m-d H:i:s') }}</td>
                 </tr>
-                <tr style="height: 1em; border: 0;"></tr>
+                <tr style="height: 1em; border: 0; background-color: #102e44;"></tr>
             {% endfor %}
         </table>
     {% else %}
