@@ -1,0 +1,10 @@
+{# templates/bundles/TwigBundle/Exception/error.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Błąd {{ status_code }}{% endblock %}
+
+{% block body %}
+    <h1>Ups! Wydarzył się błąd {{ status_code }}</h1>
+    <p> Tak się dzieje przeważnie dlatego, że autor coś skopał, lub użytkownik skręcił w złą drogę. Kliknij <a href="{{ path('app_catalogs_home') }}">tutaj</a>, aby powrócić do strony głównej.</p>
+{% endblock %}
