@@ -619,6 +619,7 @@ textarea {
     .user-email {
         width: 90%;
         overflow-x: hidden;
+        text-align: center;
     }
     .list-item-underlined {
         flex-direction: column;
@@ -634,6 +635,8 @@ textarea {
     table.report-table tr {
         border: 0;
     }
-
+    .logout-icon {
+        margin-top: 0.3em;
+    }
 
 }
