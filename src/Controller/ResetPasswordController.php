@@ -21,6 +21,9 @@ class ResetPasswordController extends MainController
     #[Route('/reset/password', name: 'app_forgot_password_request')]
     public function request(Request $request, MailerService $mailerService, GetUsersListService $getUsersListService, HashSetterService $hashSetter): Response
     {
+        if($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_catalogs_home');
+        }
         $form = $this->createForm(RegisterRequestType::class);
         $form->handleRequest($request);
 

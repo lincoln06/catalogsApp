@@ -12,6 +12,9 @@ class LoginController extends AbstractController
     #[Route('/login', name: 'app_login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
+        if($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_catalogs_home');
+        }
         $error = $authenticationUtils->getLastAuthenticationError();
         if ($error) $error = 'Nieprawidłowe dane logowania';
         $lastUsername = $authenticationUtils->getLastUsername();

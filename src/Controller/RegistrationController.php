@@ -21,7 +21,9 @@ class RegistrationController extends MainController
     #[Route('/register', name: 'app_register')]
     public function registrationRequest(Request $request, GetUsersListService $getUsersListService, HashSetterService $hashSetter): Response
     {
-
+        if($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_catalogs_home');
+        }
         $registerRequest = new RegisterRequest();
         $form = $this->createForm(RegisterRequestType::class, $registerRequest);
         $form->handleRequest($request);

@@ -10,6 +10,7 @@ use App\Services\GetUsersListService;
 use App\Services\LogService;
 use App\Services\UserPrivilegeValidatingService;
 use App\Services\UserRegistrationService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +36,7 @@ class ManageUsersController extends MainController
     }
 
     #[Route('manage/users/delete/{id}', name: 'app_delete_user')]
-    public function deleteUser(Request $request, UserRepository $userRepository, int $id, GetUsersListService $getUsersListService): Response
+    public function deleteUser(Request $request, UserRepository $userRepository, int $id): Response
     {
         $message = '';
         $user = $userRepository->find($id);
@@ -63,7 +64,7 @@ class ManageUsersController extends MainController
     }
 
     #[Route('/manage/users/edit/{id}', name: 'app_edit_user')]
-    public function editUser(Request $request, UserRepository $userRepository, int $id, GetUsersListService $getUsersListService): Response
+    public function editUser(Request $request, UserRepository $userRepository, int $id): Response
     {
         $user = $userRepository->find($id);
         $message = '';
@@ -100,8 +101,9 @@ class ManageUsersController extends MainController
     }
 
     #[Route('/manage/requests', name: 'app_manage_requests')]
-    public function requests(RegisterRequestRepository $registerRequestRepository): Response
+    public function requests(RegisterRequestRepository $registerRequestRepository, UserRegistrationService $userRegistrationService): Response
     {
+        $userRegistrationService->deleteOldRegisterRequests();
         $requests = $registerRequestRepository->findAll();
         return $this->render('manage_users/requests.html.twig', [
             'requests' => $requests,
@@ -113,6 +115,7 @@ class ManageUsersController extends MainController
     {
         $registerRequest = $registerRequestRepository->find($id);
         $registerRequest->setIsAccepted(true);
+        $registerRequest->setDate(new DateTime('now'));
         $this->crudService->persistEntity($registerRequest);
         $this->logService->createLog(
             explode('::', $request->attributes->get('_controller'))[1],

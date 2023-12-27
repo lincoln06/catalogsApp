@@ -616,4 +616,12 @@ textarea {
         line-height: 2em;
         justify-content: space-between;
     }
+    .user-email {
+        width: 90%;
+        overflow-x: hidden;
+    }
+    .list-item-underlined {
+        flex-direction: column;
+    }
+
 }

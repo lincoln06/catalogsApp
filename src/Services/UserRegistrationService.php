@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\RegisterRequest;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -22,7 +23,7 @@ class UserRegistrationService extends AbstractController
         $this->mailerService->sendEmail(
             $registerRequest->getEmail(),
             "Katalogi GABIT - link do rejestracji",
-            "Aby dokończyć rejestrację, skopiuj ten link do przeglądarki: ",
+            "Aby dokończyć rejestrację, skopiuj poniższy link do przeglądarki. Link będzie ważny 2 dni ",
             "/register/allowed/",
             $registerRequest->getHash()
         );
@@ -33,17 +34,17 @@ class UserRegistrationService extends AbstractController
         $this->entityManager->remove($registerRequest);
         $this->entityManager->flush();
     }
-//    public function deleteOldRegisterRequests() {
-//        $date = new \DateTime('now');
-//        $date = $date->modify("-30 day");
-//        $logs = $this->entityManager->getRepository(RegisterRequest::class)->findAll();
-//        foreach($logs as $log) {
-//            if($log->getWhenActionWasDone() < $date) {
-//                $this->crudService->deleteEntity($log);
-//            }
-//        }
-//    }
-//TODO insert 'date' column in reqister request table
-//TODO edit register request creation - it must contain actual date
-//TODO implement function that deletes all the requests older than 3 days
+    public function deleteOldRegisterRequests(): void
+    {
+        $registerRequestRepository = $this->entityManager->getRepository(RegisterRequest::class);
+        $date = new DateTime('now');
+        $date = $date->modify("-2 day");
+        $requests = $registerRequestRepository->findAll();
+        foreach($requests as $request) {
+            if($request->getDate() < $date && $request->getDate() !== null) {
+                $this->entityManager->remove($request);
+                $this->entityManager->flush();
+            }
+        }
+    }
 }

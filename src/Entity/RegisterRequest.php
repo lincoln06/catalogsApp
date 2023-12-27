@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\RegisterRequestRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RegisterRequestRepository::class)]
@@ -21,6 +22,9 @@ class RegisterRequest
 
     #[ORM\Column(nullable: true)]
     private ?bool $isAccepted = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date = null;
 
     public function getId(): ?int
     {
@@ -59,6 +63,18 @@ class RegisterRequest
     public function setIsAccepted(?bool $isAccepted): static
     {
         $this->isAccepted = $isAccepted;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): static
+    {
+        $this->date = $date;
 
         return $this;
     }
