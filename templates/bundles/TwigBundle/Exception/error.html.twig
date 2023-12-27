@@ -7,4 +7,5 @@
 {% block body %}
     <h1>Ups! Wydarzył się błąd {{ status_code }}</h1>
     <p> Tak się dzieje przeważnie dlatego, że autor coś skopał, lub użytkownik skręcił w złą drogę. Kliknij <a href="{{ path('app_catalogs_home') }}">tutaj</a>, aby powrócić do strony głównej.</p>
+    <img src="{{ asset('img/wrong_way.png') }}" alt="Nie tędy droga!" class="wrong-way-image">
 {% endblock %}
