@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Catalog;
 use App\Entity\System;
-use App\Repository\SystemRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -18,12 +17,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CatalogType extends AbstractType
 {
-    private SystemRepository $systemRepository;
-
-    public function __construct(SystemRepository $systemRepository)
-    {
-        $this->systemRepository = $systemRepository;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -41,21 +34,11 @@ class CatalogType extends AbstractType
                 ]])
             ->add('dateAdded', DateType::class, [
                 'label' => 'Data wydania',
-
             ])
             ->add('pdfFile', FileType::class, [
                 'label' => 'Plik (max. 200 MB, format PDF)',
-
-
-                // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
                 'required' => false,
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
                         'maxSize' => '200M',
@@ -69,7 +52,7 @@ class CatalogType extends AbstractType
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Zapisz'
-            ])// ...
+            ])
         ;
     }
 

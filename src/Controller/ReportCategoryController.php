@@ -58,11 +58,18 @@ class ReportCategoryController extends MainController
                 'message' => 'Brak danych do usunięcia'
             ]);
         }
-        $reportCategoryHandlingService->deleteReportCategory($reportCategory);
+        if(count($reportCategory->getReports()) !== 0) {
+            $this->addFlash(
+                'success',
+                'Nie możesz usunąć kategorii która zawiera zgłoszenia. Rozwiąż wszystkie zgłoszenia z tej kategorii i spróbuj ponownie'
+            );
+            return $this->redirectToRoute('app_show_report_category');
+        }
         $this->addFlash(
             'success',
             'Kategoria została usunięta'
         );
+        $reportCategoryHandlingService->deleteReportCategory($reportCategory);
         return $this->redirectToRoute('app_show_report_category');
     }
 
