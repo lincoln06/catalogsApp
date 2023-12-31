@@ -6,6 +6,7 @@ use App\Entity\Catalog;
 use App\Form\CatalogType;
 use App\Repository\CatalogRepository;
 use App\Services\CatalogHandlingService;
+use App\Services\CheckObjectNameService;
 use App\Services\GetAllCatalogsService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,26 +25,45 @@ class CatalogsHomeController extends MainController
     }
 
     #[Route('/catalog/add', name: 'app_add_catalog')]
-    public function newCatalog(Request $request, CatalogHandlingService $catalogHandlingService): Response
+    public function newCatalog(Request $request, CatalogHandlingService $catalogHandlingService, CheckObjectNameService $checkObjectNameService): Response
     {
         $catalog = new Catalog();
         $form = $this->createForm(CatalogType::class, $catalog);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
-            if ($catalog) {
-                $this->logService->createLog(
-                    explode('::', $request->attributes->get('_controller'))[1],
-                    $catalog->getSystem()->getName() . ': ' . $catalog->getName()
-                );
-                $this->crudService->persistEntity($catalog);
-                $this->addFlash(
-                    'success',
-                    'Katalog został dodany'
-                );
-                return $this->redirectToRoute('app_catalogs_home');
+            if ($catalog !== null) {
+                if($catalog->getDateAdded() <= new \DateTime()) {
+
+                    if($checkObjectNameService->checkIfCatalogExists($catalog->getName())) {
+                        $this->logService->createLog(
+                            explode('::', $request->attributes->get('_controller'))[1],
+                            $catalog->getSystem()->getName() . ': ' . $catalog->getName()
+                        );
+                        $this->crudService->persistEntity($catalog);
+                        $this->addFlash(
+                            'success',
+                            'Katalog został dodany'
+                        );
+
+                        return $this->redirectToRoute('app_catalogs_home');
+                    } else {
+                        return $this->render('catalogs_home/new.html.twig', [
+                            'caption' => 'Dodawanie katalogu',
+                            'error' => 'Katalog o takiej nazwie już istnieje',
+                            'form' => $form->createView(),
+                        ]);
+                    }
+                } else {
+                    return $this->render('catalogs_home/new.html.twig', [
+                        'caption' => 'Dodawanie katalogu',
+                        'error' => 'Wprowadzono nieprawidłową datę',
+                        'form' => $form->createView(),
+                    ]);
+                }
             }
             return $this->render('catalogs_home/new.html.twig', [
+                'caption' => 'Dodawanie katalogu',
                 'error' => 'Nie dodano pliku',
                 'form' => $form->createView(),
             ]);
@@ -55,31 +75,40 @@ class CatalogsHomeController extends MainController
     }
 
     #[Route('/catalog/edit/{id}', name: 'app_edit_catalog')]
-    public function editCatalog(Request $request, CatalogHandlingService $catalogHandlingService, CatalogRepository $catalogRepository, int $id): Response
+    public function editCatalog(Request $request, CatalogHandlingService $catalogHandlingService, CatalogRepository $catalogRepository, int $id, CheckObjectNameService $checkObjectNameService): Response
     {
         $catalog = $catalogRepository->find($id);
         if ($catalog) {
             $oldPdfFile = $catalog->getPdfFile();
+            $oldName = $catalog->getName();
             $filesystem = new Filesystem();
             $form = $this->createForm(CatalogType::class, $catalog);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
-                $this->crudService->persistEntity($catalog);
-                if ($catalog->getPdfFile() !== $oldPdfFile) {
+                if($checkObjectNameService->checkIfCatalogExists($catalog->getName()) || $catalog->getName() === $oldName) {
+                    $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
+                    $this->crudService->persistEntity($catalog);
+                    if ($catalog->getPdfFile() !== $oldPdfFile) {
 
-                    $olfPdfFilePath = $this->getParameter('catalogs_directory') . '/' . $oldPdfFile;
-                    $filesystem->remove($olfPdfFilePath);
+                        $olfPdfFilePath = $this->getParameter('catalogs_directory') . '/' . $oldPdfFile;
+                        $filesystem->remove($olfPdfFilePath);
+                    }
+                    $this->logService->createLog(
+                        explode('::', $request->attributes->get('_controller'))[1],
+                        $catalog->getSystem()->getName() . ': ' . $catalog->getName()
+                    );
+                    $this->addFlash(
+                        'success',
+                        'Zmiany zostały zapisane'
+                    );
+                    return $this->redirectToRoute('app_catalogs_home');
+                } else {
+                    return $this->render('catalogs_home/new.html.twig', [
+                        'error' => 'Katalog o takiej nazwie już istnieje',
+                        'caption' => 'Edycja katalogu',
+                        'form' => $form->createView()
+                    ]);
                 }
-                $this->logService->createLog(
-                    explode('::', $request->attributes->get('_controller'))[1],
-                    $catalog->getSystem()->getName() . ': ' . $catalog->getName()
-                );
-                $this->addFlash(
-                    'success',
-                    'Zmiany zostały zapisane'
-                );
-                return $this->redirectToRoute('app_catalogs_home');
             }
             return $this->render('catalogs_home/new.html.twig', [
 

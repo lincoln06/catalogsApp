@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 
 class CatalogType extends AbstractType
 {
@@ -34,6 +35,7 @@ class CatalogType extends AbstractType
                 ]])
             ->add('dateAdded', DateType::class, [
                 'label' => 'Data wydania',
+                'data' => new \DateTime(),
             ])
             ->add('pdfFile', FileType::class, [
                 'label' => 'Plik (max. 200 MB, format PDF)',
