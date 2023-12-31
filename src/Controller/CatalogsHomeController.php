@@ -85,26 +85,34 @@ class CatalogsHomeController extends MainController
             $form = $this->createForm(CatalogType::class, $catalog);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                if($checkObjectNameService->checkIfCatalogExists($catalog->getName()) || $catalog->getName() === $oldName) {
-                    $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
-                    $this->crudService->persistEntity($catalog);
-                    if ($catalog->getPdfFile() !== $oldPdfFile) {
+                if($catalog->getDateAdded() <= new \DateTime()) {
+                    if ($checkObjectNameService->checkIfCatalogExists($catalog->getName()) || $catalog->getName() === $oldName) {
+                        $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
+                        $this->crudService->persistEntity($catalog);
+                        if ($catalog->getPdfFile() !== $oldPdfFile) {
 
-                        $olfPdfFilePath = $this->getParameter('catalogs_directory') . '/' . $oldPdfFile;
-                        $filesystem->remove($olfPdfFilePath);
+                            $olfPdfFilePath = $this->getParameter('catalogs_directory') . '/' . $oldPdfFile;
+                            $filesystem->remove($olfPdfFilePath);
+                        }
+                        $this->logService->createLog(
+                            explode('::', $request->attributes->get('_controller'))[1],
+                            $catalog->getSystem()->getName() . ': ' . $catalog->getName()
+                        );
+                        $this->addFlash(
+                            'success',
+                            'Zmiany zostały zapisane'
+                        );
+                        return $this->redirectToRoute('app_catalogs_home');
+                    } else {
+                        return $this->render('catalogs_home/new.html.twig', [
+                            'error' => 'Katalog o takiej nazwie już istnieje',
+                            'caption' => 'Edycja katalogu',
+                            'form' => $form->createView()
+                        ]);
                     }
-                    $this->logService->createLog(
-                        explode('::', $request->attributes->get('_controller'))[1],
-                        $catalog->getSystem()->getName() . ': ' . $catalog->getName()
-                    );
-                    $this->addFlash(
-                        'success',
-                        'Zmiany zostały zapisane'
-                    );
-                    return $this->redirectToRoute('app_catalogs_home');
                 } else {
                     return $this->render('catalogs_home/new.html.twig', [
-                        'error' => 'Katalog o takiej nazwie już istnieje',
+                        'error' => 'Wprowadzono nieprawidłową datę',
                         'caption' => 'Edycja katalogu',
                         'form' => $form->createView()
                     ]);
