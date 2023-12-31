@@ -520,6 +520,7 @@ textarea {
     .list-header {
         flex-direction: column;
         justify-content: start;
+        overflow-wrap: anywhere;
     }
 
     .system-header {
