@@ -29,6 +29,7 @@ class ResetPasswordController extends MainController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
+            $email = trim(strtolower($email));
             $registeredEmails = $getUsersListService->getRegisteredEmails();
             if (!in_array($email, $registeredEmails)) {
                 return $this->render('registration/register_request.html.twig', [
@@ -77,6 +78,7 @@ class ResetPasswordController extends MainController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
+            $email = trim(strtolower($email));
             $emailToCheck = $session->get('email');
             if ($email !== $emailToCheck) {
                 return $this->render('error_page/index.html.twig', [

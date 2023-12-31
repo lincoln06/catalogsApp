@@ -28,9 +28,9 @@ class RegistrationController extends MainController
         $form = $this->createForm(RegisterRequestType::class, $registerRequest);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $emailToCheck = $form->get('email')->getData();
-            $isEmailRegistered = $getUsersListService->checkIfIsEmailRegistered($emailToCheck);
             $email = $form->get('email')->getData();
+            $email = trim(strtolower($email));
+            $isEmailRegistered = $getUsersListService->checkIfIsEmailRegistered($email);
             $hash = $hashSetter->makeHash();
             if ($isEmailRegistered) {
                 return $this->render('registration/register_request.html.twig', [
@@ -39,7 +39,7 @@ class RegistrationController extends MainController
                     'caption' => 'Prośba o dostęp'
                 ]);
             }
-            $registerRequest->setEmail($email);
+            $registerRequest->setEmail(trim(strtolower($email)));
             $registerRequest->setHash($hash);
             $this->crudService->persistEntity($registerRequest);
             return $this->render('registration/register_request.html.twig', [
@@ -71,12 +71,14 @@ class RegistrationController extends MainController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
+            $email = trim(strtolower($email));
             if ($email !== $registerRequest->getEmail()) {
                 return $this->render('error_page/index.html.twig', [
                     'message' => 'Ten adres e-mail nie istnieje w systemie'
                 ]);
             }
             $password = $form->get('plainPassword')->getData();
+            $user->setEmail($email);
             $user->setPassword($userPasswordHasher->hashPassword($user, $password));
 
             $this->crudService->persistEntity($user);
