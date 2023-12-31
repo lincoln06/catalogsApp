@@ -6,16 +6,16 @@
 
 #### For the best experience use Linux
 
-1. PHP 8.3
-   ```sudo add-apt-repository ppa:ondrej/php``` and then ```sudo apt install php8.3```.
-2. PHP 8.3 MySQL ```sudo apt install php8.3-mysql```.
-3. PHP 8.3 curl ```sudo apt install curl``` & ```sudo apt install php8.3-curl```.
-4. PDO ```sudo apt install php8.3-pdo```.
+1. PHP 8.2
+   ```sudo apt install php8.2```.
+2. PHP 8.2 MySQL ```sudo apt install php8.2-mysql```.
+3. PHP 8.2 curl ```sudo apt install curl``` & ```sudo apt install php8.2-curl```.
+4. PDO ```sudo apt install php8.2-pdo```.
 5. MariaDB 10.6.12 ```sudo apt install mariadb-server```.
 6. Composer ```https://getcomposer.org/```.
 7. Symfony 6.2 CLI ```curl -sS https://get.symfony.com/cli/installer | bash```.
-7. All the php extensions i.e. curl and pdo should be turned on in php.ini ```sudo nano /etc/php/8.3/cli/php.ini```
-   and ```sudo nano /etc/php/8.3/mods-available/php.ini``` - find extension name and remove semicolon ```;``` before it.
+7. All the php extensions i.e. curl and pdo should be turned on in php.ini ```sudo nano /etc/php/8.2/cli/php.ini```
+   and ```sudo nano /etc/php/8.2/mods-available/php.ini``` - find extension name and remove semicolon ```;``` before it.
 
 ## How to run it
 
