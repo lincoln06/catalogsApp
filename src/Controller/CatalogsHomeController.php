@@ -80,13 +80,13 @@ class CatalogsHomeController extends MainController
         $catalog = $catalogRepository->find($id);
         if ($catalog) {
             $oldPdfFile = $catalog->getPdfFile();
-            $oldName = $catalog->getName();
+            $oldName = strtolower($catalog->getName());
             $filesystem = new Filesystem();
             $form = $this->createForm(CatalogType::class, $catalog);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 if($catalog->getDateAdded() <= new \DateTime()) {
-                    if ($checkObjectNameService->checkIfCatalogExists($catalog->getName()) || $catalog->getName() === $oldName) {
+                    if ($checkObjectNameService->checkIfCatalogExists($catalog->getName()) || strtolower($catalog->getName()) === $oldName) {
                         $catalog = $catalogHandlingService->createOfUpdateCatalog($catalog, $form);
                         $this->crudService->persistEntity($catalog);
                         if ($catalog->getPdfFile() !== $oldPdfFile) {
