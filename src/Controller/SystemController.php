@@ -48,6 +48,7 @@ class SystemController extends MainController
             }
             $error = "System o takiej nazwie już istnieje";
             return $this->render('system/index.html.twig', [
+                'caption' => 'Dodawanie systemodawcy',
                 'form' => $form->createView(),
                 'error' => $error
             ]);
@@ -66,12 +67,13 @@ class SystemController extends MainController
         if (!$system) {
             $error = 'Brak danych';
         }
+        $oldName = $system->getName();
         $form = $this->createForm(SystemType::class, $system);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $systemName = $form->get('name')->getData();
-            if ($checkObjectNameService->checkIfSystemExists($systemName) || !($system->getName() !== $systemName)) {
+            if ($checkObjectNameService->checkIfSystemExists($systemName) || $oldName === $systemName) {
                 $system->setName($systemName);
                 $this->crudService->persistEntity($system);
                 $this->logService->createLog(
