@@ -45,7 +45,7 @@ class ResetPasswordController extends MainController
             $message = "Sprawdź swoją skrzynkę odbiorczą";
             $mailerService->sendEmail(
                 $email,
-                "Katalogi GABIT - Link do resetowania hasła",
+                "Baza wiedzy - Link do resetowania hasła",
                 "Aby zresetować hasło, skopiuj ten link do przeglądarki: \n\n",
                 "/reset/password/",
                 $hash

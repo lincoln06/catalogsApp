@@ -22,7 +22,7 @@ class UserRegistrationService extends AbstractController
     {
         $this->mailerService->sendEmail(
             $registerRequest->getEmail(),
-            "Katalogi GABIT - link do rejestracji",
+            "Katalogi - link do rejestracji",
             "Aby dokończyć rejestrację, skopiuj poniższy link do przeglądarki. Link będzie ważny 2 dni ",
             "/register/allowed/",
             $registerRequest->getHash()
